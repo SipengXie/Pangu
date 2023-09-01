@@ -1,0 +1,34 @@
+syntax = "proto3";
+package pb;
+import "pb/common.proto";
+
+option go_package="./pb";
+
+enum PacketType {
+  P2PPACKET=0;
+  CLIENTPACKET=1;
+}
+
+
+message Packet {
+  bytes msg =1;
+  int64 consensusID=2;
+  int64 epoch=3;
+  PacketType type = 4;
+}
+
+enum TransactionType{
+  NORMAL=0;
+  UPGRADE=1;
+  TIMEVOTE=2;
+  LOCK=3;
+}
+
+message Transaction {
+  TransactionType type=1;
+  bytes payload=2;
+}
+
+service P2P {
+  rpc Send(Packet) returns (Empty) {}
+}

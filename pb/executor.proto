@@ -1,0 +1,19 @@
+syntax = "proto3";
+package pb;
+import "pb/common.proto";
+import "pb/upgradeable-consensus.proto";
+
+option go_package="./pb";
+
+message ExecBlock {
+  repeated bytes txs=1;
+}
+
+message Result {
+    bool success=1;
+}
+
+service Executor {
+  rpc CommitBlock(ExecBlock) returns (Empty) {}
+  rpc VerifyTx(Transaction) returns (Result) {}
+}
