@@ -3,6 +3,7 @@ module github.com/SipengXie/pangu
 go 1.21.0
 
 require (
+<<<<<<< HEAD
 	github.com/c2h5oh/datasize v0.0.0-20220606134207-859f65c6625b
 	github.com/ethereum/go-ethereum v1.12.2
 	github.com/gofrs/flock v0.8.1
@@ -105,3 +106,10 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
+=======
+	golang.org/x/crypto v0.12.0
+	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63
+)
+
+require golang.org/x/sys v0.11.0 // indirect
+>>>>>>> 97e0dd0079eb0fc3ed35a7800ba545c661550c5c
