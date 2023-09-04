@@ -21,6 +21,7 @@ type PanguTransaction struct {
 	// TODO: 暂时先不用
 	EncAlgo    byte
 	EncContent []byte // EncContent <--> {Data, AccessList}
+	VmType     byte
 
 	Data       []byte
 	AccessList AccessList
