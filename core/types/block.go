@@ -169,6 +169,7 @@ func (b *Block) ParentHash() common.Hash  { return b.header.ParentHash }
 func (b *Block) TxRoot() common.Hash      { return b.header.TxRoot }
 func (b *Block) ReceiptRoot() common.Hash { return b.header.ReceiptRoot }
 func (b *Block) Extra() []byte            { return common.CopyBytes(b.header.Extra) }
+func (b *Block) Header() *Header          { return b.header } // TODO: 新增Header()方法
 
 func (b *Block) BaseFee() *big.Int {
 	if b.header.BaseFee == nil {

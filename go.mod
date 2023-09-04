@@ -16,7 +16,10 @@ require (
 	golang.org/x/tools v0.12.1-0.20230815132531-74c255bcf846
 )
 
-require github.com/go-stack/stack v1.8.1 // indirect
+require (
+	github.com/deckarep/golang-set/v2 v2.3.1 // indirect
+	github.com/go-stack/stack v1.8.1 // indirect
+)
 
 require (
 	github.com/bits-and-blooms/bitset v1.7.0 // indirect

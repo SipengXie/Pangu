@@ -5,17 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="变更">
-      <change afterPath="$PROJECT_DIR$/core/pvm.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/process.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/txclassfy.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/evm/jump_table.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/jump_table.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/evm/jump_table_export.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/jump_table_export.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/evm/operations_acl.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/operations_acl.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/evm/runtime/env.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/runtime/env.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/evm/runtime/runtime.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/runtime/runtime.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/evm/runtime/runtime_example_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/runtime/runtime_example_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/evm/runtime/runtime_test.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/evm/stack_table.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/stack_table.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/pvm.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/pvm.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/types/block.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/types/block.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
