@@ -6,7 +6,7 @@ require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2
 	github.com/consensys/gnark-crypto v0.11.2
 	github.com/crate-crypto/go-kzg-4844 v0.3.0
-	github.com/ethereum/c-kzg-4844/bindings/go v0.0.0-20230126171313-363c7d7593b4
+	github.com/ethereum/c-kzg-4844 v0.3.1
 	github.com/google/gofuzz v1.2.0
 	github.com/holiman/uint256 v1.2.3
 	github.com/jedisct1/go-minisign v0.0.0-20230811132847-661be99b8267
@@ -25,7 +25,7 @@ require (
 	github.com/mmcloughlin/addchain v0.4.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
-	github.com/supranational/blst v0.3.11-0.20230124161941-ca03e11a3ff2 // indirect
+	github.com/supranational/blst v0.3.11 // indirect
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.11.0
