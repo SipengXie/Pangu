@@ -2,11 +2,11 @@ package types
 
 import "github.com/SipengXie/pangu/common"
 
-// AccessList is an EIP-2930 access list.
-type AccessList []AccessTuple
-
-// AccessTuple is the element type of an access list.
-type AccessTuple struct {
-	Address     common.Address `json:"address"     gencodec:"required"`
-	StorageKeys []common.Hash  `json:"storageKeys" gencodec:"required"`
+// AccessList 统一定义一种AccessList形式
+type AccessList struct {
+	// int = -1表示当前地址没有对应的slot；int >= 0表示Address对应的slot在slots数组中的序号
+	Addresses map[common.Address]int
+	Slots     []map[common.Hash]struct{}
 }
+
+// 其他方法等地后续添加
