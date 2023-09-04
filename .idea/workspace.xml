@@ -5,93 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="变更">
-      <change afterPath="$PROJECT_DIR$/core/evm/evmparams/config.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/evm/evmparams/gas_params.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/types/PanguTransaction.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/types/PanguTransaction.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/analysis.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/analysis.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/analysis_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/analysis_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/common.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/common.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/contract.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/contract.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/contracts.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/contracts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/contracts_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/contracts_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/doc.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/doc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/eips.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/eips.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/errors.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/evm.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/evm.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/gas.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/gas.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/gas_table.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/gas_table.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/gas_table_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/gas_table_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/instructions.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/instructions.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/instructions_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/instructions_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/interface.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/interface.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/interpreter.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/interpreter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/interpreter_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/interpreter_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/jump_table.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/jump_table.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/jump_table_export.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/jump_table_export.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/jump_table_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/jump_table_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/logger.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/memory.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/memory.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/memory_table.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/memory_table.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/memory_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/memory_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/opcodes.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/opcodes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/operations_acl.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/operations_acl.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/runtime/doc.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/runtime/doc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/runtime/env.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/runtime/env.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/runtime/runtime.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/runtime/runtime.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/runtime/runtime_example_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/runtime/runtime_example_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/runtime/runtime_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/runtime/runtime_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/stack.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/stack.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/stack_table.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/stack_table.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/blake2F.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/blake2F.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/blsG1Add.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/blsG1Add.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/blsG1Mul.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/blsG1Mul.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/blsG1MultiExp.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/blsG1MultiExp.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/blsG2Add.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/blsG2Add.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/blsG2Mul.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/blsG2Mul.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/blsG2MultiExp.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/blsG2MultiExp.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/blsMapG1.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/blsMapG1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/blsMapG2.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/blsMapG2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/blsPairing.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/blsPairing.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/bn256Add.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/bn256Add.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/bn256Pairing.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/bn256Pairing.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/bn256ScalarMul.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/bn256ScalarMul.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/ecRecover.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/ecRecover.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/fail-blake2f.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/fail-blake2f.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/fail-blsG1Add.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/fail-blsG1Add.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/fail-blsG1Mul.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/fail-blsG1Mul.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/fail-blsG1MultiExp.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/fail-blsG1MultiExp.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/fail-blsG2Add.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/fail-blsG2Add.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/fail-blsG2Mul.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/fail-blsG2Mul.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/fail-blsG2MultiExp.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/fail-blsG2MultiExp.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/fail-blsMapG1.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/fail-blsMapG1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/fail-blsMapG2.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/fail-blsMapG2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/fail-blsPairing.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/fail-blsPairing.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/modexp.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/modexp.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/modexp_eip2565.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/modexp_eip2565.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/precompiles/pointEvaluation.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/precompiles/pointEvaluation.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_add.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_add.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_and.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_and.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_byte.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_byte.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_div.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_div.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_eq.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_eq.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_exp.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_exp.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_gt.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_gt.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_lt.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_lt.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_mod.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_mul.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_mul.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_or.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_or.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_sar.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_sar.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_sdiv.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_sdiv.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_sgt.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_sgt.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_shl.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_shl.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_shr.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_shr.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_signext.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_signext.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_slt.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_slt.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_smod.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_smod.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_sub.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_sub.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/vm/testdata/testcases_xor.json" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/testdata/testcases_xor.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
