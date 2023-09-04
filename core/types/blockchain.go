@@ -40,6 +40,7 @@ func NewBlokchain(config *params.ChainConfig, statedb *state.StateDB) *Blockchai
 		config:        config,
 		statedb:       statedb,
 		chainHeadFeed: new(event.Feed),
+		chainmu:       syncx.NewClosableMutex(),
 	}
 }
 
