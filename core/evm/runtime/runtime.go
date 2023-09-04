@@ -17,6 +17,8 @@
 package runtime
 
 import (
+	"github.com/SipengXie/pangu/core/evm"
+	"github.com/SipengXie/pangu/core/evm/evmparams"
 	"math"
 	"math/big"
 
@@ -24,7 +26,6 @@ import (
 	"github.com/SipengXie/pangu/core/rawdb"
 	"github.com/SipengXie/pangu/core/state"
 	"github.com/SipengXie/pangu/core/types"
-	"github.com/SipengXie/pangu/core/vm"
 	"github.com/SipengXie/pangu/crypto"
 	"github.com/SipengXie/pangu/params"
 )
@@ -42,7 +43,7 @@ type Config struct {
 	GasPrice    *big.Int
 	Value       *big.Int
 	Debug       bool
-	EVMConfig   vm.Config
+	EVMConfig   evm.Config
 	BaseFee     *big.Int
 	BlobHashes  []common.Hash
 	Random      *common.Hash
@@ -55,20 +56,20 @@ type Config struct {
 func setDefaults(cfg *Config) {
 	if cfg.ChainConfig == nil {
 		cfg.ChainConfig = &params.ChainConfig{
-			ChainID:             big.NewInt(1),
-			HomesteadBlock:      new(big.Int),
-			DAOForkBlock:        new(big.Int),
-			DAOForkSupport:      false,
-			EIP150Block:         new(big.Int),
-			EIP155Block:         new(big.Int),
-			EIP158Block:         new(big.Int),
-			ByzantiumBlock:      new(big.Int),
-			ConstantinopleBlock: new(big.Int),
-			PetersburgBlock:     new(big.Int),
-			IstanbulBlock:       new(big.Int),
-			MuirGlacierBlock:    new(big.Int),
-			BerlinBlock:         new(big.Int),
-			LondonBlock:         new(big.Int),
+			ChainID: big.NewInt(1),
+			//HomesteadBlock:      new(big.Int),	// TODO: 暂时去掉
+			//DAOForkBlock:        new(big.Int),
+			//DAOForkSupport:      false,
+			//EIP150Block:         new(big.Int),
+			//EIP155Block:         new(big.Int),
+			//EIP158Block:         new(big.Int),
+			//ByzantiumBlock:      new(big.Int),
+			//ConstantinopleBlock: new(big.Int),
+			//PetersburgBlock:     new(big.Int),
+			//IstanbulBlock:       new(big.Int),
+			//MuirGlacierBlock:    new(big.Int),
+			//BerlinBlock:         new(big.Int),
+			//LondonBlock:         new(big.Int),
 		}
 	}
 
@@ -93,7 +94,7 @@ func setDefaults(cfg *Config) {
 		}
 	}
 	if cfg.BaseFee == nil {
-		cfg.BaseFee = big.NewInt(params.InitialBaseFee)
+		cfg.BaseFee = big.NewInt(evmparams.InitialBaseFee)
 	}
 }
 
@@ -114,13 +115,13 @@ func Execute(code, input []byte, cfg *Config) ([]byte, *state.StateDB, error) {
 	var (
 		address = common.BytesToAddress([]byte("contract"))
 		vmenv   = NewEnv(cfg)
-		sender  = vm.AccountRef(cfg.Origin)
+		sender  = evm.AccountRef(cfg.Origin)
 		rules   = cfg.ChainConfig.Rules(vmenv.Context.BlockNumber, vmenv.Context.Random != nil, vmenv.Context.Time)
 	)
 	// Execute the preparatory steps for state transition which includes:
 	// - prepare accessList(post-berlin)
 	// - reset transient storage(eip 1153)
-	cfg.State.Prepare(rules, cfg.Origin, cfg.Coinbase, &address, vm.ActivePrecompiles(rules), nil)
+	cfg.State.Prepare(rules, cfg.Origin, cfg.Coinbase, &address, evm.ActivePrecompiles(rules), nil)
 	cfg.State.CreateAccount(address)
 	// set the receiver's (the executing contract) code for execution.
 	cfg.State.SetCode(address, code)
@@ -147,13 +148,13 @@ func Create(input []byte, cfg *Config) ([]byte, common.Address, uint64, error) {
 	}
 	var (
 		vmenv  = NewEnv(cfg)
-		sender = vm.AccountRef(cfg.Origin)
+		sender = evm.AccountRef(cfg.Origin)
 		rules  = cfg.ChainConfig.Rules(vmenv.Context.BlockNumber, vmenv.Context.Random != nil, vmenv.Context.Time)
 	)
 	// Execute the preparatory steps for state transition which includes:
 	// - prepare accessList(post-berlin)
 	// - reset transient storage(eip 1153)
-	cfg.State.Prepare(rules, cfg.Origin, cfg.Coinbase, nil, vm.ActivePrecompiles(rules), nil)
+	cfg.State.Prepare(rules, cfg.Origin, cfg.Coinbase, nil, evm.ActivePrecompiles(rules), nil)
 	// Call the code with the given configuration.
 	code, address, leftOverGas, err := vmenv.Create(
 		sender,
@@ -181,7 +182,7 @@ func Call(address common.Address, input []byte, cfg *Config) ([]byte, uint64, er
 	// Execute the preparatory steps for state transition which includes:
 	// - prepare accessList(post-berlin)
 	// - reset transient storage(eip 1153)
-	statedb.Prepare(rules, cfg.Origin, cfg.Coinbase, &address, vm.ActivePrecompiles(rules), nil)
+	statedb.Prepare(rules, cfg.Origin, cfg.Coinbase, &address, evm.ActivePrecompiles(rules), nil)
 
 	// Call the code with the given configuration.
 	ret, leftOverGas, err := vmenv.Call(

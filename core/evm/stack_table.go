@@ -17,7 +17,7 @@
 package evm
 
 import (
-	"github.com/SipengXie/pangu/params"
+	"github.com/SipengXie/pangu/core/evm/evmparams"
 )
 
 func minSwapStack(n int) int {
@@ -35,7 +35,7 @@ func maxDupStack(n int) int {
 }
 
 func maxStack(pop, push int) int {
-	return int(params.StackLimit) + pop - push
+	return int(evmparams.StackLimit) + pop - push
 }
 func minStack(pops, push int) int {
 	return pops

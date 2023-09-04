@@ -18,16 +18,16 @@ package runtime
 
 import (
 	"github.com/SipengXie/pangu/core"
-	"github.com/SipengXie/pangu/core/vm"
+	"github.com/SipengXie/pangu/core/evm"
 )
 
-func NewEnv(cfg *Config) *vm.EVM {
-	txContext := vm.TxContext{
+func NewEnv(cfg *Config) *evm.EVM {
+	txContext := evm.TxContext{
 		Origin:     cfg.Origin,
 		GasPrice:   cfg.GasPrice,
 		BlobHashes: cfg.BlobHashes,
 	}
-	blockContext := vm.BlockContext{
+	blockContext := evm.BlockContext{
 		CanTransfer: core.CanTransfer,
 		Transfer:    core.Transfer,
 		GetHash:     cfg.GetHashFn,
@@ -40,5 +40,5 @@ func NewEnv(cfg *Config) *vm.EVM {
 		Random:      cfg.Random,
 	}
 
-	return vm.NewEVM(blockContext, txContext, cfg.State, cfg.ChainConfig, cfg.EVMConfig)
+	return evm.NewEVM(blockContext, txContext, cfg.State, cfg.ChainConfig, cfg.EVMConfig)
 }

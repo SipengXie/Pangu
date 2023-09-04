@@ -15,3 +15,18 @@ type Rules struct {
 func (c *ChainConfig) Rules(num *big.Int, isMerge bool, timestamp uint64) Rules {
 	return Rules{}
 }
+
+// evm测试文件中用到的变量，临时定义
+var (
+	// AllEthashProtocolChanges contains every protocol change (EIPs) introduced
+	// and accepted by the Ethereum core developers into the Ethash consensus.
+	AllEthashProtocolChanges = &ChainConfig{
+		ChainID: big.NewInt(1337), // TODO: 很多都舍弃了
+	}
+
+	// TestChainConfig contains every protocol change (EIPs) introduced
+	// and accepted by the Ethereum core developers for testing proposes.
+	TestChainConfig = &ChainConfig{
+		ChainID: big.NewInt(1337),
+	}
+)

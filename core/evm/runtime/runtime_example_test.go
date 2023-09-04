@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	"github.com/SipengXie/pangu/common"
-	"github.com/SipengXie/pangu/core/vm/runtime"
+	"github.com/SipengXie/pangu/core/evm/runtime"
 )
 
 func ExampleExecute() {
