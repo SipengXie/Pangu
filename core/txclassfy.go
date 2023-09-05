@@ -2,6 +2,7 @@ package core
 
 import (
 	"bytes"
+	"math/big"
 	"sort"
 
 	"github.com/SipengXie/pangu/common"
@@ -40,17 +41,17 @@ func NewTxResource(txs types.Transactions) map[*types.Transaction]mapset.Set[str
 }
 
 // MergeAccessList 将AccessList中的Address和StorageKey进行合并得到一个集合
-func MergeAccessList(al types.AccessList) mapset.Set[string] {
+func MergeAccessList(al *types.AccessList) mapset.Set[string] {
 	set := mapset.NewSet[string]()
-	for _, resource := range al {
-		addr := resource.Address.Hex()
-		if len(resource.StorageKeys) > 0 {
-			for _, storageKey := range resource.StorageKeys {
-				key := storageKey.Hex()
-				set.Add(addr + key)
+	for addr, num := range al.Addresses {
+		addrStr := addr.Hex()
+		if num > 0 { // num > 0说明有 slots
+			for key, _ := range al.Slots[num] {
+				keyStr := key.Hex()
+				set.Add(addrStr + keyStr)
 			}
 		} else {
-			set.Add(addr)
+			set.Add(addrStr)
 		}
 	}
 	return set
@@ -116,11 +117,11 @@ func ClassifyTx(txs types.Transactions, signer types.Signer) map[int][]*types.Tr
 // FindMaxGasPrice
 func FindMaxGasPrice(txMap map[common.Address][]*types.Transaction) common.Address {
 	var maxGasPriceAddr common.Address
-	maxGasPrice := uint64(0)
+	maxGasPrice := big.NewInt(0)
 	for addr, txs := range txMap {
-		if txs[0].Gas() > maxGasPrice {
+		if txs[0].GasPrice().Cmp(maxGasPrice) > 0 {
 			maxGasPriceAddr = addr
-			maxGasPrice = txs[0].GasPrice().Uint64()
+			maxGasPrice = txs[0].GasPrice()
 		}
 	}
 	return maxGasPriceAddr

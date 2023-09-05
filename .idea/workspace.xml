@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="fix:修改了prepare函数&#10;&#10;新的AccessList的遍历">
+    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="fix:清除rawdb的显式错误&#10;&#10;通过注释的方法清除">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/rawdb/accessors_chain.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/rawdb/accessors_chain.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/rawdb/accessors_indexes.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/rawdb/accessors_indexes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/rawdb/chain_freezer.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/rawdb/chain_freezer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/rawdb/chain_iterator.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/rawdb/chain_iterator.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/txpool/legacypool/legacypool.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/txpool/legacypool/legacypool.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/txpool/legacypool/list_test.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/txpool/subpool.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/txpool/subpool.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/txclassfy.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/txclassfy.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +134,8 @@
     <MESSAGE value="chore:更新API的执行器启动&#10;&#10;模拟创建一条链并实例化Txpool和共识客户端，启动了ExecutorService" />
     <MESSAGE value="chore:添加了Trie，修改了部分BUG&#10;&#10;将geth的Tire包引入，然后改了gomod的几个版本干掉了一些错误" />
     <MESSAGE value="fix:修改了prepare函数&#10;&#10;新的AccessList的遍历" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix:修改了prepare函数&#10;&#10;新的AccessList的遍历" />
+    <MESSAGE value="fix:清除rawdb的显式错误&#10;&#10;通过注释的方法清除" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix:清除rawdb的显式错误&#10;&#10;通过注释的方法清除" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
