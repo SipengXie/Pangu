@@ -25,9 +25,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/SipengXie/pangu/common"
+	"github.com/SipengXie/pangu/core/types"
+	"github.com/SipengXie/pangu/rlp"
 	bloomfilter "github.com/holiman/bloomfilter/v2"
 	"golang.org/x/exp/slices"
 )

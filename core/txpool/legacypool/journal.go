@@ -22,10 +22,10 @@ import (
 	"io/fs"
 	"os"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/SipengXie/pangu/common"
+	"github.com/SipengXie/pangu/core/types"
+	"github.com/SipengXie/pangu/log"
+	"github.com/SipengXie/pangu/rlp"
 )
 
 // errNoActiveJournal is returned if a transaction is attempted to be inserted

@@ -74,7 +74,7 @@ type TxData interface {
 	to() *common.Address
 
 	encContent() []byte
-	accessList() AccessList
+	accessList() *AccessList
 	data() []byte
 
 	gasLimit() uint64
@@ -241,7 +241,7 @@ func (tx *Transaction) EncContent() []byte {
 func (tx *Transaction) Data() []byte { return tx.inner.data() }
 
 // AccessList returns the access list of the transaction.
-func (tx *Transaction) AccessList() AccessList { return tx.inner.accessList() }
+func (tx *Transaction) AccessList() *AccessList { return tx.inner.accessList() }
 
 // Gas returns the gas limit of the transaction.
 func (tx *Transaction) GasLimit() uint64 { return tx.inner.gasLimit() }

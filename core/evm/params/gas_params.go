@@ -1,4 +1,4 @@
-package evmparams
+package params
 
 import "math/big"
 

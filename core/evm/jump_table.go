@@ -19,7 +19,7 @@ package evm
 import (
 	"fmt"
 
-	"github.com/SipengXie/pangu/core/evm/evmparams"
+	evmparams "github.com/SipengXie/pangu/core/evm/params"
 )
 
 type (

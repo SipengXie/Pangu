@@ -21,7 +21,7 @@ import (
 
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/common/math"
-	"github.com/SipengXie/pangu/core/evm/evmparams"
+	evmparams "github.com/SipengXie/pangu/core/evm/params"
 )
 
 // memoryGasCost calculates the quadratic gas for memory expansion. It does so

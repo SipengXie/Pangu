@@ -1,4 +1,4 @@
-package types
+package core
 
 import (
 	"errors"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core/state"
+	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/event"
 	"github.com/SipengXie/pangu/params"
 	"github.com/SipengXie/pangu/utils/syncx"
@@ -24,7 +25,7 @@ const (
 )
 
 type Blockchain struct {
-	blocks Blocks
+	blocks types.Blocks
 
 	config        *params.ChainConfig
 	gasLimit      atomic.Uint64
@@ -36,7 +37,7 @@ type Blockchain struct {
 
 func NewBlokchain(config *params.ChainConfig, statedb *state.StateDB) *Blockchain {
 	return &Blockchain{
-		blocks:        make(Blocks, 0),
+		blocks:        make(types.Blocks, 0),
 		config:        config,
 		statedb:       statedb,
 		chainHeadFeed: new(event.Feed),
@@ -48,11 +49,11 @@ func (bc *Blockchain) Config() *params.ChainConfig {
 	return bc.config
 }
 
-func (bc *Blockchain) CurrentBlock() *Block {
+func (bc *Blockchain) CurrentBlock() *types.Block {
 	return bc.blocks[len(bc.blocks)-1]
 }
 
-func (bc *Blockchain) GetBlock(hash common.Hash, number uint64) *Block {
+func (bc *Blockchain) GetBlock(hash common.Hash, number uint64) *types.Block {
 	return bc.blocks[number]
 }
 
@@ -60,20 +61,20 @@ func (bc *Blockchain) StateAt(root common.Hash) (*state.StateDB, error) {
 	return bc.statedb, nil
 }
 
-func (bc *Blockchain) writeHeadBlock(block *Block) {
+func (bc *Blockchain) writeHeadBlock(block *types.Block, state *state.StateDB) {
 	bc.blocks = append(bc.blocks, block)
 	state.Commit(false) // TODO
 }
 
-func (bc *Blockchain) writeBlockAndSetHead(block *Block, receipts []*Receipt, logs []*Log, state *state.StateDB, emitHeadEvent bool) (status WriteStatus, err error) {
-	bc.writeHeadBlock(block)
+func (bc *Blockchain) writeBlockAndSetHead(block *types.Block, receipts []*types.Receipt, logs []*types.Log, state *state.StateDB, emitHeadEvent bool) (status WriteStatus, err error) {
+	bc.writeHeadBlock(block, state)
 	if emitHeadEvent {
-		bc.chainHeadFeed.Send(ChainHeadEvent{Block: block})
+		bc.chainHeadFeed.Send(types.ChainHeadEvent{Block: block})
 	}
 	return CanonStatTy, nil
 }
 
-func (bc *Blockchain) WriteBlockAndSetHead(block *Block, receipts []*Receipt, logs []*Log, state *state.StateDB, emitHeadEvent bool) (status WriteStatus, err error) {
+func (bc *Blockchain) WriteBlockAndSetHead(block *types.Block, receipts []*types.Receipt, logs []*types.Log, state *state.StateDB, emitHeadEvent bool) (status WriteStatus, err error) {
 	if !bc.chainmu.TryLock() {
 		// TODO: 并发安全
 		return NonStatTy, errChainStopped

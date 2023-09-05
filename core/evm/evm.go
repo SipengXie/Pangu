@@ -17,39 +17,26 @@
 package evm
 
 import (
-	"github.com/SipengXie/pangu/core/evm/evmparams"
 	"math/big"
 	"sync/atomic"
+
+	evmparams "github.com/SipengXie/pangu/core/evm/params"
 
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/crypto"
 	"github.com/holiman/uint256"
-
-	"github.com/SipengXie/pangu/params"
 )
 
 type (
-	// CanTransferFunc is the signature of a transfer guard function
 	CanTransferFunc func(StateDB, common.Address, *big.Int) bool
-	// TransferFunc is the signature of a transfer function
-	TransferFunc func(StateDB, common.Address, common.Address, *big.Int)
-	// GetHashFunc returns the n'th block hash in the blockchain
-	// and is used by the BLOCKHASH EVM op code.
-	GetHashFunc func(uint64) common.Hash
+	TransferFunc    func(StateDB, common.Address, common.Address, *big.Int)
+	GetHashFunc     func(uint64) common.Hash
 )
 
 func (evm *EVM) precompile(addr common.Address) (PrecompiledContract, bool) {
 	var precompiles map[common.Address]PrecompiledContract
 	switch {
-	//case evm.chainRules.IsCancun:
-	//	precompiles = PrecompiledContractsCancun
-	//case evm.chainRules.IsBerlin:
-	//	precompiles = PrecompiledContractsBerlin
-	//case evm.chainRules.IsIstanbul:
-	//	precompiles = PrecompiledContractsIstanbul
-	//case evm.chainRules.IsByzantium:
-	//	precompiles = PrecompiledContractsByzantium
 	default:
 		precompiles = PrecompiledContractsHomestead
 	}
@@ -57,26 +44,18 @@ func (evm *EVM) precompile(addr common.Address) (PrecompiledContract, bool) {
 	return p, ok
 }
 
-// BlockContext provides the EVM with auxiliary information. Once provided
-// it shouldn't be modified.
 type BlockContext struct {
-	// CanTransfer returns whether the account contains
-	// sufficient ether to transfer the value
 	CanTransfer CanTransferFunc
-	// Transfer transfers ether from one account to the other
-	Transfer TransferFunc
-	// GetHash returns the hash corresponding to n
-	GetHash GetHashFunc
+	Transfer    TransferFunc
+	GetHash     GetHashFunc
 
 	// Block information
-	Coinbase      common.Address // Provides information for COINBASE
-	GasLimit      uint64         // Provides information for GASLIMIT
-	BlockNumber   *big.Int       // Provides information for NUMBER
-	Time          uint64         // Provides information for TIME
-	Difficulty    *big.Int       // Provides information for DIFFICULTY
-	BaseFee       *big.Int       // Provides information for BASEFEE
-	Random        *common.Hash   // Provides information for PREVRANDAO
-	ExcessBlobGas *uint64        // ExcessBlobGas field in the header, needed to compute the data
+	Coinbase    common.Address // Provides information for COINBASE
+	GasLimit    uint64         // Provides information for GASLIMIT
+	BlockNumber *big.Int       // Provides information for NUMBER
+	Time        uint64         // Provides information for TIME
+	BaseFee     *big.Int       // Provides information for BASEFEE
+	Random      *common.Hash
 }
 
 // TxContext provides the EVM with information about a transaction.
@@ -107,9 +86,9 @@ type EVM struct {
 	depth int
 
 	// chainConfig contains information about the current chain
-	chainConfig *params.ChainConfig
+	chainConfig *evmparams.ChainConfig
 	// chain rules contains the chain rules for the current epoch
-	chainRules params.Rules
+	chainRules evmparams.Rules
 	// virtual machine configuration options used to initialise the
 	// evm.
 	Config Config
@@ -126,14 +105,14 @@ type EVM struct {
 
 // NewEVM returns a new EVM. The returned EVM is not thread safe and should
 // only ever be used *once*.
-func NewEVM(blockCtx BlockContext, txCtx TxContext, statedb StateDB, chainConfig *params.ChainConfig, config Config) *EVM {
+func NewEVM(blockCtx BlockContext, txCtx TxContext, statedb StateDB, chainConfig *evmparams.ChainConfig, config Config) *EVM {
 	evm := &EVM{
 		Context:     blockCtx,
 		TxContext:   txCtx,
 		StateDB:     statedb,
 		Config:      config,
 		chainConfig: chainConfig,
-		chainRules:  chainConfig.Rules(blockCtx.BlockNumber, blockCtx.Random != nil, blockCtx.Time), // TODO: no use
+		chainRules:  chainConfig.Rules(blockCtx.BlockNumber, blockCtx.Time),
 	}
 	evm.interpreter = NewEVMInterpreter(evm)
 	return evm
@@ -167,7 +146,7 @@ func (evm *EVM) SetBlockContext(blockCtx BlockContext) {
 	evm.Context = blockCtx
 	num := blockCtx.BlockNumber
 	timestamp := blockCtx.Time
-	evm.chainRules = evm.chainConfig.Rules(num, blockCtx.Random != nil, timestamp)
+	evm.chainRules = evm.chainConfig.Rules(num, timestamp)
 }
 
 // Call executes the contract associated with the addr with the given input as
@@ -521,4 +500,4 @@ func (evm *EVM) Create2(caller ContractRef, code []byte, gas uint64, endowment *
 }
 
 // ChainConfig returns the environment's chain configuration
-func (evm *EVM) ChainConfig() *params.ChainConfig { return evm.chainConfig }
+func (evm *EVM) ChainConfig() *evmparams.ChainConfig { return evm.chainConfig }

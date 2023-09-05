@@ -17,8 +17,10 @@
 package evm
 
 import (
+	"math/big"
+
 	"github.com/SipengXie/pangu/common"
-	"github.com/SipengXie/pangu/core/evm/evmparams"
+	evmparams "github.com/SipengXie/pangu/core/evm/params"
 	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/crypto"
 	"github.com/holiman/uint256"
@@ -468,12 +470,14 @@ func opNumber(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]b
 	return nil, nil
 }
 
+// ! No difficulty here
 func opDifficulty(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {
-	v, _ := uint256.FromBig(interpreter.evm.Context.Difficulty)
+	v, _ := uint256.FromBig(big.NewInt(0))
 	scope.Stack.push(v)
 	return nil, nil
 }
 
+// ! Random must come from header
 func opRandom(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {
 	v := new(uint256.Int).SetBytes(interpreter.evm.Context.Random.Bytes())
 	scope.Stack.push(v)

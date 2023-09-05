@@ -23,12 +23,12 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/trie/trienode"
+	"github.com/SipengXie/pangu/common"
+	"github.com/SipengXie/pangu/core/types"
+	"github.com/SipengXie/pangu/crypto"
+	"github.com/SipengXie/pangu/metrics"
+	"github.com/SipengXie/pangu/rlp"
+	"github.com/SipengXie/pangu/trie/trienode"
 )
 
 type Code []byte

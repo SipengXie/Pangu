@@ -26,10 +26,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/SipengXie/pangu/common"
+	"github.com/SipengXie/pangu/ethdb"
+	"github.com/SipengXie/pangu/log"
+	"github.com/SipengXie/pangu/metrics"
 	"github.com/gofrs/flock"
 )
 

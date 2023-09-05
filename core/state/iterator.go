@@ -20,10 +20,10 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/SipengXie/pangu/common"
+	"github.com/SipengXie/pangu/core/types"
+	"github.com/SipengXie/pangu/rlp"
+	"github.com/SipengXie/pangu/trie"
 )
 
 // nodeIterator is an iterator to traverse the entire state trie post-order,
