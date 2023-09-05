@@ -18,10 +18,10 @@ package evm
 
 import (
 	"fmt"
-	"github.com/SipengXie/pangu/core/evm/evmparams"
 	"sort"
 
 	"github.com/SipengXie/pangu/common"
+	evmparams "github.com/SipengXie/pangu/core/evm/params"
 	"github.com/holiman/uint256"
 )
 

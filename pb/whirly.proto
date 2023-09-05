@@ -1,0 +1,66 @@
+syntax = "proto3";
+package pb;
+import "pb/common.proto";
+
+option go_package="./pb";
+
+message WhirlyMsg {
+  oneof Payload {
+    WhirlyProposal whirlyProposal = 1;
+    WhirlyVote whirlyVote = 2;
+    WhirlyNewView whirlyNewView = 3;
+    Request request = 4;
+    Reply reply = 5;
+    NewLeaderNotify newLeaderNotify = 6;
+    NewLeaderEcho newLeaderEcho = 7;
+  }
+//   string senderAddress = 11;
+}
+
+message SimpleWhirlyProof {
+  bytes BlockHash = 1;
+  uint64 viewNum = 2;
+  repeated WhirlyVote proof = 3;
+}
+
+message WhirlyProposal {
+  uint64 id = 1;
+  uint64 senderId = 2;
+  Block block = 3;
+  QuorumCert highQC = 4;
+  SimpleWhirlyProof swProof = 5;
+  uint64 epoch = 6;
+}
+
+message WhirlyVote {
+  uint64 id = 1;
+  uint64 senderId = 2;
+  uint64 blockView = 3;
+  bytes BlockHash = 4;
+  bool flag = 5;
+  QuorumCert qc = 6;
+  bytes partialSig = 7;
+  SimpleWhirlyProof swProof = 8;
+  uint64 epoch = 9;
+}
+
+message WhirlyNewView {
+  QuorumCert lockQC = 1;
+  uint64 viewNum = 2;
+  uint64 epoch = 3;
+}
+
+message NewLeaderNotify {
+  uint64 leader = 1;
+  uint64 epoch = 2;
+  bytes proof = 3;
+}
+
+message NewLeaderEcho {
+  uint64 leader = 1;
+  uint64 senderId = 2;
+  uint64 epoch = 3;
+  Block block = 4;
+  SimpleWhirlyProof swProof = 5;
+  uint64 vHeight = 6;
+}

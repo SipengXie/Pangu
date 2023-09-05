@@ -4,10 +4,12 @@ package core
 
 import (
 	"fmt"
+	"sync"
+
 	"github.com/SipengXie/pangu/core/evm"
+	"github.com/SipengXie/pangu/core/state"
 	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/params"
-	"sync"
 )
 
 // Processor 执行器

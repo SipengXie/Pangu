@@ -24,7 +24,7 @@ type PanguTransaction struct {
 	VmType     byte
 
 	Data       []byte
-	AccessList AccessList
+	AccessList *AccessList
 }
 
 // copy creates a deep copy of the transaction data and initializes all fields.
@@ -37,13 +37,13 @@ func (tx *PanguTransaction) copy() TxData {
 		Signature: common.CopyBytes(tx.Signature),
 
 		// These are copied below.
-		AccessList: make(AccessList, len(tx.AccessList)),
+		AccessList: new(AccessList),
 		Value:      new(big.Int),
 		ChainID:    new(big.Int),
 		TipCap:     new(big.Int),
 		FeeCap:     new(big.Int),
 	}
-	copy(cpy.AccessList, tx.AccessList)
+	*cpy.AccessList = *tx.AccessList
 	if tx.Value != nil {
 		cpy.Value.Set(tx.Value)
 	}
@@ -60,19 +60,19 @@ func (tx *PanguTransaction) copy() TxData {
 	return cpy
 }
 
-func (tx *PanguTransaction) txType() byte           { return PanguTxType }
-func (tx *PanguTransaction) chainID() *big.Int      { return tx.ChainID }
-func (tx *PanguTransaction) encContent() []byte     { return tx.EncContent }
-func (tx *PanguTransaction) accessList() AccessList { return tx.AccessList }
-func (tx *PanguTransaction) data() []byte           { return tx.Data }
-func (tx *PanguTransaction) gasLimit() uint64       { return tx.GasLimit }
-func (tx *PanguTransaction) gasFeeCap() *big.Int    { return tx.FeeCap }
-func (tx *PanguTransaction) gasTipCap() *big.Int    { return tx.TipCap }
-func (tx *PanguTransaction) gasPrice() *big.Int     { return tx.FeeCap }
-func (tx *PanguTransaction) value() *big.Int        { return tx.Value }
-func (tx *PanguTransaction) nonce() uint64          { return tx.Nonce }
-func (tx *PanguTransaction) to() *common.Address    { return tx.To }
-func (tx *PanguTransaction) sigAlgo() byte          { return tx.SigAlgo }
+func (tx *PanguTransaction) txType() byte            { return PanguTxType }
+func (tx *PanguTransaction) chainID() *big.Int       { return tx.ChainID }
+func (tx *PanguTransaction) encContent() []byte      { return tx.EncContent }
+func (tx *PanguTransaction) accessList() *AccessList { return tx.AccessList }
+func (tx *PanguTransaction) data() []byte            { return tx.Data }
+func (tx *PanguTransaction) gasLimit() uint64        { return tx.GasLimit }
+func (tx *PanguTransaction) gasFeeCap() *big.Int     { return tx.FeeCap }
+func (tx *PanguTransaction) gasTipCap() *big.Int     { return tx.TipCap }
+func (tx *PanguTransaction) gasPrice() *big.Int      { return tx.FeeCap }
+func (tx *PanguTransaction) value() *big.Int         { return tx.Value }
+func (tx *PanguTransaction) nonce() uint64           { return tx.Nonce }
+func (tx *PanguTransaction) to() *common.Address     { return tx.To }
+func (tx *PanguTransaction) sigAlgo() byte           { return tx.SigAlgo }
 
 func (tx *PanguTransaction) rawSigValues() []byte {
 	return tx.Signature

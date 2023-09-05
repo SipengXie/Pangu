@@ -17,7 +17,7 @@
 package evm
 
 import (
-	"github.com/SipengXie/pangu/core/evm/evmparams"
+	evmparams "github.com/SipengXie/pangu/core/evm/params"
 )
 
 func minSwapStack(n int) int {
