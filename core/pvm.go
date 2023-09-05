@@ -1,10 +1,11 @@
 package core
 
 import (
+	"math/big"
+
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core/evm"
 	"github.com/SipengXie/pangu/core/types"
-	"math/big"
 )
 
 // pangu虚拟机执行前代码，代替原evm.go
@@ -18,14 +19,14 @@ import (
 // current blockchain to be used during transaction processing.
 type ChainContext interface {
 	// Engine retrieves the chain's consensus engine.
-	Engine() consensus.Engine
+	//Engine() consensus.Engine
 
 	// GetHeader returns the header corresponding to the hash/number argument pair.
 	GetHeader(common.Hash, uint64) *types.Header
 }
 
 // NewEVMBlockContext creates a new context for use in the EVM.
-func NewEVMBlockContext(header *types.Header, chain ChainContext, author *common.Address) vm.BlockContext {
+func NewEVMBlockContext(header *types.Header, chain ChainContext, author *common.Address) evm.BlockContext {
 	var (
 		beneficiary common.Address
 		baseFee     *big.Int
@@ -35,7 +36,7 @@ func NewEVMBlockContext(header *types.Header, chain ChainContext, author *common
 	// ! coinbase怎么办？
 	// If we don't have an explicit author (i.e. not mining), extract from the header
 	if author == nil {
-		beneficiary, _ = chain.Engine().Author(header) // Ignore error, we're past header validation
+		//beneficiary, _ = chain.Engine().Author(header) // Ignore error, we're past header validation
 	} else {
 		beneficiary = *author
 	}

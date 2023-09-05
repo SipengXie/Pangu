@@ -43,7 +43,7 @@ type BlockChain interface {
 	CurrentBlock() *types.Header
 
 	// SubscribeChainHeadEvent subscribes to new blocks being added to the chain.
-	SubscribeChainHeadEvent(ch chan<- core.ChainHeadEvent) event.Subscription
+	SubscribeChainHeadEvent(ch chan<- types.ChainHeadEvent) event.Subscription
 }
 
 // TxPool is an aggregator for various transaction specific pools, collectively
@@ -110,7 +110,7 @@ func (p *TxPool) Close() error {
 func (p *TxPool) loop(head *types.Header, chain BlockChain) {
 	// Subscribe to chain head events to trigger subpool resets
 	var (
-		newHeadCh  = make(chan core.ChainHeadEvent)
+		newHeadCh  = make(chan types.ChainHeadEvent)
 		newHeadSub = chain.SubscribeChainHeadEvent(newHeadCh)
 	)
 	defer newHeadSub.Unsubscribe()
@@ -249,7 +249,7 @@ func (p *TxPool) Add(txs []*Transaction, local bool, sync bool) []error {
 	for i, split := range splits {
 		// If the transaction was rejected by all subpools, mark it unsupported
 		if split == -1 {
-			errs[i] = core.ErrTxTypeNotSupported
+			errs[i] = types.ErrTxTypeNotSupported
 			continue
 		}
 		// Find which subpool handled it and pull in the corresponding error
