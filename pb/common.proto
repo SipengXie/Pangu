@@ -1,0 +1,55 @@
+syntax = "proto3";
+package pb;
+
+option go_package="./pb";
+
+message Empty {}
+
+message Block {
+  bytes ParentHash = 1;
+  bytes Hash = 2;
+  uint64 height = 3;
+  repeated bytes txs = 4;
+  QuorumCert Justify = 5;
+  bool committed = 6;
+}
+
+enum MsgType {
+  PREPARE = 0;
+  PREPARE_VOTE = 1;
+  PRECOMMIT = 2;
+  PRECOMMIT_VOTE = 3;
+  COMMIT = 4;
+  COMMIT_VOTE = 5;
+  NEWVIEW = 6;
+  DECIDE = 7;
+}
+
+message QuorumCert {
+  bytes BlockHash = 1;
+  MsgType type = 2;
+  uint64 viewNum = 3;
+  bytes signature = 4;
+}
+
+message Request {
+  bytes tx = 1;
+}
+
+message Reply {
+  bytes tx = 1;
+  bytes receipt = 2;
+}
+
+message Header{
+    uint64 Height = 1;
+    bytes  ParentHash = 2;
+    repeated bytes UncleHash = 3;
+    bytes Mixdigest = 4;
+    bytes Difficulty = 5;
+    int64 Nonce = 6;
+    bytes Timestamp = 7;
+    repeated bytes PoTProof = 8;
+    int64 Address = 9;
+    bytes Hashes =10;
+}

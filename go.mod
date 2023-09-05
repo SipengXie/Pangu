@@ -1,6 +1,6 @@
 module github.com/SipengXie/pangu
 
-go 1.21.0
+go 1.19
 
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2
@@ -11,6 +11,7 @@ require (
 	github.com/holiman/uint256 v1.2.3
 	github.com/jedisct1/go-minisign v0.0.0-20230811132847-661be99b8267
 	github.com/stretchr/testify v1.8.4
+	github.com/zeromicro/go-zero v1.5.5
 	golang.org/x/crypto v0.12.0
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63
 	golang.org/x/tools v0.12.1-0.20230815132531-74c255bcf846

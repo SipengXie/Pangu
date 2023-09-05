@@ -1,0 +1,31 @@
+type (
+	TransactionArgs {
+		From                 []byte `json:"from"`
+		To                   []byte `json:"to"`
+		Gas                  string `json:"gas"`
+		GasPrice             string `json:"gasPrice"`
+		MaxFeePerGas         string `json:"maxFeePerGas"`
+		MaxPriorityFeePerGas string `json:"maxPriorityFeePerGas"`
+		Value                string `json:"value"`
+		Nonce                uint64 `json:"nonce"`
+
+		Data  []byte `json:"data"`
+		Input []byte `json:"input"`
+
+		//		AccessList *types.AccessList `json:"accessList,omitemty"`
+		//		ChainID    *hexutil.Big      `json:"chainId,omitempty"`
+	}
+
+	boolRes {
+		Flag bool `json:"flag"`
+	}
+)
+
+@server(
+	jwt: Auth
+)
+
+service pangu {
+	@handler sendTransaction
+	post /pangu/sendTransaction (TransactionArgs) returns (boolRes)
+}
