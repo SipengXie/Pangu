@@ -1,6 +1,9 @@
 package types
 
-import "github.com/SipengXie/pangu/common"
+import (
+	"encoding/json"
+	"github.com/SipengXie/pangu/common"
+)
 
 // AccessList 统一定义一种AccessList形式
 type AccessList struct {
@@ -20,4 +23,14 @@ func (al *AccessList) StorageKeys() int {
 		keys += len(slot)
 	}
 	return keys
+}
+
+// Serialize 序列化为JSON字符串
+func (al *AccessList) Serialize() ([]byte, error) {
+	return json.Marshal(al)
+}
+
+// Deserialize 从JSON字符串反序列化
+func (al *AccessList) Deserialize(data []byte) error {
+	return json.Unmarshal(data, al)
 }
