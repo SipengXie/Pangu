@@ -409,7 +409,7 @@ func (pool *LegacyPool) Reset(oldHead, newHead *types.Header) {
 
 // SubscribeTransactions registers a subscription of NewTxsEvent and
 // starts sending event to the given channel.
-func (pool *LegacyPool) SubscribeTransactions(ch chan<- core.NewTxsEvent) event.Subscription {
+func (pool *LegacyPool) SubscribeTransactions(ch chan<- types.NewTxsEvent) event.Subscription {
 	return pool.scope.Track(pool.txFeed.Subscribe(ch))
 }
 
@@ -1255,7 +1255,7 @@ func (pool *LegacyPool) runReorg(done chan struct{}, reset *txpoolResetRequest, 
 		for _, set := range events {
 			txs = append(txs, set.Flatten()...)
 		}
-		pool.txFeed.Send(core.NewTxsEvent{Txs: txs})
+		pool.txFeed.Send(types.NewTxsEvent{Txs: txs})
 	}
 }
 

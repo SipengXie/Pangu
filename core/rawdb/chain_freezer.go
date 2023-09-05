@@ -25,7 +25,6 @@ import (
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/ethdb"
 	"github.com/SipengXie/pangu/log"
-	"github.com/SipengXie/pangu/params"
 )
 
 const (
@@ -62,7 +61,8 @@ func newChainFreezer(datadir string, namespace string, readonly bool) (*chainFre
 		quit:    make(chan struct{}),
 		trigger: make(chan chan struct{}),
 	}
-	cf.threshold.Store(params.FullImmutabilityThreshold)
+	// TODO : 暂时注释，待以后重构逻辑
+	//cf.threshold.Store(params.FullImmutabilityThreshold)
 	return &cf, nil
 }
 

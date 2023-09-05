@@ -20,7 +20,6 @@ import (
 	"math/big"
 
 	"github.com/SipengXie/pangu/common"
-	"github.com/SipengXie/pangu/core"
 	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/crypto/kzg4844"
 	"github.com/SipengXie/pangu/event"
@@ -84,7 +83,7 @@ type SubPool interface {
 	Pending(enforceTips bool) map[common.Address][]*types.Transaction
 
 	// SubscribeTransactions subscribes to new transaction events.
-	SubscribeTransactions(ch chan<- core.NewTxsEvent) event.Subscription
+	SubscribeTransactions(ch chan<- types.NewTxsEvent) event.Subscription
 
 	// Nonce returns the next nonce of an account, with all transactions executable
 	// by the pool already applied on top.

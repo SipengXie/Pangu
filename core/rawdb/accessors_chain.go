@@ -643,10 +643,12 @@ func ReadReceipts(db ethdb.Reader, hash common.Hash, number uint64, time uint64,
 	} else {
 		baseFee = header.BaseFee
 	}
-	if err := receipts.DeriveFields(config, hash, number, time, baseFee, body.Transactions); err != nil {
-		log.Error("Failed to derive block receipts fields", "hash", hash, "number", number, "err", err)
-		return nil
-	}
+	// TODO : 暂时注释，待以后重构逻辑
+	//if err := receipts.DeriveFields(config, hash, number, time, baseFee, body.Transactions); err != nil {
+	//	log.Error("Failed to derive block receipts fields", "hash", hash, "number", number, "err", err)
+	//	return nil
+	//}
+	fmt.Println(baseFee)
 	return receipts
 }
 
@@ -758,14 +760,18 @@ func ReadBlock(db ethdb.Reader, hash common.Hash, number uint64) *types.Block {
 	if body == nil {
 		return nil
 	}
-	return types.NewBlockWithHeader(header).WithBody(body.Transactions, body.Uncles).WithWithdrawals(body.Withdrawals)
+	// TODO : 暂时注释，待以后重构逻辑
+	//return types.NewBlockWithHeader(header).WithBody(body.Transactions, body.Uncles).WithWithdrawals(body.Withdrawals)
+	var emptyBlock *types.Block
+	return emptyBlock
 }
 
 // WriteBlock serializes a block into the database, header and body separately.
-func WriteBlock(db ethdb.KeyValueWriter, block *types.Block) {
-	WriteBody(db, block.Hash(), block.NumberU64(), block.Body())
-	WriteHeader(db, block.Header())
-}
+// TODO : 暂时注释，待以后重构逻辑
+//func WriteBlock(db ethdb.KeyValueWriter, block *types.Block) {
+//	WriteBody(db, block.Hash(), block.NumberU64(), block.Body())
+//	WriteHeader(db, block.Header())
+//}
 
 // WriteAncientBlocks writes entire block data into ancient store and returns the total written size.
 func WriteAncientBlocks(db ethdb.AncientWriter, blocks []*types.Block, receipts []types.Receipts, td *big.Int) (int64, error) {
@@ -781,9 +787,10 @@ func WriteAncientBlocks(db ethdb.AncientWriter, blocks []*types.Block, receipts 
 				stReceipts = append(stReceipts, (*types.ReceiptForStorage)(receipt))
 			}
 			header := block.Header()
-			if i > 0 {
-				tdSum.Add(tdSum, header.Difficulty)
-			}
+			// TODO : 暂时注释，待以后重构逻辑
+			//if i > 0 {
+			//	tdSum.Add(tdSum, header.Difficulty)
+			//}
 			if err := writeAncientBlock(op, block, header, stReceipts, tdSum); err != nil {
 				return err
 			}
@@ -800,9 +807,10 @@ func writeAncientBlock(op ethdb.AncientWriteOp, block *types.Block, header *type
 	if err := op.Append(ChainFreezerHeaderTable, num, header); err != nil {
 		return fmt.Errorf("can't append block header %d: %v", num, err)
 	}
-	if err := op.Append(ChainFreezerBodiesTable, num, block.Body()); err != nil {
-		return fmt.Errorf("can't append block body %d: %v", num, err)
-	}
+	// TODO : 暂时注释，待以后重构逻辑
+	//if err := op.Append(ChainFreezerBodiesTable, num, block.Body()); err != nil {
+	//	return fmt.Errorf("can't append block body %d: %v", num, err)
+	//}
 	if err := op.Append(ChainFreezerReceiptTable, num, receipts); err != nil {
 		return fmt.Errorf("can't append block %d receipts: %v", num, err)
 	}
@@ -837,40 +845,42 @@ type badBlock struct {
 }
 
 // ReadBadBlock retrieves the bad block with the corresponding block hash.
-func ReadBadBlock(db ethdb.Reader, hash common.Hash) *types.Block {
-	blob, err := db.Get(badBlockKey)
-	if err != nil {
-		return nil
-	}
-	var badBlocks []*badBlock
-	if err := rlp.DecodeBytes(blob, &badBlocks); err != nil {
-		return nil
-	}
-	for _, bad := range badBlocks {
-		if bad.Header.Hash() == hash {
-			return types.NewBlockWithHeader(bad.Header).WithBody(bad.Body.Transactions, bad.Body.Uncles).WithWithdrawals(bad.Body.Withdrawals)
-		}
-	}
-	return nil
-}
+// TODO : 暂时注释，待以后重构逻辑
+//func ReadBadBlock(db ethdb.Reader, hash common.Hash) *types.Block {
+//	blob, err := db.Get(badBlockKey)
+//	if err != nil {
+//		return nil
+//	}
+//	var badBlocks []*badBlock
+//	if err := rlp.DecodeBytes(blob, &badBlocks); err != nil {
+//		return nil
+//	}
+//	for _, bad := range badBlocks {
+//		if bad.Header.Hash() == hash {
+//			return types.NewBlockWithHeader(bad.Header).WithBody(bad.Body.Transactions, bad.Body.Uncles).WithWithdrawals(bad.Body.Withdrawals)
+//		}
+//	}
+//	return nil
+//}
 
 // ReadAllBadBlocks retrieves all the bad blocks in the database.
 // All returned blocks are sorted in reverse order by number.
-func ReadAllBadBlocks(db ethdb.Reader) []*types.Block {
-	blob, err := db.Get(badBlockKey)
-	if err != nil {
-		return nil
-	}
-	var badBlocks []*badBlock
-	if err := rlp.DecodeBytes(blob, &badBlocks); err != nil {
-		return nil
-	}
-	var blocks []*types.Block
-	for _, bad := range badBlocks {
-		blocks = append(blocks, types.NewBlockWithHeader(bad.Header).WithBody(bad.Body.Transactions, bad.Body.Uncles).WithWithdrawals(bad.Body.Withdrawals))
-	}
-	return blocks
-}
+// TODO : 暂时注释，待以后重构逻辑
+//func ReadAllBadBlocks(db ethdb.Reader) []*types.Block {
+//	blob, err := db.Get(badBlockKey)
+//	if err != nil {
+//		return nil
+//	}
+//	var badBlocks []*badBlock
+//	if err := rlp.DecodeBytes(blob, &badBlocks); err != nil {
+//		return nil
+//	}
+//	var blocks []*types.Block
+//	for _, bad := range badBlocks {
+//		blocks = append(blocks, types.NewBlockWithHeader(bad.Header).WithBody(bad.Body.Transactions, bad.Body.Uncles).WithWithdrawals(bad.Body.Withdrawals))
+//	}
+//	return blocks
+//}
 
 // WriteBadBlock serializes the bad block into the database. If the cumulated
 // bad blocks exceeds the limitation, the oldest will be dropped.
@@ -891,10 +901,11 @@ func WriteBadBlock(db ethdb.KeyValueStore, block *types.Block) {
 			return
 		}
 	}
-	badBlocks = append(badBlocks, &badBlock{
-		Header: block.Header(),
-		Body:   block.Body(),
-	})
+	// TODO : 暂时注释，待以后重构逻辑
+	//badBlocks = append(badBlocks, &badBlock{
+	//	Header: block.Header(),
+	//	Body:   block.Body(),
+	//})
 	slices.SortFunc(badBlocks, func(a, b *badBlock) bool {
 		// Note: sorting in descending number order.
 		return a.Header.Number.Uint64() >= b.Header.Number.Uint64()

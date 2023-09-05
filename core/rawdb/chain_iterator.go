@@ -147,12 +147,13 @@ func iterateTransactions(db ethdb.Database, from uint64, to uint64, reverse bool
 				log.Warn("Failed to decode block body", "block", data.number, "error", err)
 				return
 			}
-			var hashes []common.Hash
-			for _, tx := range body.Transactions {
-				hashes = append(hashes, tx.Hash())
-			}
+			// TODO : 暂时注释，待以后重构逻辑
+			//var hashes []common.Hash
+			//for _, tx := range body.Transactions {
+			//	hashes = append(hashes, tx.Hash())
+			//}
 			result := &blockTxHashes{
-				hashes: hashes,
+				//hashes: hashes,
 				number: data.number,
 			}
 			// Feed the block to the aggregator, or abort on interrupt

@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="chore:加入trie，纠错部分bug">
+    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="fix:修改了prepare函数&#10;&#10;新的AccessList的遍历">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/state/statedb.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/state/statedb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/rawdb/accessors_chain.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/rawdb/accessors_chain.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/rawdb/accessors_indexes.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/rawdb/accessors_indexes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/rawdb/chain_freezer.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/rawdb/chain_freezer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/rawdb/chain_iterator.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/rawdb/chain_iterator.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/txpool/legacypool/legacypool.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/txpool/legacypool/legacypool.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/txpool/legacypool/list_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/txpool/subpool.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/txpool/subpool.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,32 +49,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "DefaultGoTemplateProperty": "Go File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "configurable..is.expanded": "false",
-    "configurable.GoLibrariesConfigurable.is.expanded": "true",
-    "git-widget-placeholder": "devHanser",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "F:/Pangu",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;configurable..is.expanded&quot;: &quot;false&quot;,
+    &quot;configurable.GoLibrariesConfigurable.is.expanded&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;devHanser&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/erigon&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="Pangu" />
@@ -77,6 +82,15 @@
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build github.com/SipengXie/pangu/node" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="Pangu" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/SipengXie/pangu/node" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/node/pangu.go" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
@@ -88,6 +102,11 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build github.com/SipengXie/pangu/node" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
@@ -119,9 +138,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="chore:更新API的交易处理&#10;&#10;增加了AccessList的序列化和反序列化" />
     <MESSAGE value="chore:更新API的执行器启动&#10;&#10;模拟创建一条链并实例化Txpool和共识客户端，启动了ExecutorService" />
-    <MESSAGE value="fix:纠错部分bug" />
-    <MESSAGE value="chore:加入trie，纠错部分bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore:加入trie，纠错部分bug" />
+    <MESSAGE value="chore:添加了Trie，修改了部分BUG&#10;&#10;将geth的Tire包引入，然后改了gomod的几个版本干掉了一些错误" />
+    <MESSAGE value="fix:修改了prepare函数&#10;&#10;新的AccessList的遍历" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix:修改了prepare函数&#10;&#10;新的AccessList的遍历" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

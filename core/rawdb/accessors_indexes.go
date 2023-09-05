@@ -109,11 +109,12 @@ func ReadTransaction(db ethdb.Reader, hash common.Hash) (*types.Transaction, com
 		log.Error("Transaction referenced missing", "number", *blockNumber, "hash", blockHash)
 		return nil, common.Hash{}, 0, 0
 	}
-	for txIndex, tx := range body.Transactions {
-		if tx.Hash() == hash {
-			return tx, blockHash, *blockNumber, uint64(txIndex)
-		}
-	}
+	// TODO : 暂时注释，待以后重构逻辑
+	//for txIndex, tx := range body.Transactions {
+	//	if tx.Hash() == hash {
+	//		return tx, blockHash, *blockNumber, uint64(txIndex)
+	//	}
+	//}
 	log.Error("Transaction not found", "number", *blockNumber, "hash", blockHash, "txhash", hash)
 	return nil, common.Hash{}, 0, 0
 }
