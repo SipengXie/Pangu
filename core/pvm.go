@@ -17,15 +17,15 @@ import (
 // ChainContext supports retrieving headers and consensus parameters from the
 // current blockchain to be used during transaction processing.
 type ChainContext interface {
-	// Engine retrieves the chain's consensus engine.
-	Engine() consensus.Engine
+	//// Engine retrieves the chain's consensus engine.	// TODO: 暂时删除共识引擎
+	//Engine() consensus.Engine
 
 	// GetHeader returns the header corresponding to the hash/number argument pair.
 	GetHeader(common.Hash, uint64) *types.Header
 }
 
 // NewEVMBlockContext creates a new context for use in the EVM.
-func NewEVMBlockContext(header *types.Header, chain ChainContext, author *common.Address) vm.BlockContext {
+func NewEVMBlockContext(header *types.Header, chain ChainContext, author *common.Address) evm.BlockContext {
 	var (
 		beneficiary common.Address
 		baseFee     *big.Int
@@ -33,12 +33,13 @@ func NewEVMBlockContext(header *types.Header, chain ChainContext, author *common
 	)
 
 	// ! coinbase怎么办？
-	// If we don't have an explicit author (i.e. not mining), extract from the header
-	if author == nil {
-		beneficiary, _ = chain.Engine().Author(header) // Ignore error, we're past header validation
-	} else {
-		beneficiary = *author
-	}
+	// If we don't have an explicit author (i.e. not mining), extract from the header	// TODO: 暂时删除
+	//if author == nil {
+	//	beneficiary, _ = chain.Engine().Author(header) // Ignore error, we're past header validation
+	//} else {
+	//	beneficiary = *author
+	//}
+	beneficiary = header.Coinbase // * 拿到header里的coinbase地址
 	if header.BaseFee != nil {
 		baseFee = new(big.Int).Set(header.BaseFee)
 	}

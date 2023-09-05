@@ -83,3 +83,8 @@ func (bc *Blockchain) WriteBlockAndSetHead(block *types.Block, receipts []*types
 
 	return bc.writeBlockAndSetHead(block, receipts, logs, state, emitHeadEvent)
 }
+
+// GetHeader 临时定义一个，在process中需要实现这个方法获取哈希值来创建evm环境
+func (bc *Blockchain) GetHeader(h common.Hash, i uint64) *types.Header {
+	return nil
+}
