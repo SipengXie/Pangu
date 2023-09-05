@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="chore:更新API的交易处理&#10;&#10;增加了AccessList的序列化和反序列化">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/blockchain.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/blockchain.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/events.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/txpool/txpool.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/txpool/txpool.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/svc/servicecontext.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/svc/servicecontext.go" afterDir="false" />
-    </list>
+    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="chore:加入trie，纠错部分bug" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,13 +59,32 @@
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/38142",
+    "last_opened_file_path": "F:/Pangu",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="Pangu" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="Pangu" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
@@ -101,7 +114,10 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="chore:更新API的交易处理&#10;&#10;增加了AccessList的序列化和反序列化" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore:更新API的交易处理&#10;&#10;增加了AccessList的序列化和反序列化" />
+    <MESSAGE value="chore:更新API的执行器启动&#10;&#10;模拟创建一条链并实例化Txpool和共识客户端，启动了ExecutorService" />
+    <MESSAGE value="fix:纠错部分bug" />
+    <MESSAGE value="chore:加入trie，纠错部分bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore:加入trie，纠错部分bug" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/SipengXie/pangu/core"
 	"github.com/SipengXie/pangu/core/txpool"
 	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/event"
@@ -16,11 +15,11 @@ import (
 const txChanSize = 4096
 
 type ExecutorService struct {
-	executionTxsCh  chan core.NewTxsEvent
+	executionTxsCh  chan types.NewTxsEvent
 	executionTxsSub event.Subscription // txsSub = pendingPool.SubscribeNewTxsEvent(txsCh)
 	executionPool   *txpool.TxPool     // may be the execution pool
 
-	pendingTxsCh  chan core.NewTxsEvent
+	pendingTxsCh  chan types.NewTxsEvent
 	pendingTxsSub event.Subscription // txsSub = pendingPool.SubscribeNewTxsEvent(txsCh)
 	pendingPool   *txpool.TxPool     // may be the pending pool
 
@@ -30,9 +29,9 @@ type ExecutorService struct {
 
 func NewExecutorService(ePool, pPool *txpool.TxPool, Cli pb.P2PClient) *ExecutorService {
 	es := &ExecutorService{
-		executionTxsCh: make(chan core.NewTxsEvent, txChanSize),
+		executionTxsCh: make(chan types.NewTxsEvent, txChanSize),
 		executionPool:  ePool,
-		pendingTxsCh:   make(chan core.NewTxsEvent, txChanSize),
+		pendingTxsCh:   make(chan types.NewTxsEvent, txChanSize),
 		pendingPool:    pPool,
 		p2pClient:      Cli,
 	}
