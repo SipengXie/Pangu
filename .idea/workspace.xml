@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="变更">
+    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="chore:更新API的交易处理&#10;&#10;增加了AccessList的序列化和反序列化">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/types/accessList.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/types/accessList.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/etc/pangu.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/node/etc/pangu.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/handler/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/handler/routes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/handler/sendtransactionhandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/handler/sendtransactionhandler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/logic/sendtransactionlogic.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/logic/sendtransactionlogic.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/blockchain.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/blockchain.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/events.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/txpool/txpool.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/txpool/txpool.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node/internal/svc/servicecontext.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/svc/servicecontext.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/types/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/types/types.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/pangu.api" beforeDir="false" afterPath="$PROJECT_DIR$/node/pangu.api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/pangu.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/pangu.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +98,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="chore:更新API的交易处理&#10;&#10;增加了AccessList的序列化和反序列化" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore:更新API的交易处理&#10;&#10;增加了AccessList的序列化和反序列化" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

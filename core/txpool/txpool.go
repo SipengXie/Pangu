@@ -21,7 +21,6 @@ import (
 	"math/big"
 
 	"github.com/SipengXie/pangu/common"
-	"github.com/SipengXie/pangu/core"
 	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/event"
 )
@@ -273,7 +272,7 @@ func (p *TxPool) Pending(enforceTips bool) map[common.Address][]*types.Transacti
 
 // SubscribeNewTxsEvent registers a subscription of NewTxsEvent and starts sending
 // events to the given channel.
-func (p *TxPool) SubscribeNewTxsEvent(ch chan<- core.NewTxsEvent) event.Subscription {
+func (p *TxPool) SubscribeNewTxsEvent(ch chan<- types.NewTxsEvent) event.Subscription {
 	subs := make([]event.Subscription, len(p.subpools))
 	for i, subpool := range p.subpools {
 		subs[i] = subpool.SubscribeTransactions(ch)

@@ -33,6 +33,8 @@ type Blockchain struct {
 	chainHeadFeed *event.Feed
 
 	chainmu *syncx.ClosableMutex
+
+	scope event.SubscriptionScope
 }
 
 func NewBlokchain(config *params.ChainConfig, statedb *state.StateDB) *Blockchain {
@@ -49,8 +51,8 @@ func (bc *Blockchain) Config() *params.ChainConfig {
 	return bc.config
 }
 
-func (bc *Blockchain) CurrentBlock() *types.Block {
-	return bc.blocks[len(bc.blocks)-1]
+func (bc *Blockchain) CurrentBlock() *types.Header {
+	return bc.blocks[len(bc.blocks)-1].Header()
 }
 
 func (bc *Blockchain) GetBlock(hash common.Hash, number uint64) *types.Block {
@@ -82,4 +84,9 @@ func (bc *Blockchain) WriteBlockAndSetHead(block *types.Block, receipts []*types
 	defer bc.chainmu.Unlock()
 
 	return bc.writeBlockAndSetHead(block, receipts, logs, state, emitHeadEvent)
+}
+
+// SubscribeChainHeadEvent registers a subscription of ChainHeadEvent.
+func (bc *Blockchain) SubscribeChainHeadEvent(ch chan<- types.ChainHeadEvent) event.Subscription {
+	return bc.scope.Track(bc.chainHeadFeed.Subscribe(ch))
 }
