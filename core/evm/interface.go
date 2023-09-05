@@ -17,6 +17,7 @@
 package evm
 
 import (
+	"github.com/SipengXie/pangu/core/state"
 	"math/big"
 
 	"github.com/SipengXie/pangu/common"
@@ -78,6 +79,11 @@ type StateDB interface {
 
 	AddLog(*types.Log)
 	AddPreimage(common.Hash, []byte)
+
+	GetLogs(hash common.Hash, blockNumber uint64, blockHash common.Hash) []*types.Log    // New Function
+	SetTxContext(thash common.Hash)                                                      // New Function
+	Finalise(deleteEmptyObjects bool)                                                    // New Function
+	GetPendingObj() (map[common.Address]struct{}, map[common.Address]*state.StateObject) // New Function
 }
 
 // CallContext provides a basic interface for the EVM calling conventions. The EVM

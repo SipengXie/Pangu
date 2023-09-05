@@ -5,10 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="变更">
+      <change afterPath="$PROJECT_DIR$/core/transition.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/blockchain.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/blockchain.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/evm/interface.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/interface.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/evm/params/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/params/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/process.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/process.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/process_types.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/process_types.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/pvm.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/pvm.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/state/journal.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/state/journal.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/state/state_object.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/state/state_object.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/state/statedb.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/state/statedb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/types/PanguTransaction.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/types/PanguTransaction.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/types/block.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/types/block.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +72,7 @@
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />

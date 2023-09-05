@@ -108,3 +108,12 @@ func Transfer(db evm.StateDB, sender, recipient common.Address, amount *big.Int)
 	db.SubBalance(sender, amount)
 	db.AddBalance(recipient, amount)
 }
+
+// NewEVMTxContext creates a new transaction context for a single transaction.
+func NewEVMTxContext(msg *TxMessage) evm.TxContext {
+	return evm.TxContext{
+		Origin:   msg.From,
+		GasPrice: new(big.Int).Set(msg.GasPrice),
+		// BlobHashes: msg.BlobHashes,	// TODO: 暂时删除
+	}
+}
