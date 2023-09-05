@@ -20,8 +20,8 @@ import (
 	"math/big"
 
 	"github.com/SipengXie/pangu/common"
-	evmparams "github.com/SipengXie/pangu/core/evm/params"
 	"github.com/SipengXie/pangu/core/types"
+	"github.com/SipengXie/pangu/params"
 )
 
 // StateDB is an EVM database for full state querying.
@@ -71,7 +71,7 @@ type StateDB interface {
 	// AddSlotToAccessList adds the given (address,slot) to the access list. This operation is safe to perform
 	// even if the feature/fork is not active yet
 	AddSlotToAccessList(addr common.Address, slot common.Hash)
-	Prepare(rules evmparams.Rules, sender, coinbase common.Address, dest *common.Address, precompiles []common.Address, txAccesses types.AccessList)
+	Prepare(rules params.Rules, sender, coinbase common.Address, dest *common.Address, precompiles []common.Address, txAccesses types.AccessList)
 
 	RevertToSnapshot(int)
 	Snapshot() int

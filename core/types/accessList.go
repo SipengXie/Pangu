@@ -10,3 +10,14 @@ type AccessList struct {
 }
 
 // 其他方法等地后续添加
+func (al *AccessList) Len() int {
+	return len(al.Addresses)
+}
+
+func (al *AccessList) StorageKeys() int {
+	var keys int
+	for _, slot := range al.Slots {
+		keys += len(slot)
+	}
+	return keys
+}

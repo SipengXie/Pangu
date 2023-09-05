@@ -1,10 +1,11 @@
 package core
 
 import (
+	"math/big"
+
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core/evm"
 	"github.com/SipengXie/pangu/core/types"
-	"math/big"
 )
 
 // pangu虚拟机执行前代码，代替原evm.go
@@ -17,7 +18,7 @@ import (
 // ChainContext supports retrieving headers and consensus parameters from the
 // current blockchain to be used during transaction processing.
 type ChainContext interface {
-	//// Engine retrieves the chain's consensus engine.	// TODO: 暂时删除共识引擎
+	// Engine retrieves the chain's consensus engine.
 	//Engine() consensus.Engine
 
 	// GetHeader returns the header corresponding to the hash/number argument pair.

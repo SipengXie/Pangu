@@ -3,8 +3,7 @@ package params
 import "math/big"
 
 type ChainConfig struct {
-	ChainID    *big.Int `json:"chainId"` // chainId identifies the current chain and is used for replay protection
-	chainRules Rules    // 暂时定义一个空的
+	ChainID *big.Int `json:"chainId"` // chainId identifies the current chain and is used for replay protection
 }
 type Rules struct {
 }

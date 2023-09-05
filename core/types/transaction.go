@@ -27,15 +27,25 @@ import (
 
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/common/math"
+	"github.com/SipengXie/pangu/params"
 	"github.com/SipengXie/pangu/rlp"
 )
 
 var (
-	ErrInvalidSig         = errors.New("invalid transaction signature values")
-	ErrInvalidTxType      = errors.New("transaction type not valid in this context")
-	ErrTxTypeNotSupported = errors.New("transaction type not supported")
-	ErrGasFeeCapTooLow    = errors.New("fee cap less than base fee")
-	errShortTypedTx       = errors.New("typed transaction too short")
+	ErrInvalidSig              = errors.New("invalid transaction signature values")
+	ErrInvalidTxType           = errors.New("transaction type not valid in this context")
+	ErrTxTypeNotSupported      = errors.New("transaction type not supported")
+	ErrGasFeeCapTooLow         = errors.New("fee cap less than base fee")
+	ErrMaxInitCodeSizeExceeded = errors.New("max init code size exceeded")
+	ErrShortTypedTx            = errors.New("typed transaction too short")
+	ErrFeeCapVeryHigh          = errors.New("fee cap too high")
+	ErrTipVeryHigh             = errors.New("tip too high")
+	ErrTipAboveFeeCap          = errors.New("tip above fee cap")
+	ErrIntrinsicGas            = errors.New("intrinsic gas too low")
+	ErrGasUintOverflow         = errors.New("gas uint64 overflow")
+	ErrNonceTooLow             = errors.New("nonce too low")
+	ErrNonceTooHigh            = errors.New("nonce too high")
+	ErrInsufficientFunds       = errors.New("insufficient funds for gas * price + value")
 )
 
 // Transaction types.
@@ -154,7 +164,7 @@ func (tx *Transaction) UnmarshalBinary(b []byte) error {
 // decodeTyped decodes a typed transaction from the canonical format.
 func (tx *Transaction) decodeTyped(b []byte) (TxData, error) {
 	if len(b) <= 1 {
-		return nil, errShortTypedTx
+		return nil, ErrShortTypedTx
 	}
 	switch b[0] {
 	case PanguTxType:
@@ -385,6 +395,57 @@ func (tx *Transaction) WithSignature(signer Signer, sig []byte, sigAlgo byte) (*
 	cpy := tx.inner.copy()
 	cpy.setSigValues(signer.ChainID(), sig, sigAlgo)
 	return &Transaction{inner: cpy, time: tx.time}, nil
+}
+
+func (tx *Transaction) IntrinsicGas() (uint64, error) {
+	// Set the starting gas for the raw transaction
+	var gas = params.TxGas
+	data := tx.Data()
+	dataLen := uint64(len(data))
+	// Bump the required gas by the amount of transactional data
+	if dataLen > 0 {
+		// Zero and non-zero bytes are priced differently
+		var nz uint64
+		for _, byt := range data {
+			if byt != 0 {
+				nz++
+			}
+		}
+		// Make sure we don't exceed uint64 for all data combinations
+		nonZeroGas := params.TxDataNonZeroGasEIP2028
+
+		if (math.MaxUint64-gas)/nonZeroGas < nz {
+			return 0, ErrGasUintOverflow
+		}
+		gas += nz * nonZeroGas
+
+		z := dataLen - nz
+		if (math.MaxUint64-gas)/params.TxDataZeroGas < z {
+			return 0, ErrGasUintOverflow
+		}
+		gas += z * params.TxDataZeroGas
+		if tx.To() == nil {
+			lenWords := toWordSize(dataLen)
+			if (math.MaxUint64-gas)/params.InitCodeWordGas < lenWords {
+				return 0, ErrGasUintOverflow
+			}
+			gas += lenWords * params.InitCodeWordGas
+		}
+	}
+	accessList := tx.AccessList()
+	if accessList != nil {
+		gas += uint64(accessList.Len()) * params.TxAccessListAddressGas
+		gas += uint64(accessList.StorageKeys()) * params.TxAccessListStorageKeyGas
+	}
+	return gas, nil
+}
+
+func toWordSize(size uint64) uint64 {
+	if size > math.MaxUint64-31 {
+		return math.MaxUint64/32 + 1
+	}
+
+	return (size + 31) / 32
 }
 
 // Transactions implements DerivableList for transactions.

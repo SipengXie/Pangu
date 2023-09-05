@@ -28,7 +28,6 @@ import (
 
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/common/prque"
-	"github.com/SipengXie/pangu/consensus/misc"
 	"github.com/SipengXie/pangu/core"
 	"github.com/SipengXie/pangu/core/state"
 	"github.com/SipengXie/pangu/core/txpool"
@@ -251,7 +250,7 @@ func New(config Config, chain BlockChain) *LegacyPool {
 		config:          config,
 		chain:           chain,
 		chainconfig:     chain.Config(),
-		signer:          types.LatestSigner(chain.Config()),
+		signer:          types.LatestSignerForChainID(chain.Config().ChainID), // ! CHANGE MADE HERE
 		pending:         make(map[common.Address]*list),
 		queue:           make(map[common.Address]*list),
 		beats:           make(map[common.Address]time.Time),
@@ -280,7 +279,7 @@ func New(config Config, chain BlockChain) *LegacyPool {
 // pool, specifically, whether it is a Legacy, AccessList or Dynamic transaction.
 func (pool *LegacyPool) Filter(tx *types.Transaction) bool {
 	switch tx.Type() {
-	case types.LegacyTxType, types.AccessListTxType, types.DynamicFeeTxType:
+	case types.PanguTxType:
 		return true
 	default:
 		return false
@@ -577,16 +576,14 @@ func (pool *LegacyPool) validateTxBasics(tx *types.Transaction, local bool) erro
 	opts := &txpool.ValidationOptions{
 		Config: pool.chainconfig,
 		Accept: 0 |
-			1<<types.LegacyTxType |
-			1<<types.AccessListTxType |
-			1<<types.DynamicFeeTxType,
+			1<<types.PanguTxType,
 		MaxSize: txMaxSize,
 		MinTip:  pool.gasTip.Load(),
 	}
 	if local {
 		opts.MinTip = new(big.Int)
 	}
-	if err := txpool.ValidateTransaction(tx, nil, nil, nil, pool.currentHead.Load(), pool.signer, opts); err != nil {
+	if err := txpool.ValidateTransaction(tx, pool.currentHead.Load(), pool.signer, opts); err != nil {
 		return err
 	}
 	return nil
@@ -1220,12 +1217,14 @@ func (pool *LegacyPool) runReorg(done chan struct{}, reset *txpoolResetRequest, 
 	if reset != nil {
 		pool.demoteUnexecutables()
 		if reset.newHead != nil {
-			if pool.chainconfig.IsLondon(new(big.Int).Add(reset.newHead.Number, big.NewInt(1))) {
-				pendingBaseFee := misc.CalcBaseFee(pool.chainconfig, reset.newHead)
-				pool.priced.SetBaseFee(pendingBaseFee)
-			} else {
-				pool.priced.Reheap()
-			}
+			// ! Here we change baseFee to be static
+			pool.priced.SetBaseFee(reset.newHead.BaseFee)
+			// if pool.chainconfig.IsLondon(new(big.Int).Add(reset.newHead.Number, big.NewInt(1))) {
+			// 	pendingBaseFee := misc.CalcBaseFee(pool.chainconfig, reset.newHead)
+			// 	pool.priced.SetBaseFee(pendingBaseFee)
+			// } else {
+			// 	pool.priced.Reheap()
+			// }
 		}
 		// Update all accounts to the latest known pending nonce
 		nonces := make(map[common.Address]uint64, len(pool.pending))
@@ -1338,7 +1337,7 @@ func (pool *LegacyPool) reset(oldHead, newHead *types.Header) {
 	if newHead == nil {
 		newHead = pool.chain.CurrentBlock() // Special case during testing
 	}
-	statedb, err := pool.chain.StateAt(newHead.Root)
+	statedb, err := pool.chain.StateAt(newHead.StateRoot)
 	if err != nil {
 		log.Error("Failed to reset txpool state", "err", err)
 		return
