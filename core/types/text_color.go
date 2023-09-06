@@ -1,3 +1,5 @@
+// 用于输出信息的字体颜色变量
+
 package types
 
 var (
