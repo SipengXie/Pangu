@@ -157,81 +157,56 @@ func (evm *EVM) SetBlockContext(blockCtx BlockContext) {
 // the necessary steps to create accounts and reverses the state in case of an
 // execution error or failed value transfer.
 // input -> msg.Data value -> msg.Value addr -> msg.To
-func (evm *EVM) Call(caller ContractRef, msg *core.TxMessage, gas uint64, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, leftOverGas uint64, CanParallel bool, err error) {
-	// Fail if we're trying to execute above the call depth limit
+func (evm *EVM) Call(caller ContractRef, msg *core.TxMessage, gas uint64, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, GasRemain uint64, CanParallel bool, err error) {
+	// 调用深度检查
 	if evm.depth > int(evmparams.CallCreateDepth) {
-		return nil, gas, ErrDepth
+		fmt.Printf("%sERROR MSG%s   调用深度超出限制\n", types.FRED, types.FRESET)
+		return nil, gas, true, ErrDepth
 	}
-	// Fail if we're trying to transfer more than the available balance
+
+	// 余额是否可以转账
 	if msg.Value.Sign() != 0 && !evm.Context.CanTransfer(evm.StateDB, caller.Address(), msg.Value) {
-		return nil, gas, ErrInsufficientBalance
+		fmt.Printf("%sERROR MSG%s   余额不足，不能转账\n", types.FRED, types.FRESET)
+		return nil, gas, true, ErrInsufficientBalance
 	}
 	snapshot := evm.StateDB.Snapshot()
-	p, isPrecompile := evm.precompile(addr)
-	debug := evm.Config.Tracer != nil
+	p, isPrecompile := evm.precompile(*msg.To)
 
-	if !evm.StateDB.Exist(addr) {
-		if !isPrecompile && value.Sign() == 0 { // TODO: remove "evm.chainRules.IsEIP158"
-			// Calling a non existing account, don't do anything, but ping the tracer
-			if debug {
-				if evm.depth == 0 {
-					evm.Config.Tracer.CaptureStart(evm, caller.Address(), addr, false, input, gas, value)
-					evm.Config.Tracer.CaptureEnd(ret, 0, nil)
-				} else {
-					evm.Config.Tracer.CaptureEnter(CALL, caller.Address(), addr, input, gas, value)
-					evm.Config.Tracer.CaptureExit(ret, 0, nil)
-				}
-			}
-			return nil, gas, nil
+	if !evm.StateDB.Exist(*msg.To) {
+		if !isPrecompile && msg.Value.Sign() == 0 { // TODO: remove "evm.chainRules.IsEIP158"
+			fmt.Printf("%sERROR MSG%s   调用合约地址不存在\n", types.FRED, types.FRESET)
+			return nil, gas, true, errors.New("contract address is not exist")
 		}
-		evm.StateDB.CreateAccount(addr)
+		evm.StateDB.CreateAccount(*msg.To)
 	}
-	evm.Context.Transfer(evm.StateDB, caller.Address(), addr, value)
 
-	// Capture the tracer start/end events in debug mode
-	if debug {
-		if evm.depth == 0 {
-			evm.Config.Tracer.CaptureStart(evm, caller.Address(), addr, false, input, gas, value)
-			defer func(startGas uint64) { // Lazy evaluation of the parameters
-				evm.Config.Tracer.CaptureEnd(ret, startGas-gas, err)
-			}(gas)
-		} else {
-			// Handle tracer events for entering and exiting a call frame
-			evm.Config.Tracer.CaptureEnter(CALL, caller.Address(), addr, input, gas, value)
-			defer func(startGas uint64) {
-				evm.Config.Tracer.CaptureExit(ret, startGas-gas, err)
-			}(gas)
-		}
-	}
+	// 转账交易
+	evm.Context.Transfer(evm.StateDB, caller.Address(), *msg.To, msg.Value)
 
 	if isPrecompile {
-		ret, gas, err = RunPrecompiledContract(p, input, gas)
+		ret, gas, err = RunPrecompiledContract(p, msg.Data, gas)
 	} else {
-		// Initialise a new contract and set the code that is to be used by the EVM.
-		// The contract is a scoped environment for this execution context only.
-		code := evm.StateDB.GetCode(addr)
+		// 不是预编译合约，初始化一个新的合约，并设置EVM要使用的代码
+		code := evm.StateDB.GetCode(*msg.To)
 		if len(code) == 0 {
+			fmt.Printf("%sPROMPT MSG%s   调用合约中没有代码\n", types.FGREEN, types.FRESET)
 			ret, err = nil, nil // gas is unchanged
+			return nil, gas, true, nil
 		} else {
-			addrCopy := addr
-			// If the account has no code, we can abort here
-			// The depth-check is already done, and precompiles handled above
-			contract := NewContract(caller, AccountRef(addrCopy), value, gas)
+			// 调用合约中有代码
+			addrCopy := *msg.To
+			contract := NewContract(caller, AccountRef(addrCopy), msg.Value, gas)
 			contract.SetCallCode(&addrCopy, evm.StateDB.GetCodeHash(addrCopy), code)
-			ret, err = evm.interpreter.Run(contract, input, false)
+			ret, err, CanParallel = evm.interpreter.Run(contract, msg.Data, false, TrueAccessList, IsParallel)
 			gas = contract.Gas
 		}
 	}
-	// When an error was returned by the EVM or when setting the creation code
-	// above we revert to the snapshot and consume any gas remaining. Additionally
-	// when we're in homestead this also counts for code storage gas errors.
+
 	if err != nil {
+		fmt.Printf("%sERROR MSG%s   交易执行出错\n", types.FRED, types.FRESET)
 		evm.StateDB.RevertToSnapshot(snapshot)
-		if err != ErrExecutionReverted {
-			gas = 0
-		}
 	}
-	return ret, gas, err
+	return ret, gas, CanParallel, err
 }
 
 // CallCode executes the contract associated with the addr with the given input
@@ -401,19 +376,19 @@ func (evm *EVM) create(caller ContractRef, codeAndHash *codeAndHash, gas uint64,
 	// 检查调用深度
 	if evm.depth > int(evmparams.CallCreateDepth) {
 		fmt.Printf("%sERROR MSG%s   调用深度出错\n", types.FRED, types.FRESET)
-		return nil, 0, true, errors.New("max call depth exceeded") // CanParallel必须为true，为了不进入上层串行队列交易判断
+		return nil, gas, true, errors.New("max call depth exceeded") // CanParallel必须为true，为了不进入上层串行队列交易判断
 	}
 	// 是否有足够的钱转账
 	if !evm.Context.CanTransfer(evm.StateDB, caller.Address(), value) {
 		fmt.Printf("%sERROR MSG%s   没有足够的钱转账\n", types.FRED, types.FRESET)
-		return nil, 0, true, errors.New("insufficient balance for transfer")
+		return nil, gas, true, errors.New("insufficient balance for transfer")
 	}
 
 	// 检查nonce是否正确
 	nonce := evm.StateDB.GetNonce(caller.Address())
 	if nonce+1 < nonce {
 		fmt.Printf("%sERROR MSG%s   nonce值错误\n", types.FRED, types.FRESET)
-		return nil, 0, true, errors.New("nonce uint64 overflow")
+		return nil, gas, true, errors.New("nonce uint64 overflow")
 	}
 	evm.StateDB.SetNonce(caller.Address(), nonce+1)
 
@@ -421,7 +396,7 @@ func (evm *EVM) create(caller ContractRef, codeAndHash *codeAndHash, gas uint64,
 	contractHash := evm.StateDB.GetCodeHash(address)
 	if evm.StateDB.GetNonce(address) != 0 || (contractHash != (common.Hash{}) && contractHash != types.EmptyCodeHash) {
 		fmt.Printf("%sERROR MSG%s   合约地址错误\n", types.FRED, types.FRESET)
-		return nil, 0, true, errors.New("contract address collision")
+		return nil, gas, true, errors.New("contract address collision")
 	}
 
 	snapshot := evm.StateDB.Snapshot()
