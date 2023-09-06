@@ -7,6 +7,7 @@ import (
 	"github.com/SipengXie/pangu/params"
 	cmath "github.com/ethereum/go-ethereum/common/math"
 	"math/big"
+	"sort"
 )
 
 // MessageReturn MesReturn 作为返回结构体，通过管道传输线程中每组交易的结果，暂时去掉了IsScusses，因为这是执行函数，不是验证函数
@@ -37,7 +38,6 @@ type ThreadMessage struct {
 	EVMenv      *evm.EVM
 	Signer      types.Signer
 	Header      *types.Header
-	// BaseFee     *big.Int // 获取区块头中的BaseFee
 }
 
 // TxMessage 实际交易执行传递的信息
@@ -66,6 +66,15 @@ type ExecutionResult struct {
 	Err             error
 	ReturnData      []byte // Returned data from evm(function result or data supplied with revert opcode)
 	IsParallelError bool   // 标识当前错误是否时因为交易无法并行导致的错误
+}
+
+// ProcessReturnMsg Process函数返回结构体
+type ProcessReturnMsg struct {
+	Receipt  types.Receipts
+	Logs     []*types.Log
+	ErrTx    []*TxErrorMessage
+	UsedGas  *uint64
+	RootHash common.Hash
 }
 
 // NewThreadMessage 新建，复制AllMessage结构体
@@ -121,5 +130,37 @@ func NewTxErrorMessage(tx *types.Transaction, result string, err error) *TxError
 		Tx:       tx,
 		Result:   result,
 		ErrorMsg: err,
+	}
+}
+
+// SortSerialTX 串行队列排序方法
+func SortSerialTX(SingleTxList []*types.Transaction) {
+	// 使用 sort.Slice 排序函数对第二项进行排序
+	sort.Slice(SingleTxList, func(i, j int) bool {
+		// todo：1 Nonce从小到大
+		if SingleTxList[i].Nonce() < SingleTxList[j].Nonce() {
+			return true
+		} else if SingleTxList[i].Nonce() == SingleTxList[j].Nonce() {
+			// todo：2 GasPrice从大到小
+			if SingleTxList[i].GasPrice().Cmp(SingleTxList[j].GasPrice()) == 1 {
+				return true
+			} else if SingleTxList[i].GasPrice().Cmp(SingleTxList[j].GasPrice()) == 0 {
+				// todo：3 哈希值从小到大
+				if SingleTxList[i].Hash().Less(SingleTxList[j].Hash()) {
+					return true
+				}
+			}
+		}
+		return false
+	})
+}
+
+func NewProcessReturnMsg(Receipts types.Receipts, AllLogs []*types.Log, ErrorTxList []*TxErrorMessage, UsedGas *uint64, RootHash common.Hash) *ProcessReturnMsg {
+	return &ProcessReturnMsg{
+		Receipt:  Receipts,
+		Logs:     AllLogs,
+		ErrTx:    ErrorTxList,
+		UsedGas:  UsedGas,
+		RootHash: RootHash,
 	}
 }
