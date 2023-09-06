@@ -17,6 +17,7 @@
 package evm
 
 import (
+	"github.com/SipengXie/pangu/core"
 	"math/big"
 	"sync/atomic"
 
@@ -153,7 +154,8 @@ func (evm *EVM) SetBlockContext(blockCtx BlockContext) {
 // parameters. It also handles any necessary value transfer required and takes
 // the necessary steps to create accounts and reverses the state in case of an
 // execution error or failed value transfer.
-func (evm *EVM) Call(caller ContractRef, addr common.Address, input []byte, gas uint64, value *big.Int) (ret []byte, leftOverGas uint64, err error) {
+// input -> msg.Data value -> msg.Value addr -> msg.To
+func (evm *EVM) Call(caller ContractRef, msg *core.TxMessage, gas uint64, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, leftOverGas uint64, CanParallel bool, err error) {
 	// Fail if we're trying to execute above the call depth limit
 	if evm.depth > int(evmparams.CallCreateDepth) {
 		return nil, gas, ErrDepth
@@ -484,9 +486,10 @@ func (evm *EVM) create(caller ContractRef, codeAndHash *codeAndHash, gas uint64,
 }
 
 // Create creates a new contract using code as deployment code.
-func (evm *EVM) Create(caller ContractRef, code []byte, gas uint64, value *big.Int) (ret []byte, contractAddr common.Address, leftOverGas uint64, err error) {
-	contractAddr = crypto.CreateAddress(caller.Address(), evm.StateDB.GetNonce(caller.Address()))
-	return evm.create(caller, &codeAndHash{code: code}, gas, value, contractAddr, CREATE)
+func (evm *EVM) Create(caller ContractRef, msg *core.TxMessage, gas uint64, TrueAccessList *types.AccessList,
+	IsParallel bool) (ret []byte, leftOverGas uint64, CanParallel bool, err error) {
+	contractAddr := crypto.CreateAddress(caller.Address(), evm.StateDB.GetNonce(caller.Address()))
+	return evm.create(caller, &codeAndHash{code: msg.Data}, gas, msg.Value, contractAddr, CREATE)
 }
 
 // Create2 creates a new contract using code as deployment code.
