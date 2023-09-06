@@ -4,6 +4,7 @@ package core
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"github.com/SipengXie/pangu/common"
 	evmparams "github.com/SipengXie/pangu/core/evm/params"
@@ -45,20 +46,21 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 		BlockNumber = block.Number()
 		AllLogs     []*types.Log
 		EvmContext  = NewEVMBlockContext(Header, p.blockchain, nil) // evm环境
-		// vmenv   = vm.NewEVM(context, vm.TxContext{}, statedb, p.config, cfg) // ! ERROR
-		Signer   = types.MakeSigner(p.config, Header.Number, Header.Time)
-		GroupNum = len(TXS) // 组数
+		Signer      = types.MakeSigner(p.config, Header.Number, Header.Time)
+		GroupNum    = len(TXS) // 组数
 	)
 
 	// 调用分组函数
 	// txs := ClassifyTx(allTX, signer) // TODO: 如果传来的是二维数组，则说明在传入之前已经调用了分组函数
 
 	var (
-		ReturnChan1 = make(chan MessageReturn, GroupNum) // 并行组返回通道
-		ReturnChan2 = make(chan MessageReturn, 1)        // 串行组返回通道
-		wg1         sync.WaitGroup                       // 并行组等待组
-		wg2         sync.WaitGroup                       // 串行组等待组
-		AllEvm      []*evm.EVM                           // 存储所有线程的evm
+		ReturnChan1  = make(chan MessageReturn, GroupNum) // 并行组返回通道
+		ReturnChan2  = make(chan MessageReturn, 1)        // 串行组返回通道
+		wg1          sync.WaitGroup                       // 并行组等待组
+		wg2          sync.WaitGroup                       // 串行组等待组
+		AllEvm       []*evm.EVM                           // 存储所有线程的evm
+		SerialTxList []*types.Transaction                 // 串行交易队列
+		ErrorTxList  []*TxErrorMessage                    // 执行出现错误的交易队列
 		// AllStateDB  []*state.StateDB                     // 存储所有线程的stateDB
 	)
 
@@ -71,7 +73,7 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 		wg1.Add(1)
 	}
 
-	fmt.Printf("STAGE CHANGE   交易开始并行处理 << \n") // ! 统一消息提示格式：英文概要大写   （空三格）中文描述具体内容
+	fmt.Printf("STAGE CHANGE   交易开始并行处理 <<< \n") // ! 统一消息提示格式：英文概要大写   （空三格）中文描述具体内容
 
 	for i, EachTXS := range TXS {
 		EachThreadMessage := NewThreadMessage(p.config, BlockNumber, BlockHash, UsedGas, AllEvm[i], Signer, Header)
@@ -80,14 +82,36 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 
 	wg1.Wait()
 
-	fmt.Printf("STAGE CHANGE   并行交易结果处理 << \n")
+	fmt.Printf("STAGE CHANGE   并行交易结果处理 <<< \n")
 
 	// 提交stateDB状态到内存
-	for _, evm := range AllEvm {
-		evm.StateDB.Finalise(true)
-		spo, so := evm.StateDB.GetPendingObj()
+	for _, value := range AllEvm {
+		value.StateDB.Finalise(true)
+		spo, so := value.StateDB.GetPendingObj()
 		statedb.SetPendingObj(spo)
 		statedb.UpdateStateObj(so)
+	}
+
+	if len(ReturnChan1) == 0 {
+		fmt.Printf("ERROR MSG   并行线程的返回通道中没有返回值")
+		return nil, nil, 0, errors.New("no Return Message in Parallel Channel")
+	}
+	for value := range ReturnChan1 {
+		fmt.Printf("PROMPT MSG   收到一组并行交易的返回值，开始处理\n")
+		Receipts = append(Receipts, value.NewReceipt...)       // 收据树
+		AllLogs = append(AllLogs, value.NewLogs...)            // 日志
+		SerialTxList = append(SerialTxList, value.TxSerial...) // 串行队列
+		ErrorTxList = append(ErrorTxList, value.TxError...)    // 执行出现错误的交易队列
+		if len(ReturnChan1) == 0 {
+			break
+		}
+	}
+
+	// 开始执行交易串行队列
+	if len(SerialTxList) != 0 {
+		fmt.Printf("STAGE CHANGE   开始执行串行队列交易 <<< \n")
+	} else {
+		fmt.Printf("STAGE CHANGE   串行交易队列长度为零，不需要执行串行队列交易 <<< \n")
 	}
 
 	return nil, nil, 0, nil
@@ -167,7 +191,7 @@ func TxThread(id int, txs []*types.Transaction, wg *sync.WaitGroup, msgReturn ch
 	messageReturn := MessageReturn{
 		NewReceipt: ThreadReceipt,
 		NewLogs:    ThreadLogs,
-		SingleTx:   ThreadSerialTx,
+		TxSerial:   ThreadSerialTx,
 		TxError:    ErrReturnMsg,
 	}
 	msgReturn <- messageReturn

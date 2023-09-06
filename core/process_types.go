@@ -16,7 +16,7 @@ type MessageReturn struct {
 	// logs
 	NewLogs []*types.Log
 	// 串行队列
-	SingleTx []*types.Transaction
+	TxSerial []*types.Transaction
 	// 出错交易
 	TxError []*TxErrorMessage
 }
