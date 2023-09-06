@@ -17,6 +17,8 @@
 package evm
 
 import (
+	"errors"
+	"fmt"
 	"github.com/SipengXie/pangu/core"
 	"math/big"
 	"sync/atomic"
@@ -161,7 +163,7 @@ func (evm *EVM) Call(caller ContractRef, msg *core.TxMessage, gas uint64, TrueAc
 		return nil, gas, ErrDepth
 	}
 	// Fail if we're trying to transfer more than the available balance
-	if value.Sign() != 0 && !evm.Context.CanTransfer(evm.StateDB, caller.Address(), value) {
+	if msg.Value.Sign() != 0 && !evm.Context.CanTransfer(evm.StateDB, caller.Address(), msg.Value) {
 		return nil, gas, ErrInsufficientBalance
 	}
 	snapshot := evm.StateDB.Snapshot()
@@ -395,101 +397,79 @@ func (c *codeAndHash) Hash() common.Hash {
 }
 
 // create creates a new contract using code as deployment code.
-func (evm *EVM) create(caller ContractRef, codeAndHash *codeAndHash, gas uint64, value *big.Int, address common.Address, typ OpCode) ([]byte, common.Address, uint64, error) {
-	// Depth check execution. Fail if we're trying to execute above the
-	// limit.
+func (evm *EVM) create(caller ContractRef, codeAndHash *codeAndHash, gas uint64, value *big.Int, address common.Address, TrueAccessList *types.AccessList, IsParallel bool) ([]byte, uint64, bool, error) {
+	// 检查调用深度
 	if evm.depth > int(evmparams.CallCreateDepth) {
-		return nil, common.Address{}, gas, ErrDepth
+		fmt.Printf("%sERROR MSG%s   调用深度出错\n", types.FRED, types.FRESET)
+		return nil, 0, true, errors.New("max call depth exceeded") // CanParallel必须为true，为了不进入上层串行队列交易判断
 	}
+	// 是否有足够的钱转账
 	if !evm.Context.CanTransfer(evm.StateDB, caller.Address(), value) {
-		return nil, common.Address{}, gas, ErrInsufficientBalance
+		fmt.Printf("%sERROR MSG%s   没有足够的钱转账\n", types.FRED, types.FRESET)
+		return nil, 0, true, errors.New("insufficient balance for transfer")
 	}
+
+	// 检查nonce是否正确
 	nonce := evm.StateDB.GetNonce(caller.Address())
 	if nonce+1 < nonce {
-		return nil, common.Address{}, gas, ErrNonceUintOverflow
+		fmt.Printf("%sERROR MSG%s   nonce值错误\n", types.FRED, types.FRESET)
+		return nil, 0, true, errors.New("nonce uint64 overflow")
 	}
 	evm.StateDB.SetNonce(caller.Address(), nonce+1)
-	// We add this to the access list _before_ taking a snapshot. Even if the creation fails,
-	// the access-list change should not be rolled back
-	//if evm.chainRules.IsBerlin {
-	//	evm.StateDB.AddAddressToAccessList(address)
-	//}
-	// Ensure there's no existing contract already at the designated address
+
+	// 确保在指定的地址没有现有的合约
 	contractHash := evm.StateDB.GetCodeHash(address)
 	if evm.StateDB.GetNonce(address) != 0 || (contractHash != (common.Hash{}) && contractHash != types.EmptyCodeHash) {
-		return nil, common.Address{}, 0, ErrContractAddressCollision
+		fmt.Printf("%sERROR MSG%s   合约地址错误\n", types.FRED, types.FRESET)
+		return nil, 0, true, errors.New("contract address collision")
 	}
-	// Create a new account on the state
+
 	snapshot := evm.StateDB.Snapshot()
+
+	// 新建账户
 	evm.StateDB.CreateAccount(address)
-	//if evm.chainRules.IsEIP158 {
-	//	evm.StateDB.SetNonce(address, 1)
-	//}
+
+	// 转账交易
 	evm.Context.Transfer(evm.StateDB, caller.Address(), address, value)
 
-	// Initialise a new contract and set the code that is to be used by the EVM.
-	// The contract is a scoped environment for this execution context only.
+	// 新建合约
 	contract := NewContract(caller, AccountRef(address), value, gas)
 	contract.SetCodeOptionalHash(&address, codeAndHash)
 
-	if evm.Config.Tracer != nil {
-		if evm.depth == 0 {
-			evm.Config.Tracer.CaptureStart(evm, caller.Address(), address, true, codeAndHash.code, gas, value)
-		} else {
-			evm.Config.Tracer.CaptureEnter(typ, caller.Address(), address, codeAndHash.code, gas, value)
-		}
-	}
+	// 执行合约代码
+	ret, err, CanParallel := evm.interpreter.Run(contract, nil, false, TrueAccessList, IsParallel)
 
-	ret, err := evm.interpreter.Run(contract, nil, false)
-
-	// Check whether the max code size has been exceeded, assign err if the case.
+	// 检查代码大小是否超出最大值
 	if err == nil && len(ret) > evmparams.MaxCodeSize { // TODO: remove "evm.chainRules.IsEIP158"
-		err = ErrMaxCodeSizeExceeded
+		fmt.Printf("%sERROR MSG%s   合约代码大小错误\n", types.FRED, types.FRESET)
+		return nil, 0, true, errors.New("max code size exceeded")
 	}
 
-	// Reject code starting with 0xEF if EIP-3541 is enabled.
-	if err == nil && len(ret) >= 1 && ret[0] == 0xEF { // TODO: remove "evm.chainRules.IsLondon"
-		err = ErrInvalidCode
-	}
-
-	// if the contract creation ran successfully and no errors were returned
-	// calculate the gas required to store the code. If the code could not
-	// be stored due to not enough gas set an error and let it be handled
-	// by the error checking condition below.
+	// 如果合约创建成功并且没有返回错误，计算存储代码所需的gas
 	if err == nil {
 		createDataGas := uint64(len(ret)) * evmparams.CreateDataGas
 		if contract.UseGas(createDataGas) {
 			evm.StateDB.SetCode(address, ret)
 		} else {
-			err = ErrCodeStoreOutOfGas
+			fmt.Printf("%sERROR MSG%s   汽油费无法支付存放合约代码的费用\n", types.FRED, types.FRESET)
+			return nil, 0, true, errors.New("contract creation code storage out of gas")
 		}
 	}
 
-	// When an error was returned by the EVM or when setting the creation code
-	// above we revert to the snapshot and consume any gas remaining. Additionally
-	// when we're in homestead this also counts for code storage gas errors.
-	if err != nil && err != ErrCodeStoreOutOfGas { // TODO: remove "evm.chainRules.IsHomestead"
+	// 交易出错，快照回滚
+	if err != nil { // TODO: remove "evm.chainRules.IsHomestead"
 		evm.StateDB.RevertToSnapshot(snapshot)
-		if err != ErrExecutionReverted {
-			contract.UseGas(contract.Gas)
-		}
+
 	}
 
-	if evm.Config.Tracer != nil {
-		if evm.depth == 0 {
-			evm.Config.Tracer.CaptureEnd(ret, gas-contract.Gas, err)
-		} else {
-			evm.Config.Tracer.CaptureExit(ret, gas-contract.Gas, err)
-		}
-	}
-	return ret, address, contract.Gas, err
+	return ret, contract.Gas, CanParallel, err
 }
 
 // Create creates a new contract using code as deployment code.
 func (evm *EVM) Create(caller ContractRef, msg *core.TxMessage, gas uint64, TrueAccessList *types.AccessList,
-	IsParallel bool) (ret []byte, leftOverGas uint64, CanParallel bool, err error) {
+	IsParallel bool) (ret []byte, GasRemain uint64, CanParallel bool, err error) {
 	contractAddr := crypto.CreateAddress(caller.Address(), evm.StateDB.GetNonce(caller.Address()))
-	return evm.create(caller, &codeAndHash{code: msg.Data}, gas, msg.Value, contractAddr, CREATE)
+	return evm.create(caller, &codeAndHash{code: msg.Data}, gas, msg.Value, contractAddr, TrueAccessList, IsParallel)
 }
 
 // Create2 creates a new contract using code as deployment code.

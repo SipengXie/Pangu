@@ -19,6 +19,7 @@ package evm
 import (
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/common/math"
+	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/crypto"
 	"github.com/SipengXie/pangu/log"
 )
@@ -104,7 +105,7 @@ func NewEVMInterpreter(evm *EVM) *EVMInterpreter {
 // It's important to note that any errors returned by the interpreter should be
 // considered a revert-and-consume-all-gas operation except for
 // ErrExecutionReverted which means revert-and-keep-gas-left.
-func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (ret []byte, err error) {
+func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, err error, CanParallel bool) {
 	// Increment the call depth which is restricted to 1024
 	in.evm.depth++
 	defer func() { in.evm.depth-- }()
