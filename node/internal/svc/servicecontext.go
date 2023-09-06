@@ -52,7 +52,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	p2pClient := pb.NewP2PClient(conn)
 
 	// 实例化ExecutorService
-	executorService := executor.NewExecutorService(etxpool, ptxpool, p2pClient)
+	executorService := executor.NewExecutorService(etxpool, ptxpool, blockchain, p2pClient)
 
 	return &ServiceContext{
 		Config:          c,

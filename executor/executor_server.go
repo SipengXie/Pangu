@@ -3,6 +3,10 @@ package executor
 import (
 	"context"
 	"fmt"
+	"github.com/SipengXie/pangu/common"
+	"github.com/SipengXie/pangu/core"
+	"math/big"
+	"time"
 
 	"github.com/SipengXie/pangu/core/txpool"
 	"github.com/SipengXie/pangu/core/types"
@@ -14,7 +18,14 @@ import (
 
 const txChanSize = 4096
 
+var (
+	COINBASEBYTE = []byte{1}
+	COINBASE     = common.BytesToAddress(COINBASEBYTE)
+)
+
 type ExecutorService struct {
+	BlockChain *core.Blockchain
+
 	executionTxsCh  chan types.NewTxsEvent
 	executionTxsSub event.Subscription // txsSub = pendingPool.SubscribeNewTxsEvent(txsCh)
 	executionPool   *txpool.TxPool     // may be the execution pool
@@ -25,15 +36,20 @@ type ExecutorService struct {
 
 	p2pClient pb.P2PClient
 	pb.UnimplementedExecutorServer
+
+	// extra channels
+	initBlockCh chan struct{}
 }
 
-func NewExecutorService(ePool, pPool *txpool.TxPool, Cli pb.P2PClient) *ExecutorService {
+func NewExecutorService(ePool, pPool *txpool.TxPool, bc *core.Blockchain, Cli pb.P2PClient) *ExecutorService {
 	es := &ExecutorService{
+		BlockChain:     bc,
 		executionTxsCh: make(chan types.NewTxsEvent, txChanSize),
 		executionPool:  ePool,
 		pendingTxsCh:   make(chan types.NewTxsEvent, txChanSize),
 		pendingPool:    pPool,
 		p2pClient:      Cli,
+		initBlockCh:    make(chan struct{}),
 	}
 	es.executionTxsSub = es.executionPool.SubscribeNewTxsEvent(es.executionTxsCh)
 	es.pendingTxsSub = es.pendingPool.SubscribeNewTxsEvent(es.pendingTxsCh)
@@ -142,15 +158,53 @@ func (e *ExecutorService) SendLoop() {
 
 func (e *ExecutorService) ExecuteLoop() {
 	defer e.executionTxsSub.Unsubscribe()
+	var header *types.Header
+	var txs types.Transactions
+	e.initBlockCh <- struct{}{}
 	for {
 		select {
+		case <-e.initBlockCh:
+			txs = make(types.Transactions, 0)
+			header = types.CopyHeader(e.initHeader(COINBASE, 12345678))
 		case ev := <-e.executionTxsCh:
+			// txs := make(map[common.Address][]*types.Transaction, len(ev.Txs))
+			// 将交易打包进区块
+			// TODO : 完善打包区块的逻辑
 			for _, tx := range ev.Txs {
-				// TODO : 执行交易
-				fmt.Println("get a Tx from consensus layer:", tx)
+				txs = append(txs, tx)
+			}
+			if len(txs) >= 10 {
+				signer := types.MakeSigner(e.BlockChain.Config(), header.Number, header.Time)
+				// 交易分组
+				blockTxs := core.ClassifyTx(txs, signer)
+				block := types.InitBlock(header, blockTxs)
+				// 将区块发送执行
+
+				// 执行后将block传入一个管道，然后上链
+				// err := e.BlockChain.WriteBlockAndSetHead(block,nil,nil,e.BlockChain.)
+
+				// 发送新建block的请求（写入initBlockCH）
+				e.initBlockCh <- struct{}{}
+			} else {
+				continue
 			}
 		case <-e.executionTxsSub.Err():
 			return // if error then exit
 		}
 	}
+}
+
+func (e *ExecutorService) fillTransactionsToBlock() {
+}
+
+func (e *ExecutorService) initHeader(coinBase common.Address, gasLimit uint64) *types.Header {
+	blockNum := big.NewInt(0)
+	header := &types.Header{
+		ParentHash: e.BlockChain.CurrentBlock().Hash(),
+		Time:       uint64(time.Now().Unix()),
+		Number:     blockNum.Add(e.BlockChain.CurrentBlock().Number, big.NewInt(1)),
+		Coinbase:   coinBase,
+		GasLimit:   gasLimit,
+	}
+	return header
 }

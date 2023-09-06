@@ -15,11 +15,11 @@ import (
 // Processor 执行器
 type Processor struct {
 	config     *params.ChainConfig // 链配置
-	blockchain *types.Blockchain   // 区块链
+	blockchain *Blockchain         // 区块链
 }
 
 // NewStateProcessor 初始化一个交易执行器
-func NewStateProcessor(config *params.ChainConfig, bc *types.Blockchain) *Processor {
+func NewStateProcessor(config *params.ChainConfig, bc *Blockchain) *Processor {
 	return &Processor{
 		config:     config,
 		blockchain: bc,

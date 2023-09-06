@@ -124,6 +124,19 @@ func NewBlock(header *Header, txs []Transactions, receipts []*Receipt, hasher Tr
 	return b
 }
 
+func InitBlock(header *Header, txs []Transactions) *Block {
+	b := &Block{
+		header: CopyHeader(header),
+	}
+	b.SetTransactions(txs)
+	return b
+}
+
+func (b *Block) SetTransactions(txs []Transactions) {
+	b.transactions = make([]Transactions, len(txs))
+	copy(b.transactions, txs)
+}
+
 // DecodeRLP decodes the Ethereum
 func (b *Block) DecodeRLP(s *rlp.Stream) error {
 	var eb extblock

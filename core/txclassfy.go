@@ -70,7 +70,7 @@ func IsConflict(set1, set2 mapset.Set[string]) bool {
 // ClassifyTx TODO: 对交易按资源是否冲突进行分类
 // 返回的map中每个int对应一个类，但不保证int是连续单增的，即int是什么不重要
 // 其中每个类别的交易序列按地址进行排序，若地址相同则按其Nonce从小到大排序
-func ClassifyTx(txs types.Transactions, signer types.Signer) map[int][]*types.Transaction {
+func ClassifyTx(txs types.Transactions, signer types.Signer) []types.Transactions {
 	// 对txClassList的ID进行处理
 	txClassList := NewTxClassList(txs)
 	TxClassListLen := len(txClassList)
@@ -111,7 +111,11 @@ func ClassifyTx(txs types.Transactions, signer types.Signer) map[int][]*types.Tr
 			return txList[i].Nonce() < txList[j].Nonce()
 		})
 	}
-	return groups
+	groupsRes := make([]types.Transactions, 0)
+	for _, txList := range groups {
+		groupsRes = append(groupsRes, txList)
+	}
+	return groupsRes
 }
 
 // FindMaxGasPrice
