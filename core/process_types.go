@@ -20,6 +20,8 @@ type MessageReturn struct {
 	TxSerial []*types.Transaction
 	// 出错交易
 	TxError []*TxErrorMessage
+	// AccessList有问题的交易
+	TxAccessList []*TxAccessListMessage
 }
 
 // TxErrorMessage 首次执行时记录每组中执行错误的交易错误信息
@@ -27,6 +29,12 @@ type TxErrorMessage struct {
 	Tx       *types.Transaction // 出错交易
 	Result   string             // 出错原因
 	ErrorMsg error              // 具体错误
+}
+
+// TxAccessListMessage 首次执行时记录每组中需要更改AccessList的交易
+type TxAccessListMessage struct {
+	Tx             *types.Transaction // 出错交易
+	TrueAccessList *types.AccessList
 }
 
 // ThreadMessage 作为多线程函数的传入参数，以一个线程为单位
@@ -66,6 +74,7 @@ type ExecutionResult struct {
 	Err             error
 	ReturnData      []byte // Returned data from evm(function result or data supplied with revert opcode)
 	IsParallelError bool   // 标识当前错误是否时因为交易无法并行导致的错误
+	TrueAccessList  *types.AccessList
 }
 
 // ProcessReturnMsg Process函数返回结构体
@@ -73,6 +82,7 @@ type ProcessReturnMsg struct {
 	Receipt  types.Receipts
 	Logs     []*types.Log
 	ErrTx    []*TxErrorMessage
+	AlTx     []*TxAccessListMessage
 	UsedGas  *uint64
 	RootHash common.Hash
 }
@@ -155,11 +165,12 @@ func SortSerialTX(SingleTxList []*types.Transaction) {
 	})
 }
 
-func NewProcessReturnMsg(Receipts types.Receipts, AllLogs []*types.Log, ErrorTxList []*TxErrorMessage, UsedGas *uint64, RootHash common.Hash) *ProcessReturnMsg {
+func NewProcessReturnMsg(Receipts types.Receipts, AllLogs []*types.Log, ErrorTxList []*TxErrorMessage, AccessListTx []*TxAccessListMessage, UsedGas *uint64, RootHash common.Hash) *ProcessReturnMsg {
 	return &ProcessReturnMsg{
 		Receipt:  Receipts,
 		Logs:     AllLogs,
 		ErrTx:    ErrorTxList,
+		AlTx:     AccessListTx,
 		UsedGas:  UsedGas,
 		RootHash: RootHash,
 	}

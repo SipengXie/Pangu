@@ -7,6 +7,7 @@
     <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="变更">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/process.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/process.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/process_types.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/process_types.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/transition.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/transition.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

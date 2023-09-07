@@ -21,7 +21,7 @@ func ApplyTransaction(msg *TxMessage, evmEvent *evm.EVM) (executionResult *Execu
 	// 交易预检查
 	if err := PreCheck(msg, evmEvent); err != nil {
 		fmt.Printf("%sERROR MSG%s   交易执行出错 in PreCheck function\n", types.FRED, types.FRESET)
-		return NewExecutionResult(0, err, nil, false)
+		return NewExecutionResult(0, err, nil, false, nil)
 	}
 
 	var (
@@ -35,34 +35,34 @@ func ApplyTransaction(msg *TxMessage, evmEvent *evm.EVM) (executionResult *Execu
 	ExpenseGasBase, err := IntrinsicGas(msg.Data, msg.AccessList, ContractCreation)
 	if err != nil {
 		fmt.Printf("%sERROR MSG%s   汽油费错误 in IntrinsicGas function\n", types.FRED, types.FRESET)
-		return NewExecutionResult(0, err, nil, false)
+		return NewExecutionResult(0, err, nil, false, nil)
 	}
 	if GasRemainBefore < ExpenseGasBase {
 		fmt.Printf("%sERROR MSG%s   汽油费错误 in GasRemain < ExpenseGas_Base\n", types.FRED, types.FRESET)
-		return NewExecutionResult(0, errors.New("gas is not enough in ExpenseGas_Base"), nil, false)
+		return NewExecutionResult(0, errors.New("gas is not enough in ExpenseGas_Base"), nil, false, nil)
 	}
 	GasRemainBefore -= ExpenseGasBase
 
 	// 检查是否有足够的钱来转账
 	if msg.Value.Sign() > 0 && !evmEvent.Context.CanTransfer(evmEvent.StateDB, msg.From, msg.Value) {
 		fmt.Printf("%sERROR MSG%s   汽油费错误 in 没有足够的钱转账\n", types.FRED, types.FRESET)
-		return NewExecutionResult(0, errors.New("insufficient funds for transfer"), nil, false)
+		return NewExecutionResult(0, errors.New("insufficient funds for transfer"), nil, false, nil)
 	}
 
 	// 检查初始代码是否超出大小（合约创建）
 	if ContractCreation && len(msg.Data) > params.MaxInitCodeSize {
 		fmt.Printf("%sERROR MSG%s   数据错误 in 初始代码超出大小\n", types.FRED, types.FRESET)
-		return NewExecutionResult(0, errors.New("max init-code size exceeded"), nil, false)
+		return NewExecutionResult(0, errors.New("max init-code size exceeded"), nil, false, nil)
 	}
 
 	// * 这里不再执行prepare函数，用户自己填写AccessList，并承担出错的风险，对接后续重构的担保人交易类型
 
 	var (
-		ReturnData     []byte            // 交易执行后返回的数据
-		EvmError       error             // 交易执行错误
-		IsParallel     bool              // 并行组或串行组
-		CanParallel    bool              // 交易能否并行
-		TrueAccessList *types.AccessList // 真正的AccessList 我们依然获取到真实的AccessList并返回给用户，但是不再修改
+		ReturnData     []byte                             // 交易执行后返回的数据
+		EvmError       error                              // 交易执行错误
+		IsParallel     bool              = msg.IsParallel // 并行组或串行组
+		CanParallel    bool                               // 交易能否并行
+		TrueAccessList *types.AccessList                  // 真正的AccessList 我们依然获取到真实的AccessList并返回给用户，但是不再修改
 	)
 
 	if ContractCreation {
@@ -79,7 +79,7 @@ func ApplyTransaction(msg *TxMessage, evmEvent *evm.EVM) (executionResult *Execu
 	if EvmError == nil && (IsParallel && !CanParallel) {
 		fmt.Printf("%sPROMPT MSG%s   并行组中的交易无法并行执行\n", types.FGREEN, types.FRESET)
 		evmEvent.StateDB.RevertToSnapshot(SnapShot) // 快照回滚
-		return NewExecutionResult(0, nil, nil, true)
+		return NewExecutionResult(0, nil, nil, true, nil)
 	}
 
 	// 交易没有出错，归还剩余的汽油费
@@ -92,7 +92,7 @@ func ApplyTransaction(msg *TxMessage, evmEvent *evm.EVM) (executionResult *Execu
 		CoinbaseFee.Mul(CoinbaseFee, msg.GasTipCap)
 		evmEvent.StateDB.AddBalance(evmEvent.Context.Coinbase, CoinbaseFee)
 
-		return NewExecutionResult(ExpenseGasBase+GasRemainBefore-GasRemainAfter, nil, ReturnData, false)
+		return NewExecutionResult(ExpenseGasBase+GasRemainBefore-GasRemainAfter, nil, ReturnData, false, TrueAccessList)
 	} else {
 		// 交易出错，不归还汽油费，将剩余汽油费交给被选举人
 		fmt.Printf("%sPROMPT MSG%s   交易出错，不归还用户汽油费\n", types.FGREEN, types.FRESET)
@@ -101,7 +101,7 @@ func ApplyTransaction(msg *TxMessage, evmEvent *evm.EVM) (executionResult *Execu
 		CoinbaseFee.Mul(CoinbaseFee, msg.GasTipCap)
 		evmEvent.StateDB.AddBalance(evmEvent.Context.Coinbase, CoinbaseFee)
 
-		return NewExecutionResult(ExpenseGasBase+GasRemainBefore, EvmError, nil, false)
+		return NewExecutionResult(ExpenseGasBase+GasRemainBefore, EvmError, nil, false, nil)
 	}
 }
 
@@ -209,12 +209,13 @@ func toWordSize(size uint64) uint64 {
 }
 
 // NewExecutionResult 新建ExecutionResult类型结构体
-func NewExecutionResult(UsedGas uint64, Err error, ReturnData []byte, IsParallelError bool) *ExecutionResult {
+func NewExecutionResult(UsedGas uint64, Err error, ReturnData []byte, IsParallelError bool, TrueAccessList *types.AccessList) *ExecutionResult {
 	return &ExecutionResult{
 		UsedGas:         UsedGas,
 		Err:             Err,
 		ReturnData:      ReturnData,
 		IsParallelError: IsParallelError,
+		TrueAccessList:  TrueAccessList,
 	}
 }
 

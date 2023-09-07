@@ -39,23 +39,24 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 	TXS := block.Transactions2D()
 
 	var (
-		Receipts     types.Receipts // 收据树
-		UsedGas      = new(uint64)  // 记录交易实际花了多少汽油费
-		Header       = block.Header()
-		BlockHash    = block.Hash()
-		BlockNumber  = block.Number()
-		AllLogs      []*types.Log
-		EvmContext   = NewEVMBlockContext(Header, p.blockchain, nil)          // evm环境
-		Signer       = types.MakeSigner(p.config, Header.Number, Header.Time) // 签名者
-		GroupNum     = len(TXS)                                               // 组数
-		PReturnMsg   = new(ProcessReturnMsg)                                  // 函数返回值
-		ReturnChan1  = make(chan MessageReturn, GroupNum)                     // 并行组返回通道
-		ReturnChan2  = make(chan MessageReturn, 1)                            // 串行组返回通道
-		wg1          sync.WaitGroup                                           // 并行组等待组
-		wg2          sync.WaitGroup                                           // 串行组等待组
-		AllEvm       []*evm.EVM                                               // 存储所有线程的evm
-		SerialTxList []*types.Transaction                                     // 串行交易队列
-		ErrorTxList  []*TxErrorMessage                                        // 执行出现错误的交易队列
+		Receipts         types.Receipts // 收据树
+		UsedGas          = new(uint64)  // 记录交易实际花了多少汽油费
+		Header           = block.Header()
+		BlockHash        = block.Hash()
+		BlockNumber      = block.Number()
+		AllLogs          []*types.Log
+		EvmContext       = NewEVMBlockContext(Header, p.blockchain, nil)          // evm环境
+		Signer           = types.MakeSigner(p.config, Header.Number, Header.Time) // 签名者
+		GroupNum         = len(TXS)                                               // 组数
+		PReturnMsg       = new(ProcessReturnMsg)                                  // 函数返回值
+		ReturnChan1      = make(chan MessageReturn, GroupNum)                     // 并行组返回通道
+		ReturnChan2      = make(chan MessageReturn, 1)                            // 串行组返回通道
+		wg1              sync.WaitGroup                                           // 并行组等待组
+		wg2              sync.WaitGroup                                           // 串行组等待组
+		AllEvm           []*evm.EVM                                               // 存储所有线程的evm
+		SerialTxList     []*types.Transaction                                     // 串行交易队列
+		ErrorTxList      []*TxErrorMessage                                        // 执行出现错误的交易队列
+		AccessListTxList []*TxAccessListMessage                                   // 串行队列AccessList不一致的交易
 		// AllStateDB  []*state.StateDB                     // 存储所有线程的stateDB
 	)
 
@@ -126,7 +127,7 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 		Receipts = append(Receipts, value.NewReceipt...)
 		AllLogs = append(AllLogs, value.NewLogs...)
 		ErrorTxList = append(ErrorTxList, value.TxError...)
-
+		AccessListTxList = append(AccessListTxList, value.TxAccessList...)
 		EachEvm.StateDB.Finalise(true)
 	} else {
 		fmt.Printf("\n%sSTAGE CHANGE%s   串行交易队列长度为零，不需要执行串行队列交易 <<< \n", types.FBLUE, types.FRESET)
@@ -141,7 +142,7 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 	}
 
 	fmt.Printf("\n%sSTAGE CHANGE%s   Process函数执行完成 <<< \n", types.FBLUE, types.FRESET)
-	PReturnMsg = NewProcessReturnMsg(Receipts, AllLogs, ErrorTxList, UsedGas, RootHash) // Process函数返回值
+	PReturnMsg = NewProcessReturnMsg(Receipts, AllLogs, ErrorTxList, AccessListTxList, UsedGas, RootHash) // Process函数返回值
 	return PReturnMsg, nil
 }
 
@@ -156,10 +157,11 @@ func TxThread(id int, txs []*types.Transaction, wg *sync.WaitGroup, msgReturn ch
 	defer wg.Done()
 
 	var (
-		ThreadReceipt  []*types.Receipt     // 线程执行的收据树
-		ThreadLogs     []*types.Log         // 线程执行的log
-		ThreadSerialTx []*types.Transaction // 线程执行的串行队列
-		ErrReturnMsg   []*TxErrorMessage    // 返回值
+		ThreadReceipt  []*types.Receipt       // 线程执行的收据树
+		ThreadLogs     []*types.Log           // 线程执行的log
+		ThreadSerialTx []*types.Transaction   // 线程执行的串行队列
+		ErrReturnMsg   []*TxErrorMessage      // 返回值
+		TxAccessList   []*TxAccessListMessage // 需要更改AccessList的交易
 	)
 
 	// 开始执行交易
@@ -175,7 +177,7 @@ func TxThread(id int, txs []*types.Transaction, wg *sync.WaitGroup, msgReturn ch
 			continue
 		}
 		// 执行交易
-		Receipt, err := ExecuteTx(msg, trMessage.BlockNumber, trMessage.BlockHash, tx, trMessage.UsedGas, trMessage.EVMenv)
+		Receipt, TrueAccessList, err := ExecuteTx(msg, trMessage.BlockNumber, trMessage.BlockHash, tx, trMessage.UsedGas, trMessage.EVMenv)
 
 		// 错误处理
 		if err != nil {
@@ -211,25 +213,32 @@ func TxThread(id int, txs []*types.Transaction, wg *sync.WaitGroup, msgReturn ch
 		fmt.Printf("%sPROMPT MSG%s   恭喜您，一笔交易在并行组中成功执行\n", types.FGREEN, types.FRESET)
 		ThreadReceipt = append(ThreadReceipt, Receipt)
 		ThreadLogs = append(ThreadLogs, Receipt.Logs...)
+		if !msg.IsParallel {
+			TxAccessList = append(TxAccessList, &TxAccessListMessage{
+				Tx:             tx,
+				TrueAccessList: TrueAccessList,
+			})
+		}
 	}
 
 	// 汇总最后的返回信息
 	messageReturn := MessageReturn{
-		NewReceipt: ThreadReceipt,
-		NewLogs:    ThreadLogs,
-		TxSerial:   ThreadSerialTx,
-		TxError:    ErrReturnMsg,
+		NewReceipt:   ThreadReceipt,
+		NewLogs:      ThreadLogs,
+		TxSerial:     ThreadSerialTx,
+		TxError:      ErrReturnMsg,
+		TxAccessList: TxAccessList,
 	}
 	msgReturn <- messageReturn
 }
 
 // ExecuteTx 交易执行入口函数，代替原applyTransaction函数
-func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *types.Transaction, usedGas *uint64, evm *evm.EVM) (*types.Receipt, error) {
+func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *types.Transaction, usedGas *uint64, evm *evm.EVM) (*types.Receipt, *types.AccessList, error) {
 	EvmTxContext := NewEVMTxContext(msg)
 	evm.TxContext = EvmTxContext
 
 	// 设置交易哈希
-	evm.StateDB.SetTxContext(tx.Hash()) // ! 更改AccessList后哈希值改变怎么办？
+	evm.StateDB.SetTxContext(tx.Hash())
 
 	// 执行交易
 	executionResult := ApplyTransaction(msg, evm) // err是交易执行外发生的错误
@@ -237,7 +246,7 @@ func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *
 	// 错误处理
 	if executionResult.IsParallelError {
 		fmt.Printf("%sERROR MSG%s   当前交易无法在并行队列中并行执行\n", types.FRED, types.FRESET)
-		return nil, nil
+		return nil, nil, nil
 	}
 	//if executionResult == nil && err != nil {
 	//	fmt.Printf("%sERROR MSG%s   当前交易在执行前的检查阶段发生错误\n", types.FRED, types.FRESET)
@@ -245,7 +254,7 @@ func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *
 	//}
 	if executionResult.Err != nil {
 		fmt.Printf("%sERROR MSG%s   当前交易在执行中发生错误\n", types.FRED, types.FRESET)
-		return nil, executionResult.Err
+		return nil, nil, executionResult.Err
 	}
 
 	*usedGas += executionResult.UsedGas
@@ -268,5 +277,5 @@ func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *
 	receipt.Bloom = types.CreateBloom(types.Receipts{receipt})
 	receipt.BlockHash = blockHash
 	receipt.BlockNumber = blockNumber
-	return receipt, nil
+	return receipt, executionResult.TrueAccessList, nil
 }
