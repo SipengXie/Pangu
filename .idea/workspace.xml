@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="变更">
-      <change afterPath="$PROJECT_DIR$/core/evm/true_accesslist.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/parallel_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accesslist/accessList.go" beforeDir="false" afterPath="$PROJECT_DIR$/accesslist/accessList.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/evm/interpreter.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/interpreter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/pangu.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/pangu.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/parallel_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/tests/parallel_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
