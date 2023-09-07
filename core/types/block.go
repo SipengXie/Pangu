@@ -34,6 +34,10 @@ func (h *Header) Hash() common.Hash {
 	return rlpHash(h)
 }
 
+func (h *Header) Root() common.Hash {
+	return h.StateRoot
+}
+
 // SanityCheck checks a few basic things -- these checks are way beyond what
 // any 'sane' production values should hold, and can mainly be used to prevent
 // that the unbounded fields are stuffed with junk data to add processing
@@ -165,6 +169,10 @@ func (b *Block) Transactions() Transactions {
 		}
 	}
 	return *ret
+}
+
+func (b *Block) Transactions2D() []Transactions {
+	return b.transactions
 }
 
 func (b *Block) Transaction(hash common.Hash) *Transaction {

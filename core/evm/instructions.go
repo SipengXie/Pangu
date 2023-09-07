@@ -19,6 +19,7 @@ package evm
 import (
 	"math/big"
 
+	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 	evmparams "github.com/SipengXie/pangu/core/evm/params"
 	"github.com/SipengXie/pangu/core/types"
@@ -577,9 +578,9 @@ func opGas(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte
 	return nil, nil
 }
 
-func opCreate(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {
+func opCreate(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	if interpreter.readOnly {
-		return nil, ErrWriteProtection
+		return nil, ErrWriteProtection, true
 	}
 	var (
 		value        = scope.Stack.pop()
@@ -600,7 +601,7 @@ func opCreate(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]b
 		bigVal = value.ToBig()
 	}
 
-	res, addr, returnGas, suberr := interpreter.evm.Create(scope.Contract, input, gas, bigVal)
+	res, addr, returnGas, CanParallel, suberr := interpreter.evm.Create(scope.Contract, input, gas, bigVal, TrueAccessList, IsParallel)
 	// Push item on the stack based on the returned error. If the ruleset is
 	// homestead we must check for CodeStoreOutOfGasError (homestead only
 	// rule) and treat as an error, if the ruleset is frontier we must
@@ -617,15 +618,15 @@ func opCreate(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]b
 
 	if suberr == ErrExecutionReverted {
 		interpreter.returnData = res // set REVERT data to return data buffer
-		return res, nil
+		return res, nil, CanParallel
 	}
 	interpreter.returnData = nil // clear dirty return data buffer
-	return nil, nil
+	return nil, nil, CanParallel
 }
 
-func opCreate2(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {
+func opCreate2(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	if interpreter.readOnly {
-		return nil, ErrWriteProtection
+		return nil, ErrWriteProtection, true
 	}
 	var (
 		endowment    = scope.Stack.pop()
@@ -644,8 +645,7 @@ func opCreate2(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]
 	if !endowment.IsZero() {
 		bigEndowment = endowment.ToBig()
 	}
-	res, addr, returnGas, suberr := interpreter.evm.Create2(scope.Contract, input, gas,
-		bigEndowment, &salt)
+	res, addr, returnGas, CanParallel, suberr := interpreter.evm.Create2(scope.Contract, input, gas, bigEndowment, &salt, TrueAccessList, IsParallel)
 	// Push item on the stack based on the returned error.
 	if suberr != nil {
 		stackvalue.Clear()
@@ -657,13 +657,13 @@ func opCreate2(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]
 
 	if suberr == ErrExecutionReverted {
 		interpreter.returnData = res // set REVERT data to return data buffer
-		return res, nil
+		return res, nil, CanParallel
 	}
 	interpreter.returnData = nil // clear dirty return data buffer
-	return nil, nil
+	return nil, nil, CanParallel
 }
 
-func opCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {
+func opCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	stack := scope.Stack
 	// Pop gas. The actual gas in interpreter.evm.callGasTemp.
 	// We can use this as a temporary value
@@ -676,7 +676,7 @@ func opCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byt
 	args := scope.Memory.GetPtr(int64(inOffset.Uint64()), int64(inSize.Uint64()))
 
 	if interpreter.readOnly && !value.IsZero() {
-		return nil, ErrWriteProtection
+		return nil, ErrWriteProtection, true
 	}
 	var bigVal = big0
 	//TODO: use uint256.Int instead of converting with toBig()
@@ -687,7 +687,7 @@ func opCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byt
 		bigVal = value.ToBig()
 	}
 
-	ret, returnGas, err := interpreter.evm.Call(scope.Contract, toAddr, args, gas, bigVal)
+	ret, returnGas, CanParallel, err := interpreter.evm.Call(scope.Contract, toAddr, args, gas, bigVal, TrueAccessList, IsParallel)
 
 	if err != nil {
 		temp.Clear()
@@ -701,10 +701,10 @@ func opCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byt
 	scope.Contract.Gas += returnGas
 
 	interpreter.returnData = ret
-	return ret, nil
+	return ret, nil, CanParallel
 }
 
-func opCallCode(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {
+func opCallCode(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	// Pop gas. The actual gas is in interpreter.evm.callGasTemp.
 	stack := scope.Stack
 	// We use it as a temporary value
@@ -723,7 +723,7 @@ func opCallCode(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([
 		bigVal = value.ToBig()
 	}
 
-	ret, returnGas, err := interpreter.evm.CallCode(scope.Contract, toAddr, args, gas, bigVal)
+	ret, returnGas, CanParallel, err := interpreter.evm.CallCode(scope.Contract, toAddr, args, gas, bigVal, TrueAccessList, IsParallel)
 	if err != nil {
 		temp.Clear()
 	} else {
@@ -736,10 +736,10 @@ func opCallCode(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([
 	scope.Contract.Gas += returnGas
 
 	interpreter.returnData = ret
-	return ret, nil
+	return ret, nil, CanParallel
 }
 
-func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {
+func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	stack := scope.Stack
 	// Pop gas. The actual gas is in interpreter.evm.callGasTemp.
 	// We use it as a temporary value
@@ -751,7 +751,7 @@ func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext
 	// Get arguments from the memory.
 	args := scope.Memory.GetPtr(int64(inOffset.Uint64()), int64(inSize.Uint64()))
 
-	ret, returnGas, err := interpreter.evm.DelegateCall(scope.Contract, toAddr, args, gas)
+	ret, returnGas, CanParallel, err := interpreter.evm.DelegateCall(scope.Contract, toAddr, args, gas, TrueAccessList, IsParallel)
 	if err != nil {
 		temp.Clear()
 	} else {
@@ -764,10 +764,10 @@ func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext
 	scope.Contract.Gas += returnGas
 
 	interpreter.returnData = ret
-	return ret, nil
+	return ret, nil, CanParallel
 }
 
-func opStaticCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {
+func opStaticCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	// Pop gas. The actual gas is in interpreter.evm.callGasTemp.
 	stack := scope.Stack
 	// We use it as a temporary value
@@ -779,7 +779,7 @@ func opStaticCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) 
 	// Get arguments from the memory.
 	args := scope.Memory.GetPtr(int64(inOffset.Uint64()), int64(inSize.Uint64()))
 
-	ret, returnGas, err := interpreter.evm.StaticCall(scope.Contract, toAddr, args, gas)
+	ret, returnGas, CanParallel, err := interpreter.evm.StaticCall(scope.Contract, toAddr, args, gas, TrueAccessList, IsParallel)
 	if err != nil {
 		temp.Clear()
 	} else {
@@ -792,7 +792,7 @@ func opStaticCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) 
 	scope.Contract.Gas += returnGas
 
 	interpreter.returnData = ret
-	return ret, nil
+	return ret, nil, CanParallel
 }
 
 func opReturn(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {

@@ -19,6 +19,9 @@ package evm
 import (
 	"math/big"
 
+	"github.com/SipengXie/pangu/accesslist"
+	"github.com/SipengXie/pangu/core/state"
+
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/params"
@@ -71,13 +74,19 @@ type StateDB interface {
 	// AddSlotToAccessList adds the given (address,slot) to the access list. This operation is safe to perform
 	// even if the feature/fork is not active yet
 	AddSlotToAccessList(addr common.Address, slot common.Hash)
-	Prepare(rules params.Rules, sender, coinbase common.Address, dest *common.Address, precompiles []common.Address, txAccesses types.AccessList)
+	Prepare(rules params.Rules, sender, coinbase common.Address, dest *common.Address, precompiles []common.Address, txAccesses accesslist.AccessList)
 
 	RevertToSnapshot(int)
 	Snapshot() int
 
 	AddLog(*types.Log)
 	AddPreimage(common.Hash, []byte)
+
+	GetLogs(hash common.Hash, blockNumber uint64, blockHash common.Hash) []*types.Log    // New Function
+	SetTxContext(thash common.Hash)                                                      // New Function
+	Finalise(deleteEmptyObjects bool)                                                    // New Function
+	GetPendingObj() (map[common.Address]struct{}, map[common.Address]*state.StateObject) // New Function
+	GetAccessList() *accesslist.AccessList                                               // New Function
 }
 
 // CallContext provides a basic interface for the EVM calling conventions. The EVM

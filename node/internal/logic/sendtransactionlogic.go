@@ -2,13 +2,15 @@ package logic
 
 import (
 	"context"
+	"log"
+	"math/big"
+
+	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 	tp "github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/node/internal/svc"
 	"github.com/SipengXie/pangu/node/internal/types"
 	"github.com/zeromicro/go-zero/core/logx"
-	"log"
-	"math/big"
 )
 
 type SendTransactionLogic struct {
@@ -28,7 +30,7 @@ func NewSendTransactionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *S
 // ToTransaction 将 TxArgs 转换成 transaction
 func ToTransaction(args *types.TransactionArgs) *tp.Transaction {
 	var data tp.TxData
-	al := new(tp.AccessList)
+	al := accesslist.NewAccessList()
 	if args.AccessList != nil {
 		// 暂定AccessList以Json字节数据传入
 		// 解析AccessList填入

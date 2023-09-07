@@ -90,3 +90,8 @@ func (bc *Blockchain) WriteBlockAndSetHead(block *types.Block, receipts []*types
 func (bc *Blockchain) SubscribeChainHeadEvent(ch chan<- types.ChainHeadEvent) event.Subscription {
 	return bc.scope.Track(bc.chainHeadFeed.Subscribe(ch))
 }
+
+// GetHeader 临时定义一个，在process中需要实现这个方法获取哈希值来创建evm环境
+func (bc *Blockchain) GetHeader(h common.Hash, i uint64) *types.Header {
+	return bc.blocks[i].Header()
+}

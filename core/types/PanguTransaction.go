@@ -3,6 +3,7 @@ package types
 import (
 	"math/big"
 
+	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 )
 
@@ -11,8 +12,8 @@ type PanguTransaction struct {
 	Nonce    uint64
 	Value    *big.Int
 	GasLimit uint64
-	FeeCap   *big.Int
-	TipCap   *big.Int
+	FeeCap   *big.Int // 暂时不管，应该是Max Fee
+	TipCap   *big.Int // 小费
 	ChainID  *big.Int
 
 	SigAlgo   byte
@@ -24,7 +25,7 @@ type PanguTransaction struct {
 	VmType     byte
 
 	Data       []byte
-	AccessList *AccessList
+	AccessList *accesslist.AccessList
 }
 
 // copy creates a deep copy of the transaction data and initializes all fields.
@@ -39,7 +40,7 @@ func (tx *PanguTransaction) copy() TxData {
 		// TODO : 其他东西
 
 		// These are copied below.
-		AccessList: new(AccessList),
+		AccessList: new(accesslist.AccessList),
 		Value:      new(big.Int),
 		ChainID:    new(big.Int),
 		TipCap:     new(big.Int),
@@ -62,19 +63,19 @@ func (tx *PanguTransaction) copy() TxData {
 	return cpy
 }
 
-func (tx *PanguTransaction) txType() byte            { return PanguTxType }
-func (tx *PanguTransaction) chainID() *big.Int       { return tx.ChainID }
-func (tx *PanguTransaction) encContent() []byte      { return tx.EncContent }
-func (tx *PanguTransaction) accessList() *AccessList { return tx.AccessList }
-func (tx *PanguTransaction) data() []byte            { return tx.Data }
-func (tx *PanguTransaction) gasLimit() uint64        { return tx.GasLimit }
-func (tx *PanguTransaction) gasFeeCap() *big.Int     { return tx.FeeCap }
-func (tx *PanguTransaction) gasTipCap() *big.Int     { return tx.TipCap }
-func (tx *PanguTransaction) gasPrice() *big.Int      { return tx.FeeCap }
-func (tx *PanguTransaction) value() *big.Int         { return tx.Value }
-func (tx *PanguTransaction) nonce() uint64           { return tx.Nonce }
-func (tx *PanguTransaction) to() *common.Address     { return tx.To }
-func (tx *PanguTransaction) sigAlgo() byte           { return tx.SigAlgo }
+func (tx *PanguTransaction) txType() byte                       { return PanguTxType }
+func (tx *PanguTransaction) chainID() *big.Int                  { return tx.ChainID }
+func (tx *PanguTransaction) encContent() []byte                 { return tx.EncContent }
+func (tx *PanguTransaction) accessList() *accesslist.AccessList { return tx.AccessList }
+func (tx *PanguTransaction) data() []byte                       { return tx.Data }
+func (tx *PanguTransaction) gasLimit() uint64                   { return tx.GasLimit }
+func (tx *PanguTransaction) gasFeeCap() *big.Int                { return tx.FeeCap }
+func (tx *PanguTransaction) gasTipCap() *big.Int                { return tx.TipCap }
+func (tx *PanguTransaction) gasPrice() *big.Int                 { return tx.FeeCap } // ! 暂时不调用这个方法，按照tip + base fee来计算
+func (tx *PanguTransaction) value() *big.Int                    { return tx.Value }
+func (tx *PanguTransaction) nonce() uint64                      { return tx.Nonce }
+func (tx *PanguTransaction) to() *common.Address                { return tx.To }
+func (tx *PanguTransaction) sigAlgo() byte                      { return tx.SigAlgo }
 
 func (tx *PanguTransaction) rawSigValues() []byte {
 	return tx.Signature

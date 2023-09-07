@@ -19,11 +19,13 @@ package evm
 import (
 	"fmt"
 
+	"github.com/SipengXie/pangu/accesslist"
 	evmparams "github.com/SipengXie/pangu/core/evm/params"
 )
 
 type (
 	executionFunc func(pc *uint64, interpreter *EVMInterpreter, callContext *ScopeContext) ([]byte, error)
+	executeALFunc func(pc *uint64, interpreter *EVMInterpreter, callContext *ScopeContext, TrueAccessList *accesslist.AccessList, IsSerial bool) ([]byte, error, bool)
 	gasFunc       func(*EVM, *Contract, *Stack, *Memory, uint64) (uint64, error) // last parameter is the requested memory size as a uint64
 	// memorySizeFunc returns the required size, and whether the operation overflowed a uint64
 	memorySizeFunc func(*Stack) (size uint64, overflow bool)
@@ -32,6 +34,7 @@ type (
 type operation struct {
 	// execute is the operation function
 	execute     executionFunc
+	executeAL   executeALFunc // 新的执行类型
 	constantGas uint64
 	dynamicGas  gasFunc
 	// minStack tells how many stack items are required
@@ -166,7 +169,7 @@ func newConstantinopleInstructionSet() JumpTable {
 		maxStack:    maxStack(1, 1),
 	}
 	instructionSet[CREATE2] = &operation{
-		execute:     opCreate2,
+		executeAL:   opCreate2,
 		constantGas: evmparams.Create2Gas,
 		dynamicGas:  gasCreate2,
 		minStack:    minStack(4, 1),
@@ -181,7 +184,7 @@ func newConstantinopleInstructionSet() JumpTable {
 func newByzantiumInstructionSet() JumpTable {
 	instructionSet := newSpuriousDragonInstructionSet()
 	instructionSet[STATICCALL] = &operation{
-		execute:     opStaticCall,
+		executeAL:   opStaticCall,
 		constantGas: evmparams.CallGasEIP150,
 		dynamicGas:  gasStaticCall,
 		minStack:    minStack(6, 1),
@@ -237,7 +240,7 @@ func newTangerineWhistleInstructionSet() JumpTable {
 func newHomesteadInstructionSet() JumpTable {
 	instructionSet := newFrontierInstructionSet()
 	instructionSet[DELEGATECALL] = &operation{
-		execute:     opDelegateCall,
+		executeAL:   opDelegateCall,
 		dynamicGas:  gasDelegateCall,
 		constantGas: evmparams.CallGasFrontier,
 		minStack:    minStack(6, 1),
@@ -1015,7 +1018,7 @@ func newFrontierInstructionSet() JumpTable {
 			memorySize: memoryLog,
 		},
 		CREATE: {
-			execute:     opCreate,
+			executeAL:   opCreate,
 			constantGas: evmparams.CreateGas,
 			dynamicGas:  gasCreate,
 			minStack:    minStack(3, 1),
@@ -1023,7 +1026,7 @@ func newFrontierInstructionSet() JumpTable {
 			memorySize:  memoryCreate,
 		},
 		CALL: {
-			execute:     opCall,
+			executeAL:   opCall, // 修改了
 			constantGas: evmparams.CallGasFrontier,
 			dynamicGas:  gasCall,
 			minStack:    minStack(7, 1),
@@ -1031,7 +1034,7 @@ func newFrontierInstructionSet() JumpTable {
 			memorySize:  memoryCall,
 		},
 		CALLCODE: {
-			execute:     opCallCode,
+			executeAL:   opCallCode, // 修改了
 			constantGas: evmparams.CallGasFrontier,
 			dynamicGas:  gasCallCode,
 			minStack:    minStack(7, 1),
