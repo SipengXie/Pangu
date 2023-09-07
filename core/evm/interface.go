@@ -84,6 +84,7 @@ type StateDB interface {
 	SetTxContext(thash common.Hash)                                                      // New Function
 	Finalise(deleteEmptyObjects bool)                                                    // New Function
 	GetPendingObj() (map[common.Address]struct{}, map[common.Address]*state.StateObject) // New Function
+	GetAccessList() *types.AccessList                                                    // New Function
 }
 
 // CallContext provides a basic interface for the EVM calling conventions. The EVM

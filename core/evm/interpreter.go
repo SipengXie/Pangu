@@ -102,14 +102,12 @@ func NewEVMInterpreter(evm *EVM) *EVMInterpreter {
 
 // Run loops and evaluates the contract's code with the given input data and returns
 // the return byte-slice and an error if one occurred.
-//
-// It's important to note that any errors returned by the interpreter should be
-// considered a revert-and-consume-all-gas operation except for
-// ErrExecutionReverted which means revert-and-keep-gas-left.
 func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, err error, CanParallel bool) {
 	// Increment the call depth which is restricted to 1024
 	in.evm.depth++
 	defer func() { in.evm.depth-- }()
+
+	CanParallel = true
 
 	if readOnly && !in.readOnly {
 		in.readOnly = true
@@ -142,6 +140,8 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool, T
 	contract.Input = input
 
 	for {
+		TrueAccessListPart := types.NewAccessList() // 每次操作访问到的AccessList
+
 		op = contract.GetOp(pc)
 		operation := in.table[op]
 		cost = operation.constantGas // For tracing
@@ -181,11 +181,50 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool, T
 				mem.Resize(memorySize)
 			}
 		}
-		// execute the operation
-		res, err = operation.execute(&pc, in, callContext)
+
+		// 并行队列判断AccessList是否冲突
+		if IsParallel {
+			// 获取到本次操作实际访问的AccessList
+			TrueAccessListPart.GetTrueAccessList(op, callContext)
+			// 暂时不需要合并AccessList，因为不需要更改AccessList
+
+			result, _, _, _ := TrueAccessListPart.ConflictDetection(in.evm.StateDB.GetAccessList())
+			if !result {
+				fmt.Printf("%sPROMPT MSG%s   Run函数执行获取到的AccessList与用户定义的AccessList不同，并行程序无法串行执行\n", types.FGREEN, types.FRESET)
+				CanParallel = false
+			}
+		} else {
+			// 串行组需要返回真实的AccessList
+			TrueAccessListPart.GetTrueAccessList(op, callContext)
+			TrueAccessList.CombineTrueAccessList(TrueAccessListPart)
+		}
+
+		if op == CREATE || op == CREATE2 {
+			CanParallel = false
+			if !IsParallel {
+				// create操作只在串行队列中完成
+				res, err, _ = operation.executeAL(&pc, in, callContext, TrueAccessList, IsParallel)
+			}
+		}
+		// 不执行并行队列无法并行执行的交易
+		if IsParallel || CanParallel {
+			if op == DELEGATECALL || op == CALL || op == STATICCALL || op == CALLCODE {
+				res, err, CanParallel = operation.executeAL(&pc, in, callContext, TrueAccessList, IsParallel)
+			} else {
+				res, err = operation.execute(&pc, in, callContext)
+			}
+		}
+
 		if err != nil {
+			fmt.Printf("%sERROR MSG%s   执行出错\n", types.FRED, types.FRESET)
 			break
 		}
+
+		// 并行队列交易无法并行执行，交易推出Run函数
+		if IsParallel && !CanParallel {
+			break
+		}
+
 		pc++
 	}
 
