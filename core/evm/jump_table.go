@@ -18,14 +18,14 @@ package evm
 
 import (
 	"fmt"
-	"github.com/SipengXie/pangu/core/types"
 
+	"github.com/SipengXie/pangu/accesslist"
 	evmparams "github.com/SipengXie/pangu/core/evm/params"
 )
 
 type (
 	executionFunc func(pc *uint64, interpreter *EVMInterpreter, callContext *ScopeContext) ([]byte, error)
-	executeALFunc func(pc *uint64, interpreter *EVMInterpreter, callContext *ScopeContext, TrueAccessList *types.AccessList, IsSerial bool) ([]byte, error, bool)
+	executeALFunc func(pc *uint64, interpreter *EVMInterpreter, callContext *ScopeContext, TrueAccessList *accesslist.AccessList, IsSerial bool) ([]byte, error, bool)
 	gasFunc       func(*EVM, *Contract, *Stack, *Memory, uint64) (uint64, error) // last parameter is the requested memory size as a uint64
 	// memorySizeFunc returns the required size, and whether the operation overflowed a uint64
 	memorySizeFunc func(*Stack) (size uint64, overflow bool)

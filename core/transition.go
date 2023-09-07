@@ -5,12 +5,14 @@ package core
 import (
 	"errors"
 	"fmt"
+	"math/big"
+
+	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/common/math"
 	"github.com/SipengXie/pangu/core/evm"
 	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/params"
-	"math/big"
 )
 
 // ApplyTransaction 连接交易与evm
@@ -58,11 +60,11 @@ func ApplyTransaction(msg *TxMessage, evmEvent *evm.EVM) (executionResult *Execu
 	// * 这里不再执行prepare函数，用户自己填写AccessList，并承担出错的风险，对接后续重构的担保人交易类型
 
 	var (
-		ReturnData     []byte                             // 交易执行后返回的数据
-		EvmError       error                              // 交易执行错误
-		IsParallel     bool              = msg.IsParallel // 并行组或串行组
-		CanParallel    bool                               // 交易能否并行
-		TrueAccessList *types.AccessList                  // 真正的AccessList 我们依然获取到真实的AccessList并返回给用户，但是不再修改
+		ReturnData     []byte                                  // 交易执行后返回的数据
+		EvmError       error                                   // 交易执行错误
+		IsParallel     bool                   = msg.IsParallel // 并行组或串行组
+		CanParallel    bool                                    // 交易能否并行
+		TrueAccessList *accesslist.AccessList                  // 真正的AccessList 我们依然获取到真实的AccessList并返回给用户，但是不再修改
 	)
 
 	if ContractCreation {
@@ -158,7 +160,7 @@ func BuyGas(msg *TxMessage, evmEvent *evm.EVM) error {
 }
 
 // IntrinsicGas 计算具有给定数据的消息的内在燃料
-func IntrinsicGas(data []byte, accessList *types.AccessList, isContractCreation bool) (uint64, error) {
+func IntrinsicGas(data []byte, accessList *accesslist.AccessList, isContractCreation bool) (uint64, error) {
 	var gas uint64
 	if isContractCreation {
 		gas = params.TxGasContractCreation
@@ -209,7 +211,7 @@ func toWordSize(size uint64) uint64 {
 }
 
 // NewExecutionResult 新建ExecutionResult类型结构体
-func NewExecutionResult(UsedGas uint64, Err error, ReturnData []byte, IsParallelError bool, TrueAccessList *types.AccessList) *ExecutionResult {
+func NewExecutionResult(UsedGas uint64, Err error, ReturnData []byte, IsParallelError bool, TrueAccessList *accesslist.AccessList) *ExecutionResult {
 	return &ExecutionResult{
 		UsedGas:         UsedGas,
 		Err:             Err,

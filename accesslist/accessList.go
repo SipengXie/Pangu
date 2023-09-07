@@ -1,10 +1,24 @@
-package types
+package accesslist
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+
 	"github.com/SipengXie/pangu/common"
-	"github.com/SipengXie/pangu/core/evm"
+	//"github.com/SipengXie/pangu/core/evm"
+)
+
+var (
+	// FRESET 重置终端样式
+	FRESET = "\033[0m"
+
+	// FRED 红色文本
+	FRED = "\033[31m"
+	// FGREEN 绿色文本
+	FGREEN = "\033[32m"
+	// FBLUE 蓝色文本
+	FBLUE = "\033[34m"
 )
 
 // AccessList 统一定义一种AccessList形式
@@ -42,6 +56,8 @@ func (al *AccessList) Serialize() ([]byte, error) {
 // Deserialize 从JSON字符串反序列化
 func (al *AccessList) Deserialize(data []byte) error {
 	return json.Unmarshal(data, al)
+}
+
 // AccessListIsAddressExce 判断指定地址是否在AccessList中，返回true表示存在，返回false表示不存在
 func (NewAL AccessList) AccessListIsAddressExce(address common.Address) bool {
 	_, result := NewAL.Addresses[address]
@@ -82,33 +98,33 @@ func (NewAL *AccessList) AccessListAddSlot(address common.Address, slot common.H
 	return false, false
 }
 
-// GetTrueAccessList 得到当前操作实际访问到的AccessList，类型归类为*AccessList，表明可以对调用数据进行修改
-func (NewAL *AccessList) GetTrueAccessList(op evm.OpCode, scope *evm.ScopeContext) {
-	//a := NewAccessList().GetTrueAccessList
-	stack := scope.Stack // scope ScopeContext包含每个调用的东西，比如堆栈和内存
-	stackData := stack.Data()
-	stackLen := len(stackData)
-	if (op == evm.SLOAD || op == evm.SSTORE) && stackLen >= 1 {
-		slot := common.Hash(stackData[stackLen-1].Bytes32())
-		//a.list.addSlot(scope.Contract.Address(), slot)
-		NewAL.AccessListAddSlot(scope.Contract.Address(), slot)
-	}
-	if (op == evm.EXTCODECOPY || op == evm.EXTCODEHASH || op == evm.EXTCODESIZE || op == evm.BALANCE || op == evm.SELFDESTRUCT) && stackLen >= 1 {
-		addr := common.Address(stackData[stackLen-1].Bytes20())
-		if ok := NewAL.AccessListIsAddressExce(addr); !ok {
-			NewAL.AccessListAddAddress(addr)
-		}
-	}
-	if (op == evm.DELEGATECALL || op == evm.CALL || op == evm.STATICCALL || op == evm.CALLCODE) && stackLen >= 5 {
-		addr := common.Address(stackData[stackLen-2].Bytes20())
-		if ok := NewAL.AccessListIsAddressExce(addr); !ok {
-			NewAL.AccessListAddAddress(addr)
-		}
-	}
-	if op == evm.CREATE || op == evm.CREATE2 {
-		// TODO: 是否也会访问和修改地址
-	}
-}
+// // GetTrueAccessList 得到当前操作实际访问到的AccessList，类型归类为*AccessList，表明可以对调用数据进行修改
+// func (NewAL *AccessList) GetTrueAccessList(op evm.OpCode, scope *evm.ScopeContext) {
+// 	//a := NewAccessList().GetTrueAccessList
+// 	stack := scope.Stack // scope ScopeContext包含每个调用的东西，比如堆栈和内存
+// 	stackData := stack.Data()
+// 	stackLen := len(stackData)
+// 	if (op == evm.SLOAD || op == evm.SSTORE) && stackLen >= 1 {
+// 		slot := common.Hash(stackData[stackLen-1].Bytes32())
+// 		//a.list.addSlot(scope.Contract.Address(), slot)
+// 		NewAL.AccessListAddSlot(scope.Contract.Address(), slot)
+// 	}
+// 	if (op == evm.EXTCODECOPY || op == evm.EXTCODEHASH || op == evm.EXTCODESIZE || op == evm.BALANCE || op == evm.SELFDESTRUCT) && stackLen >= 1 {
+// 		addr := common.Address(stackData[stackLen-1].Bytes20())
+// 		if ok := NewAL.AccessListIsAddressExce(addr); !ok {
+// 			NewAL.AccessListAddAddress(addr)
+// 		}
+// 	}
+// 	if (op == evm.DELEGATECALL || op == evm.CALL || op == evm.STATICCALL || op == evm.CALLCODE) && stackLen >= 5 {
+// 		addr := common.Address(stackData[stackLen-2].Bytes20())
+// 		if ok := NewAL.AccessListIsAddressExce(addr); !ok {
+// 			NewAL.AccessListAddAddress(addr)
+// 		}
+// 	}
+// 	if op == evm.CREATE || op == evm.CREATE2 {
+// 		// TODO: 是否也会访问和修改地址
+// 	}
+// }
 
 // ConflictDetection 冲突检测函数，检测stateDB中的AccessList和真实的AccessList之间有没有不一样的部分，如果出现了不一样，就需要将该交易放到串行队列中
 // 返回值：是否发生冲突，发生冲突项是否有Slot，地址是多少，Slot是多少。注意，后三项返回值只需要在result为false才有意义

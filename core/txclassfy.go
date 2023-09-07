@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"sort"
 
+	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core/types"
 	mapset "github.com/deckarep/golang-set/v2"
@@ -41,7 +42,7 @@ func NewTxResource(txs types.Transactions) map[*types.Transaction]mapset.Set[str
 }
 
 // MergeAccessList 将AccessList中的Address和StorageKey进行合并得到一个集合
-func MergeAccessList(al *types.AccessList) mapset.Set[string] {
+func MergeAccessList(al *accesslist.AccessList) mapset.Set[string] {
 	set := mapset.NewSet[string]()
 	for addr, num := range al.Addresses {
 		addrStr := addr.Hex()

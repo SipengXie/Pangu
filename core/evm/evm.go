@@ -22,6 +22,7 @@ import (
 	"math/big"
 	"sync/atomic"
 
+	"github.com/SipengXie/pangu/accesslist"
 	evmparams "github.com/SipengXie/pangu/core/evm/params"
 
 	"github.com/SipengXie/pangu/common"
@@ -153,7 +154,7 @@ func (evm *EVM) SetBlockContext(blockCtx BlockContext) {
 
 // Call 调用合约
 // input -> msg.Data value -> msg.Value addr -> msg.To
-func (evm *EVM) Call(caller ContractRef, addr common.Address, input []byte, gas uint64, value *big.Int, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, GasRemain uint64, CanParallel bool, err error) {
+func (evm *EVM) Call(caller ContractRef, addr common.Address, input []byte, gas uint64, value *big.Int, TrueAccessList *accesslist.AccessList, IsParallel bool) (ret []byte, GasRemain uint64, CanParallel bool, err error) {
 	// 调用深度检查
 	if evm.depth > int(evmparams.CallCreateDepth) {
 		fmt.Printf("%sERROR MSG%s   调用深度超出限制\n", types.FRED, types.FRESET)
@@ -212,7 +213,7 @@ func (evm *EVM) Call(caller ContractRef, addr common.Address, input []byte, gas 
 //
 // CallCode differs from Call in the sense that it executes the given address'
 // code with the caller as context.
-func (evm *EVM) CallCode(caller ContractRef, addr common.Address, input []byte, gas uint64, value *big.Int, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, GasRemain uint64, CanParallel bool, err error) {
+func (evm *EVM) CallCode(caller ContractRef, addr common.Address, input []byte, gas uint64, value *big.Int, TrueAccessList *accesslist.AccessList, IsParallel bool) (ret []byte, GasRemain uint64, CanParallel bool, err error) {
 	CanParallel = true
 	// Fail if we're trying to execute above the call depth limit
 	if evm.depth > int(evmparams.CallCreateDepth) {
@@ -255,7 +256,7 @@ func (evm *EVM) CallCode(caller ContractRef, addr common.Address, input []byte, 
 //
 // DelegateCall differs from CallCode in the sense that it executes the given address'
 // code with the caller as context and the caller is set to the caller of the caller.
-func (evm *EVM) DelegateCall(caller ContractRef, addr common.Address, input []byte, gas uint64, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, GasRemain uint64, CanParallel bool, err error) {
+func (evm *EVM) DelegateCall(caller ContractRef, addr common.Address, input []byte, gas uint64, TrueAccessList *accesslist.AccessList, IsParallel bool) (ret []byte, GasRemain uint64, CanParallel bool, err error) {
 	CanParallel = true
 	// Fail if we're trying to execute above the call depth limit
 	if evm.depth > int(evmparams.CallCreateDepth) {
@@ -296,7 +297,7 @@ func (evm *EVM) DelegateCall(caller ContractRef, addr common.Address, input []by
 // as parameters while disallowing any modifications to the state during the call.
 // Opcodes that attempt to perform such modifications will result in exceptions
 // instead of performing the modifications.
-func (evm *EVM) StaticCall(caller ContractRef, addr common.Address, input []byte, gas uint64, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, GasRemain uint64, CanParallel bool, err error) {
+func (evm *EVM) StaticCall(caller ContractRef, addr common.Address, input []byte, gas uint64, TrueAccessList *accesslist.AccessList, IsParallel bool) (ret []byte, GasRemain uint64, CanParallel bool, err error) {
 	CanParallel = true
 	// Fail if we're trying to execute above the call depth limit
 	if evm.depth > int(evmparams.CallCreateDepth) {
@@ -352,7 +353,7 @@ func (c *codeAndHash) Hash() common.Hash {
 
 // create creates a new contract using code as deployment code.
 func (evm *EVM) create(caller ContractRef, codeAndHash *codeAndHash, gas uint64, value *big.Int,
-	address common.Address, typ OpCode, TrueAccessList *types.AccessList, IsParallel bool) ([]byte, common.Address, uint64, bool, error) {
+	address common.Address, typ OpCode, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, common.Address, uint64, bool, error) {
 	// 检查调用深度
 	if evm.depth > int(evmparams.CallCreateDepth) {
 		fmt.Printf("%sERROR MSG%s   调用深度出错\n", types.FRED, types.FRESET)
@@ -421,7 +422,7 @@ func (evm *EVM) create(caller ContractRef, codeAndHash *codeAndHash, gas uint64,
 }
 
 // Create creates a new contract using code as deployment code.
-func (evm *EVM) Create(caller ContractRef, code []byte, gas uint64, value *big.Int, TrueAccessList *types.AccessList,
+func (evm *EVM) Create(caller ContractRef, code []byte, gas uint64, value *big.Int, TrueAccessList *accesslist.AccessList,
 	IsParallel bool) (ret []byte, addr common.Address, GasRemain uint64, CanParallel bool, err error) {
 	contractAddr := crypto.CreateAddress(caller.Address(), evm.StateDB.GetNonce(caller.Address()))
 	return evm.create(caller, &codeAndHash{code: code}, gas, value, contractAddr, CREATE, TrueAccessList, IsParallel)
@@ -431,7 +432,7 @@ func (evm *EVM) Create(caller ContractRef, code []byte, gas uint64, value *big.I
 //
 // The different between Create2 with Create is Create2 uses keccak256(0xff ++ msg.sender ++ salt ++ keccak256(init_code))[12:]
 // instead of the usual sender-and-nonce-hash as the address where the contract is initialized at.
-func (evm *EVM) Create2(caller ContractRef, code []byte, gas uint64, endowment *big.Int, salt *uint256.Int, TrueAccessList *types.AccessList,
+func (evm *EVM) Create2(caller ContractRef, code []byte, gas uint64, endowment *big.Int, salt *uint256.Int, TrueAccessList *accesslist.AccessList,
 	IsParallel bool) (ret []byte, addr common.Address, GasRemain uint64, CanParallel bool, err error) {
 	codeAndHash := &codeAndHash{code: code}
 	contractAddr := crypto.CreateAddress2(caller.Address(), salt.Bytes32(), codeAndHash.Hash().Bytes())

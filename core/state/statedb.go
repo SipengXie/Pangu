@@ -24,6 +24,7 @@ import (
 	"sort"
 	"time"
 
+	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core/rawdb"
 	"github.com/SipengXie/pangu/core/state/snapshot"
@@ -105,7 +106,7 @@ type StateDB struct {
 	preimages map[common.Hash][]byte
 
 	// Per-transaction access list
-	AccessList *types.AccessList
+	AccessList *accesslist.AccessList
 
 	// Transient storage
 	transientStorage transientStorage
@@ -154,7 +155,7 @@ func New(root common.Hash, db Database, snaps *snapshot.Tree) (*StateDB, error) 
 		logs:                 make(map[common.Hash][]*types.Log),
 		preimages:            make(map[common.Hash][]byte),
 		journal:              newJournal(),
-		AccessList:           types.NewAccessList(),
+		AccessList:           accesslist.NewAccessList(),
 		transientStorage:     newTransientStorage(),
 		hasher:               crypto.NewKeccakState(),
 	}
@@ -388,7 +389,7 @@ func (s *StateDB) StorageTrie(addr common.Address) (Trie, error) {
 	return cpy.getTrie(s.db)
 }
 
-func (s *StateDB) HasSuicided(addr common.Address) bool {
+func (s *StateDB) HasSelfDestructed(addr common.Address) bool {
 	stateObject := s.getStateObject(addr)
 	if stateObject != nil {
 		return stateObject.suicided
@@ -464,10 +465,10 @@ func (s *StateDB) SetStorage(addr common.Address, storage map[common.Hash]common
 //
 // The account's state object is still available until the state is committed,
 // getStateObject will return a non-nil account after Suicide.
-func (s *StateDB) Suicide(addr common.Address) bool {
+func (s *StateDB) SelfDestruct(addr common.Address) {
 	stateObject := s.getStateObject(addr)
 	if stateObject == nil {
-		return false
+		return
 	}
 	s.journal.append(suicideChange{
 		account:     &addr,
@@ -476,8 +477,17 @@ func (s *StateDB) Suicide(addr common.Address) bool {
 	})
 	stateObject.markSuicided()
 	stateObject.data.Balance = new(big.Int)
+}
 
-	return true
+func (s *StateDB) Selfdestruct6780(addr common.Address) {
+	stateObject := s.getStateObject(addr)
+	if stateObject == nil {
+		return
+	}
+
+	if !stateObject.suicided {
+		s.SelfDestruct(addr)
+	}
 }
 
 // SetTransientState sets transient storage for a given account. It
@@ -1132,9 +1142,9 @@ func (s *StateDB) Commit(deleteEmptyObjects bool) (common.Hash, error) {
 // - Reset access list (Berlin)
 // - Add coinbase to access list (EIP-3651)
 // - Reset transient storage (EIP-1153)
-func (s *StateDB) Prepare(rules params.Rules, sender, coinbase common.Address, dst *common.Address, precompiles []common.Address, list types.AccessList) {
+func (s *StateDB) Prepare(rules params.Rules, sender, coinbase common.Address, dst *common.Address, precompiles []common.Address, list accesslist.AccessList) {
 	// Clear out any leftover from previous executions
-	al := newAccessList()
+	al := accesslist.NewAccessList()
 	s.AccessList = al
 
 	al.AddAddress(sender)
@@ -1215,11 +1225,11 @@ func (s *StateDB) convertAccountSet(set map[common.Address]struct{}) map[common.
 	return ret
 }
 
-func (s *StateDB) GetAccessList() *types.AccessList {
+func (s *StateDB) GetAccessList() *accesslist.AccessList {
 	return s.AccessList
 }
 
-//func StateALToTypesAL(SAL *AccessList) (TAL *types.AccessList) {
+//func StateALToTypesAL(SAL *AccessList) (TAL *accesslist.AccessList) {
 //
 //}
 

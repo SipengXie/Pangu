@@ -19,6 +19,7 @@ package evm
 import (
 	"math/big"
 
+	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 	evmparams "github.com/SipengXie/pangu/core/evm/params"
 	"github.com/SipengXie/pangu/core/types"
@@ -577,7 +578,7 @@ func opGas(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte
 	return nil, nil
 }
 
-func opCreate(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *types.AccessList, IsParallel bool) ([]byte, error, bool) {
+func opCreate(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	if interpreter.readOnly {
 		return nil, ErrWriteProtection, true
 	}
@@ -623,7 +624,7 @@ func opCreate(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, True
 	return nil, nil, CanParallel
 }
 
-func opCreate2(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *types.AccessList, IsParallel bool) ([]byte, error, bool) {
+func opCreate2(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	if interpreter.readOnly {
 		return nil, ErrWriteProtection, true
 	}
@@ -662,7 +663,7 @@ func opCreate2(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, Tru
 	return nil, nil, CanParallel
 }
 
-func opCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *types.AccessList, IsParallel bool) ([]byte, error, bool) {
+func opCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	stack := scope.Stack
 	// Pop gas. The actual gas in interpreter.evm.callGasTemp.
 	// We can use this as a temporary value
@@ -703,7 +704,7 @@ func opCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAc
 	return ret, nil, CanParallel
 }
 
-func opCallCode(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *types.AccessList, IsParallel bool) ([]byte, error, bool) {
+func opCallCode(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	// Pop gas. The actual gas is in interpreter.evm.callGasTemp.
 	stack := scope.Stack
 	// We use it as a temporary value
@@ -738,7 +739,7 @@ func opCallCode(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, Tr
 	return ret, nil, CanParallel
 }
 
-func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *types.AccessList, IsParallel bool) ([]byte, error, bool) {
+func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	stack := scope.Stack
 	// Pop gas. The actual gas is in interpreter.evm.callGasTemp.
 	// We use it as a temporary value
@@ -766,7 +767,7 @@ func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext
 	return ret, nil, CanParallel
 }
 
-func opStaticCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *types.AccessList, IsParallel bool) ([]byte, error, bool) {
+func opStaticCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext, TrueAccessList *accesslist.AccessList, IsParallel bool) ([]byte, error, bool) {
 	// Pop gas. The actual gas is in interpreter.evm.callGasTemp.
 	stack := scope.Stack
 	// We use it as a temporary value

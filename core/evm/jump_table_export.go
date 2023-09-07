@@ -17,12 +17,12 @@
 package evm
 
 import (
-	"github.com/SipengXie/pangu/params"
+	evmparams "github.com/SipengXie/pangu/core/evm/params"
 )
 
 // LookupInstructionSet returns the instructionset for the fork configured by
 // the rules.
-func LookupInstructionSet(rules params.Rules) (JumpTable, error) {
+func LookupInstructionSet(rules evmparams.Rules) (JumpTable, error) {
 	//switch {	// TODO: 暂时去掉
 	//case rules.IsVerkle:
 	//	return newCancunInstructionSet(), errors.New("verkle-fork not defined yet")

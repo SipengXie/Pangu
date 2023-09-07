@@ -132,12 +132,12 @@ func New(file string, cache int, handles int, namespace string, readonly bool) (
 	// The max memtable size is limited by the uint32 offsets stored in
 	// internal/arenaskl.node, DeferredBatchOp, and flushableBatchEntry.
 	// Taken from https://github.com/cockroachdb/pebble/blob/master/open.go#L38
-	maxMemTableSize := 4<<30 - 1 // Capped by 4 GB
+	maxMemTableSize := uint64(4<<30 - 1) // Capped by 4 GB
 
 	// Two memory tables is configured which is identical to leveldb,
 	// including a frozen memory table and another live one.
 	memTableLimit := 2
-	memTableSize := cache * 1024 * 1024 / 2 / memTableLimit
+	memTableSize := uint64(cache * 1024 * 1024 / 2 / memTableLimit)
 	if memTableSize > maxMemTableSize {
 		memTableSize = maxMemTableSize
 	}
@@ -576,7 +576,7 @@ type pebbleIterator struct {
 // of database content with a particular key prefix, starting at a particular
 // initial key (or after, if it does not exist).
 func (d *Database) NewIterator(prefix []byte, start []byte) ethdb.Iterator {
-	iter := d.db.NewIter(&pebble.IterOptions{
+	iter, _ := d.db.NewIter(&pebble.IterOptions{
 		LowerBound: append(prefix, start...),
 		UpperBound: upperBound(prefix),
 	})

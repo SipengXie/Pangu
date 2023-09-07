@@ -18,6 +18,8 @@ package evm
 
 import (
 	"fmt"
+
+	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/common/math"
 	"github.com/SipengXie/pangu/core/types"
@@ -102,7 +104,7 @@ func NewEVMInterpreter(evm *EVM) *EVMInterpreter {
 
 // Run loops and evaluates the contract's code with the given input data and returns
 // the return byte-slice and an error if one occurred.
-func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, err error, CanParallel bool) {
+func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool, TrueAccessList *accesslist.AccessList, IsParallel bool) (ret []byte, err error, CanParallel bool) {
 	// Increment the call depth which is restricted to 1024
 	in.evm.depth++
 	defer func() { in.evm.depth-- }()
@@ -140,7 +142,7 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool, T
 	contract.Input = input
 
 	for {
-		TrueAccessListPart := types.NewAccessList() // 每次操作访问到的AccessList
+		TrueAccessListPart := accesslist.NewAccessList() // 每次操作访问到的AccessList
 
 		op = contract.GetOp(pc)
 		operation := in.table[op]

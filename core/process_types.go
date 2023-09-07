@@ -1,13 +1,15 @@
 package core
 
 import (
+	"math/big"
+	"sort"
+
+	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core/evm"
 	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/params"
 	cmath "github.com/ethereum/go-ethereum/common/math"
-	"math/big"
-	"sort"
 )
 
 // MessageReturn MesReturn 作为返回结构体，通过管道传输线程中每组交易的结果，暂时去掉了IsScusses，因为这是执行函数，不是验证函数
@@ -34,7 +36,7 @@ type TxErrorMessage struct {
 // TxAccessListMessage 首次执行时记录每组中需要更改AccessList的交易
 type TxAccessListMessage struct {
 	Tx             *types.Transaction // 出错交易
-	TrueAccessList *types.AccessList
+	TrueAccessList *accesslist.AccessList
 }
 
 // ThreadMessage 作为多线程函数的传入参数，以一个线程为单位
@@ -59,7 +61,7 @@ type TxMessage struct {
 	GasFeeCap   *big.Int // Max Fee
 	GasTipCap   *big.Int // 小费
 	Data        []byte
-	AccessList  *types.AccessList
+	AccessList  *accesslist.AccessList
 	BlobHashes  []common.Hash
 	IsParallel  bool // 是否是并行队列
 	CanParallel bool // 交易能否并行执行
@@ -74,7 +76,7 @@ type ExecutionResult struct {
 	Err             error
 	ReturnData      []byte // Returned data from evm(function result or data supplied with revert opcode)
 	IsParallelError bool   // 标识当前错误是否时因为交易无法并行导致的错误
-	TrueAccessList  *types.AccessList
+	TrueAccessList  *accesslist.AccessList
 }
 
 // ProcessReturnMsg Process函数返回结构体

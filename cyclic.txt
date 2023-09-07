@@ -1,0 +1,2721 @@
+Failed. 207 circular dependence chains were found. 
+
+┌---→  /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/evm/interpreter.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+└---      /home/xsp/pangu/accesslist/accessList.go
+
+
+┌---→         /home/xsp/pangu/trie/iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆              /home/xsp/pangu/trie/iterator.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆              /home/xsp/pangu/trie/iterator.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→   /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/context.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→   /home/xsp/pangu/core/state/snapshot/utils.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→       /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆            /home/xsp/pangu/trie/database_wrap.go
+┆                          ↓
+┆       /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆            /home/xsp/pangu/trie/database_wrap.go
+┆                          ↓
+┆       /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→           /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/sync.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/sync.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→   /home/xsp/pangu/core/rawdb/chain_iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+┆           /home/xsp/pangu/core/state/statedb.go
+┆                         ↓
+└---   /home/xsp/pangu/core/state/snapshot/iterator.go
+
+
+┌---→           /home/xsp/pangu/trie/trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/trie.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/trie.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→         /home/xsp/pangu/trie/stacktrie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/stacktrie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/stacktrie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/stacktrie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/stacktrie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/stacktrie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆              /home/xsp/pangu/trie/stacktrie.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆              /home/xsp/pangu/trie/stacktrie.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/stacktrie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆             /home/xsp/pangu/trie/stacktrie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→   /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/context.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→   /home/xsp/pangu/core/state/snapshot/utils.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→       /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆            /home/xsp/pangu/trie/database_wrap.go
+┆                          ↓
+┆       /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆            /home/xsp/pangu/trie/database_wrap.go
+┆                          ↓
+┆       /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→           /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/sync.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/sync.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→   /home/xsp/pangu/core/rawdb/accessors_chain.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+┆           /home/xsp/pangu/core/state/statedb.go
+┆                         ↓
+└---   /home/xsp/pangu/core/state/snapshot/iterator.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→   /home/xsp/pangu/core/state/snapshot/utils.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→    /home/xsp/pangu/core/state/state_object.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/context.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→   /home/xsp/pangu/core/state/snapshot/utils.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→       /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆            /home/xsp/pangu/trie/database_wrap.go
+┆                          ↓
+┆       /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                          ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆            /home/xsp/pangu/trie/database_wrap.go
+┆                          ↓
+┆       /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                          ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→           /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/sync.go
+┆                          ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/sync.go
+┆                          ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/rawdb/accessors_indexes.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+┆           /home/xsp/pangu/core/state/statedb.go
+┆                         ↓
+└---   /home/xsp/pangu/core/state/snapshot/iterator.go
+
+
+┌---→       /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆            /home/xsp/pangu/trie/database_wrap.go
+┆                          ↓
+┆       /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆            /home/xsp/pangu/trie/database_wrap.go
+┆                          ↓
+┆       /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/evm/jump_table.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+└---      /home/xsp/pangu/accesslist/accessList.go
+
+
+┌---→        /home/xsp/pangu/trie/secure_trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/secure_trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/secure_trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/secure_trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/secure_trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/secure_trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆             /home/xsp/pangu/trie/secure_trie.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆             /home/xsp/pangu/trie/secure_trie.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/secure_trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/secure_trie.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/trie/trie_reader.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/trie_reader.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/trie_reader.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/trie_reader.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/trie_reader.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/trie_reader.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆             /home/xsp/pangu/trie/trie_reader.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆             /home/xsp/pangu/trie/trie_reader.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/trie_reader.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆            /home/xsp/pangu/trie/trie_reader.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/difflayer.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→          /home/xsp/pangu/core/evm/evm.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+└---      /home/xsp/pangu/accesslist/accessList.go
+
+
+┌---→     /home/xsp/pangu/core/evm/instructions.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+└---      /home/xsp/pangu/accesslist/accessList.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→   /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/context.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→   /home/xsp/pangu/core/state/snapshot/utils.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→       /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆            /home/xsp/pangu/trie/database_wrap.go
+┆                          ↓
+┆       /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆            /home/xsp/pangu/trie/database_wrap.go
+┆                          ↓
+┆       /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆           /home/xsp/pangu/trie/database_wrap.go
+┆                         ↓
+┆      /home/xsp/pangu/trie/triedb/hashdb/database.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→           /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/sync.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/sync.go
+┆                          ↓
+┆        /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆       /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→   /home/xsp/pangu/core/rawdb/accessors_sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+┆           /home/xsp/pangu/core/state/statedb.go
+┆                         ↓
+└---   /home/xsp/pangu/core/state/snapshot/iterator.go
+
+
+┌---→           /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/sync.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/snapshot.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→      /home/xsp/pangu/core/state/database.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/generate.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/journal.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+┆           /home/xsp/pangu/core/evm/interface.go
+┆                         ↓
+└---        /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/conversion.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/sync.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→  /home/xsp/pangu/core/state/snapshot/disklayer.go
+┆                          ↓
+┆                /home/xsp/pangu/trie/sync.go
+┆                          ↓
+┆       /home/xsp/pangu/core/types/PanguTransaction.go
+┆                          ↓
+┆          /home/xsp/pangu/accesslist/accessList.go
+┆                          ↓
+┆            /home/xsp/pangu/core/evm/interface.go
+┆                          ↓
+└---         /home/xsp/pangu/core/state/statedb.go
+
+
+┌---→        /home/xsp/pangu/core/state/dump.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆               /home/xsp/pangu/trie/sync.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+
+┌---→      /home/xsp/pangu/core/state/iterator.go
+┆                         ↓
+┆      /home/xsp/pangu/core/types/PanguTransaction.go
+┆                         ↓
+┆         /home/xsp/pangu/accesslist/accessList.go
+┆                         ↓
+└---        /home/xsp/pangu/core/evm/interface.go
+
+

@@ -92,7 +92,7 @@ func NewPruner(db ethdb.Database, config Config) (*Pruner, error) {
 		NoBuild:    true,
 		AsyncBuild: false,
 	}
-	snaptree, err := snapshot.New(snapconfig, db, trie.NewDatabase(db), headBlock.Root())
+	snaptree, err := snapshot.New(snapconfig, db, trie.NewDatabase(db), headBlock.StateRoot())
 	if err != nil {
 		return nil, err // The relevant snapshot(s) might not exist
 	}
@@ -252,7 +252,7 @@ func (p *Pruner) Prune(root common.Hash) error {
 		// Retrieve all snapshot layers from the current HEAD.
 		// In theory there are 128 difflayers + 1 disk layer present,
 		// so 128 diff layers are expected to be returned.
-		layers = p.snaptree.Snapshots(p.chainHeader.Root, 128, true)
+		layers = p.snaptree.Snapshots(p.chainHeader.StateRoot, 128, true)
 		if len(layers) != 128 {
 			// Reject if the accumulated diff layers are less than 128. It
 			// means in most of normal cases, there is no associated state
@@ -368,7 +368,7 @@ func RecoverPruning(datadir string, db ethdb.Database, trieCachePath string) err
 		NoBuild:    true,
 		AsyncBuild: false,
 	}
-	snaptree, err := snapshot.New(snapconfig, db, trie.NewDatabase(db), headBlock.Root())
+	snaptree, err := snapshot.New(snapconfig, db, trie.NewDatabase(db), headBlock.StateRoot())
 	if err != nil {
 		return err // The relevant snapshot(s) might not exist
 	}
@@ -388,7 +388,7 @@ func RecoverPruning(datadir string, db ethdb.Database, trieCachePath string) err
 	// otherwise the dangling state will be left.
 	var (
 		found       bool
-		layers      = snaptree.Snapshots(headBlock.Root(), 128, true)
+		layers      = snaptree.Snapshots(headBlock.StateRoot(), 128, true)
 		middleRoots = make(map[common.Hash]struct{})
 	)
 	for _, layer := range layers {
@@ -416,7 +416,7 @@ func extractGenesis(db ethdb.Database, stateBloom *stateBloom) error {
 	if genesis == nil {
 		return errors.New("missing genesis block")
 	}
-	t, err := trie.NewStateTrie(trie.StateTrieID(genesis.Root()), trie.NewDatabase(db))
+	t, err := trie.NewStateTrie(trie.StateTrieID(genesis.StateRoot()), trie.NewDatabase(db))
 	if err != nil {
 		return err
 	}
@@ -439,7 +439,7 @@ func extractGenesis(db ethdb.Database, stateBloom *stateBloom) error {
 				return err
 			}
 			if acc.Root != types.EmptyRootHash {
-				id := trie.StorageTrieID(genesis.Root(), common.BytesToHash(accIter.LeafKey()), acc.Root)
+				id := trie.StorageTrieID(genesis.StateRoot(), common.BytesToHash(accIter.LeafKey()), acc.Root)
 				storageTrie, err := trie.NewStateTrie(id, trie.NewDatabase(db))
 				if err != nil {
 					return err

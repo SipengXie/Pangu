@@ -6,12 +6,14 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"math/big"
+	"sync"
+
+	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 	evmparams "github.com/SipengXie/pangu/core/evm/params"
 	"github.com/SipengXie/pangu/crypto"
 	"github.com/SipengXie/pangu/params"
-	"math/big"
-	"sync"
 
 	"github.com/SipengXie/pangu/core/evm"
 	"github.com/SipengXie/pangu/core/state"
@@ -233,7 +235,7 @@ func TxThread(id int, txs []*types.Transaction, wg *sync.WaitGroup, msgReturn ch
 }
 
 // ExecuteTx 交易执行入口函数，代替原applyTransaction函数
-func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *types.Transaction, usedGas *uint64, evm *evm.EVM) (*types.Receipt, *types.AccessList, error) {
+func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *types.Transaction, usedGas *uint64, evm *evm.EVM) (*types.Receipt, *accesslist.AccessList, error) {
 	EvmTxContext := NewEVMTxContext(msg)
 	evm.TxContext = EvmTxContext
 
