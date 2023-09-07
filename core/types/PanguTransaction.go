@@ -34,7 +34,9 @@ func (tx *PanguTransaction) copy() TxData {
 		To:        copyAddressPtr(tx.To),
 		Data:      common.CopyBytes(tx.Data),
 		GasLimit:  tx.GasLimit,
+		SigAlgo:   tx.SigAlgo,
 		Signature: common.CopyBytes(tx.Signature),
+		// TODO : 其他东西
 
 		// These are copied below.
 		AccessList: new(AccessList),

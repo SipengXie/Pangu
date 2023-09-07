@@ -181,7 +181,7 @@ func (e *ExecutorService) ExecuteLoop() {
 				// 将区块发送执行
 
 				// 执行后将block传入一个管道，然后上链
-				// err := e.BlockChain.WriteBlockAndSetHead(block,nil,nil,e.BlockChain.)
+				err := e.BlockChain.WriteBlockAndSetHead(block,nil,nil,e.BlockChain.)
 
 				// 发送新建block的请求（写入initBlockCH）
 				e.initBlockCh <- struct{}{}
