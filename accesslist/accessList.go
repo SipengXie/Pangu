@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/SipengXie/pangu/common"
-	//"github.com/SipengXie/pangu/core/evm"
 )
 
 var (

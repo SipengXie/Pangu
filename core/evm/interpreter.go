@@ -187,7 +187,7 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool, T
 		// 并行队列判断AccessList是否冲突
 		if IsParallel {
 			// 获取到本次操作实际访问的AccessList
-			TrueAccessListPart.GetTrueAccessList(op, callContext)
+			GetTrueAccessList(op, callContext, TrueAccessListPart)
 			// 暂时不需要合并AccessList，因为不需要更改AccessList
 
 			result, _, _, _ := TrueAccessListPart.ConflictDetection(in.evm.StateDB.GetAccessList())
@@ -197,7 +197,7 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool, T
 			}
 		} else {
 			// 串行组需要返回真实的AccessList
-			TrueAccessListPart.GetTrueAccessList(op, callContext)
+			GetTrueAccessList(op, callContext, TrueAccessListPart)
 			TrueAccessList.CombineTrueAccessList(TrueAccessListPart)
 		}
 

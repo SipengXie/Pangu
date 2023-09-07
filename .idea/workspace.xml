@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="变更">
+      <change afterPath="$PROJECT_DIR$/core/evm/true_accesslist.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/parallel_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/process.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/process.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/txclassfy.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/txclassfy.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/types/block.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/types/block.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/executor/executor_server.go" beforeDir="false" afterPath="$PROJECT_DIR$/executor/executor_server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/svc/servicecontext.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/svc/servicecontext.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accesslist/accessList.go" beforeDir="false" afterPath="$PROJECT_DIR$/accesslist/accessList.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/evm/interpreter.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/evm/interpreter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/pangu.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/pangu.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +24,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file://D:/Demo_go/go1.21.0" />
+  <component name="GOROOT" url="file://$USER_HOME$/go/go1.21.0" />
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -33,20 +33,20 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "history": [
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
     {
-      "state": "OPEN",
-      "assignee": "LazyDreamingDog",
-      "author": "SipengXie"
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;LazyDreamingDog&quot;,
+      &quot;author&quot;: &quot;SipengXie&quot;
     }
   ],
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "LazyDreamingDog",
-    "author": "SipengXie"
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;LazyDreamingDog&quot;,
+    &quot;author&quot;: &quot;SipengXie&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -57,6 +57,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -84,11 +87,11 @@
     "WebServerToolWindowFactoryState": "false",
     "configurable..is.expanded": "false",
     "configurable.GoLibrariesConfigurable.is.expanded": "true",
-    "git-widget-placeholder": "devHanser",
+    "git-widget-placeholder": "devXwk",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "F:/erigon",
+    "last_opened_file_path": "C:/Users/lhr4108",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
@@ -107,7 +110,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build github.com/SipengXie/pangu/node" />
+        <item itemvalue="Go 构建.go build github.com/SipengXie/pangu/node" />
       </list>
     </recent_temporary>
   </component>
