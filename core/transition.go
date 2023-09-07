@@ -67,11 +67,11 @@ func ApplyTransaction(msg *TxMessage, evmEvent *evm.EVM) (executionResult *Execu
 
 	if ContractCreation {
 		// 合约创建交易
-		ReturnData, GasRemainAfter, CanParallel, EvmError = evmEvent.Create(Sender, msg, GasRemainBefore, TrueAccessList, IsParallel)
+		ReturnData, _, GasRemainAfter, CanParallel, EvmError = evmEvent.Create(Sender, msg.Data, GasRemainBefore, msg.Value, TrueAccessList, IsParallel)
 	} else {
 		// 调用合约交易
 		evmEvent.StateDB.SetNonce(msg.From, evmEvent.StateDB.GetNonce(Sender.Address())+1)
-		ReturnData, GasRemainAfter, CanParallel, EvmError = evmEvent.Call(Sender, msg, GasRemainBefore, TrueAccessList, IsParallel)
+		ReturnData, GasRemainAfter, CanParallel, EvmError = evmEvent.Call(Sender, *msg.To, msg.Data, GasRemainBefore, msg.Value, TrueAccessList, IsParallel)
 	}
 	msg.CanParallel = CanParallel
 

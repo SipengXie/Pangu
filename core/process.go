@@ -232,17 +232,17 @@ func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *
 	evm.StateDB.SetTxContext(tx.Hash()) // ! 更改AccessList后哈希值改变怎么办？
 
 	// 执行交易
-	executionResult, err := ApplyTransaction(msg, evm) // err是交易执行外发生的错误
+	executionResult := ApplyTransaction(msg, evm) // err是交易执行外发生的错误
 
 	// 错误处理
 	if executionResult.IsParallelError {
 		fmt.Printf("%sERROR MSG%s   当前交易无法在并行队列中并行执行\n", types.FRED, types.FRESET)
 		return nil, nil
 	}
-	if executionResult == nil && err != nil {
-		fmt.Printf("%sERROR MSG%s   当前交易在执行前的检查阶段发生错误\n", types.FRED, types.FRESET)
-		return nil, err
-	}
+	//if executionResult == nil && err != nil {
+	//	fmt.Printf("%sERROR MSG%s   当前交易在执行前的检查阶段发生错误\n", types.FRED, types.FRESET)
+	//	return nil, err
+	//}
 	if executionResult.Err != nil {
 		fmt.Printf("%sERROR MSG%s   当前交易在执行中发生错误\n", types.FRED, types.FRESET)
 		return nil, executionResult.Err
