@@ -167,6 +167,10 @@ func (b *Block) Transactions() Transactions {
 	return *ret
 }
 
+func (b *Block) Transactions2D() []Transactions {
+	return b.transactions
+}
+
 func (b *Block) Transaction(hash common.Hash) *Transaction {
 	for _, txs := range b.transactions {
 		for _, tx := range txs {

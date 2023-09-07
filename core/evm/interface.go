@@ -17,6 +17,7 @@
 package evm
 
 import (
+	"github.com/SipengXie/pangu/core/state"
 	"math/big"
 
 	"github.com/SipengXie/pangu/common"
@@ -51,10 +52,10 @@ type StateDB interface {
 	GetTransientState(addr common.Address, key common.Hash) common.Hash
 	SetTransientState(addr common.Address, key, value common.Hash)
 
-	SelfDestruct(common.Address)
-	HasSelfDestructed(common.Address) bool
-
-	Selfdestruct6780(common.Address)
+	//SelfDestruct(common.Address)
+	//HasSelfDestructed(common.Address) bool
+	//
+	//Selfdestruct6780(common.Address)
 
 	// Exist reports whether the given account exists in state.
 	// Notably this should also return true for self-destructed accounts.
@@ -78,6 +79,12 @@ type StateDB interface {
 
 	AddLog(*types.Log)
 	AddPreimage(common.Hash, []byte)
+
+	GetLogs(hash common.Hash, blockNumber uint64, blockHash common.Hash) []*types.Log    // New Function
+	SetTxContext(thash common.Hash)                                                      // New Function
+	Finalise(deleteEmptyObjects bool)                                                    // New Function
+	GetPendingObj() (map[common.Address]struct{}, map[common.Address]*state.StateObject) // New Function
+	GetAccessList() *types.AccessList                                                    // New Function
 }
 
 // CallContext provides a basic interface for the EVM calling conventions. The EVM

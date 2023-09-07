@@ -11,8 +11,8 @@ type PanguTransaction struct {
 	Nonce    uint64
 	Value    *big.Int
 	GasLimit uint64
-	FeeCap   *big.Int
-	TipCap   *big.Int
+	FeeCap   *big.Int // 暂时不管，应该是Max Fee
+	TipCap   *big.Int // 小费
 	ChainID  *big.Int
 
 	SigAlgo   byte
@@ -68,7 +68,7 @@ func (tx *PanguTransaction) data() []byte            { return tx.Data }
 func (tx *PanguTransaction) gasLimit() uint64        { return tx.GasLimit }
 func (tx *PanguTransaction) gasFeeCap() *big.Int     { return tx.FeeCap }
 func (tx *PanguTransaction) gasTipCap() *big.Int     { return tx.TipCap }
-func (tx *PanguTransaction) gasPrice() *big.Int      { return tx.FeeCap }
+func (tx *PanguTransaction) gasPrice() *big.Int      { return tx.FeeCap } // ! 暂时不调用这个方法，按照tip + base fee来计算
 func (tx *PanguTransaction) value() *big.Int         { return tx.Value }
 func (tx *PanguTransaction) nonce() uint64           { return tx.Nonce }
 func (tx *PanguTransaction) to() *common.Address     { return tx.To }

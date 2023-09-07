@@ -3,6 +3,7 @@ module github.com/SipengXie/pangu
 go 1.21
 
 require (
+<<<<<<< HEAD
 	github.com/VictoriaMetrics/fastcache v1.12.1
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2
 	github.com/cockroachdb/pebble v0.0.0-20230821143352-55b44ac08de8
@@ -101,4 +102,9 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
+=======
+	github.com/ethereum/go-ethereum v1.12.2 // indirect
+	github.com/holiman/uint256 v1.2.3 // indirect
+	golang.org/x/crypto v0.12.0 // indirect
+>>>>>>> origin/devHanser
 )

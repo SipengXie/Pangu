@@ -17,8 +17,10 @@
 package evm
 
 import (
+	"fmt"
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/common/math"
+	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/crypto"
 	"github.com/SipengXie/pangu/log"
 )
@@ -100,29 +102,22 @@ func NewEVMInterpreter(evm *EVM) *EVMInterpreter {
 
 // Run loops and evaluates the contract's code with the given input data and returns
 // the return byte-slice and an error if one occurred.
-//
-// It's important to note that any errors returned by the interpreter should be
-// considered a revert-and-consume-all-gas operation except for
-// ErrExecutionReverted which means revert-and-keep-gas-left.
-func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (ret []byte, err error) {
+func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool, TrueAccessList *types.AccessList, IsParallel bool) (ret []byte, err error, CanParallel bool) {
 	// Increment the call depth which is restricted to 1024
 	in.evm.depth++
 	defer func() { in.evm.depth-- }()
 
-	// Make sure the readOnly is only set if we aren't in readOnly yet.
-	// This also makes sure that the readOnly flag isn't removed for child calls.
+	CanParallel = true
+
 	if readOnly && !in.readOnly {
 		in.readOnly = true
 		defer func() { in.readOnly = false }()
 	}
 
-	// Reset the previous call's return data. It's unimportant to preserve the old buffer
-	// as every returning call will return new data anyway.
-	in.returnData = nil
-
 	// Don't bother with the execution if there's no code.
 	if len(contract.Code) == 0 {
-		return nil, nil
+		fmt.Printf("%sPROMPT MSG%s   调用合约中没有代码\n", types.FGREEN, types.FRESET)
+		return nil, nil, true
 	}
 
 	var (
@@ -134,103 +129,102 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (
 			Stack:    stack,
 			Contract: contract,
 		}
-		// For optimisation reason we're using uint64 as the program counter.
-		// It's theoretically possible to go above 2^64. The YP defines the PC
-		// to be uint256. Practically much less so feasible.
 		pc   = uint64(0) // program counter
 		cost uint64
-		// copies used by tracer
-		pcCopy  uint64 // needed for the deferred EVMLogger
-		gasCopy uint64 // for EVMLogger to log gas remaining before execution
-		logged  bool   // deferred EVMLogger should ignore already logged steps
-		res     []byte // result of the opcode execution function
-		debug   = in.evm.Config.Tracer != nil
+		res  []byte // result of the opcode execution function
 	)
-	// Don't move this deferred function, it's placed before the capturestate-deferred method,
-	// so that it get's executed _after_: the capturestate needs the stacks before
-	// they are returned to the pools
+	// Don't move this deferred function
 	defer func() {
 		returnStack(stack)
 	}()
 	contract.Input = input
 
-	if debug {
-		defer func() {
-			if err != nil {
-				if !logged {
-					in.evm.Config.Tracer.CaptureState(pcCopy, op, gasCopy, cost, callContext, in.returnData, in.evm.depth, err)
-				} else {
-					in.evm.Config.Tracer.CaptureFault(pcCopy, op, gasCopy, cost, callContext, in.evm.depth, err)
-				}
-			}
-		}()
-	}
-	// The Interpreter main run loop (contextual). This loop runs until either an
-	// explicit STOP, RETURN or SELFDESTRUCT is executed, an error occurred during
-	// the execution of one of the operations or until the done flag is set by the
-	// parent context.
 	for {
-		if debug {
-			// Capture pre-execution values for tracing.
-			logged, pcCopy, gasCopy = false, pc, contract.Gas
-		}
-		// Get the operation from the jump table and validate the stack to ensure there are
-		// enough stack items available to perform the operation.
+		TrueAccessListPart := types.NewAccessList() // 每次操作访问到的AccessList
+
 		op = contract.GetOp(pc)
 		operation := in.table[op]
 		cost = operation.constantGas // For tracing
 		// Validate stack
 		if sLen := stack.len(); sLen < operation.minStack {
-			return nil, &ErrStackUnderflow{stackLen: sLen, required: operation.minStack}
+			fmt.Printf("%sERROR MSG%s   栈长度过低\n", types.FRED, types.FRESET)
+			return nil, &ErrStackUnderflow{stackLen: sLen, required: operation.minStack}, true
 		} else if sLen > operation.maxStack {
-			return nil, &ErrStackOverflow{stackLen: sLen, limit: operation.maxStack}
+			fmt.Printf("%sERROR MSG%s   栈长度过大\n", types.FRED, types.FRESET)
+			return nil, &ErrStackOverflow{stackLen: sLen, limit: operation.maxStack}, true
 		}
 		if !contract.UseGas(cost) {
-			return nil, ErrOutOfGas
+			fmt.Printf("%sERROR MSG%s   无法支付合约所需的汽油费\n", types.FRED, types.FRESET)
+			return nil, ErrOutOfGas, true
 		}
 		if operation.dynamicGas != nil {
-			// All ops with a dynamic memory usage also has a dynamic gas cost.
 			var memorySize uint64
-			// calculate the new memory size and expand the memory to fit
-			// the operation
-			// Memory check needs to be done prior to evaluating the dynamic gas portion,
-			// to detect calculation overflows
 			if operation.memorySize != nil {
 				memSize, overflow := operation.memorySize(stack)
 				if overflow {
-					return nil, ErrGasUintOverflow
+					fmt.Printf("%sERROR MSG%s   gas变量溢出\n", types.FRED, types.FRESET)
+					return nil, ErrGasUintOverflow, true
 				}
-				// memory is expanded in words of 32 bytes. Gas
-				// is also calculated in words.
 				if memorySize, overflow = math.SafeMul(toWordSize(memSize), 32); overflow {
-					return nil, ErrGasUintOverflow
+					fmt.Printf("%sERROR MSG%s   gas变量溢出\n", types.FRED, types.FRESET)
+					return nil, ErrGasUintOverflow, true
 				}
 			}
-			// Consume the gas and return an error if not enough gas is available.
-			// cost is explicitly set so that the capture state defer method can get the proper cost
 			var dynamicCost uint64
 			dynamicCost, err = operation.dynamicGas(in.evm, contract, stack, mem, memorySize)
 			cost += dynamicCost // for tracing
 			if err != nil || !contract.UseGas(dynamicCost) {
-				return nil, ErrOutOfGas
-			}
-			// Do tracing before memory expansion
-			if debug {
-				in.evm.Config.Tracer.CaptureState(pc, op, gasCopy, cost, callContext, in.returnData, in.evm.depth, err)
-				logged = true
+				fmt.Printf("%sERROR MSG%s   无法支付合约所需的汽油费\n", types.FRED, types.FRESET)
+				return nil, ErrOutOfGas, true
 			}
 			if memorySize > 0 {
 				mem.Resize(memorySize)
 			}
-		} else if debug {
-			in.evm.Config.Tracer.CaptureState(pc, op, gasCopy, cost, callContext, in.returnData, in.evm.depth, err)
-			logged = true
 		}
-		// execute the operation
-		res, err = operation.execute(&pc, in, callContext)
+
+		// 并行队列判断AccessList是否冲突
+		if IsParallel {
+			// 获取到本次操作实际访问的AccessList
+			TrueAccessListPart.GetTrueAccessList(op, callContext)
+			// 暂时不需要合并AccessList，因为不需要更改AccessList
+
+			result, _, _, _ := TrueAccessListPart.ConflictDetection(in.evm.StateDB.GetAccessList())
+			if !result {
+				fmt.Printf("%sPROMPT MSG%s   Run函数执行获取到的AccessList与用户定义的AccessList不同，并行程序无法串行执行\n", types.FGREEN, types.FRESET)
+				CanParallel = false
+			}
+		} else {
+			// 串行组需要返回真实的AccessList
+			TrueAccessListPart.GetTrueAccessList(op, callContext)
+			TrueAccessList.CombineTrueAccessList(TrueAccessListPart)
+		}
+
+		if op == CREATE || op == CREATE2 {
+			CanParallel = false
+			if !IsParallel {
+				// create操作只在串行队列中完成
+				res, err, _ = operation.executeAL(&pc, in, callContext, TrueAccessList, IsParallel)
+			}
+		}
+		// 不执行并行队列无法并行执行的交易
+		if IsParallel || CanParallel {
+			if op == DELEGATECALL || op == CALL || op == STATICCALL || op == CALLCODE {
+				res, err, CanParallel = operation.executeAL(&pc, in, callContext, TrueAccessList, IsParallel)
+			} else {
+				res, err = operation.execute(&pc, in, callContext)
+			}
+		}
+
 		if err != nil {
+			fmt.Printf("%sERROR MSG%s   执行出错\n", types.FRED, types.FRESET)
 			break
 		}
+
+		// 并行队列交易无法并行执行，交易推出Run函数
+		if IsParallel && !CanParallel {
+			break
+		}
+
 		pc++
 	}
 
@@ -238,5 +232,5 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (
 		err = nil // clear stop token error
 	}
 
-	return res, err
+	return res, err, CanParallel
 }

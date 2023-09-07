@@ -14,10 +14,13 @@ func (c *ChainConfig) Rules(num *big.Int, timestamp uint64) Rules {
 	return Rules{}
 }
 
-func (cfg *ChainConfig) FromGlobal(gcfg global.ChainConfig) {
+// FromGlobal global -> evm 增加了* 增加了返回代码
+func (cfg *ChainConfig) FromGlobal(gcfg *global.ChainConfig) *ChainConfig {
 	cfg.ChainID = new(big.Int).Set(gcfg.ChainID)
+	return cfg
 }
 
+// ToGlobal evm -> global
 func (cfg *ChainConfig) ToGlobal() global.ChainConfig {
 	return global.ChainConfig{}
 }

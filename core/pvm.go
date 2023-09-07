@@ -34,12 +34,13 @@ func NewEVMBlockContext(header *types.Header, chain ChainContext, author *common
 	)
 
 	// ! coinbase怎么办？
-	// If we don't have an explicit author (i.e. not mining), extract from the header
-	if author == nil {
-		//beneficiary, _ = chain.Engine().Author(header) // Ignore error, we're past header validation
-	} else {
-		beneficiary = *author
-	}
+	// If we don't have an explicit author (i.e. not mining), extract from the header	// TODO: 暂时删除
+	//if author == nil {
+	//	beneficiary, _ = chain.Engine().Author(header) // Ignore error, we're past header validation
+	//} else {
+	//	beneficiary = *author
+	//}
+	beneficiary = header.Coinbase // * 拿到header里的coinbase地址
 	if header.BaseFee != nil {
 		baseFee = new(big.Int).Set(header.BaseFee)
 	}
@@ -106,4 +107,13 @@ func CanTransfer(db evm.StateDB, addr common.Address, amount *big.Int) bool {
 func Transfer(db evm.StateDB, sender, recipient common.Address, amount *big.Int) {
 	db.SubBalance(sender, amount)
 	db.AddBalance(recipient, amount)
+}
+
+// NewEVMTxContext creates a new transaction context for a single transaction.
+func NewEVMTxContext(msg *TxMessage) evm.TxContext {
+	return evm.TxContext{
+		Origin:   msg.From,
+		GasPrice: new(big.Int).Set(msg.GasPrice),
+		// BlobHashes: msg.BlobHashes,	// TODO: 暂时删除
+	}
 }
