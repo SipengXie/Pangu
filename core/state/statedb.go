@@ -105,7 +105,7 @@ type StateDB struct {
 	preimages map[common.Hash][]byte
 
 	// Per-transaction access list
-	AccessList *AccessList
+	AccessList *types.AccessList
 
 	// Transient storage
 	transientStorage transientStorage
@@ -154,7 +154,7 @@ func New(root common.Hash, db Database, snaps *snapshot.Tree) (*StateDB, error) 
 		logs:                 make(map[common.Hash][]*types.Log),
 		preimages:            make(map[common.Hash][]byte),
 		journal:              newJournal(),
-		AccessList:           newAccessList(),
+		AccessList:           types.NewAccessList(),
 		transientStorage:     newTransientStorage(),
 		hasher:               crypto.NewKeccakState(),
 	}
@@ -1209,9 +1209,13 @@ func (s *StateDB) convertAccountSet(set map[common.Address]struct{}) map[common.
 	return ret
 }
 
-func (s *StateDB) GetAccessList() *AccessList {
+func (s *StateDB) GetAccessList() *types.AccessList {
 	return s.AccessList
 }
+
+//func StateALToTypesAL(SAL *AccessList) (TAL *types.AccessList) {
+//
+//}
 
 func (s *StateDB) GetPendingObj() (map[common.Address]struct{}, map[common.Address]*StateObject) {
 	so := make(map[common.Address]*StateObject)
