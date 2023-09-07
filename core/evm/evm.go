@@ -161,7 +161,7 @@ func (evm *EVM) Call(caller ContractRef, addr common.Address, input []byte, gas 
 	}
 
 	// 余额是否可以转账
-	if value.Sign() != 0 && !evm.Context.CanTransfer(evm.StateDB, caller.Address(), msg.Value) {
+	if value.Sign() != 0 && !evm.Context.CanTransfer(evm.StateDB, caller.Address(), value) {
 		fmt.Printf("%sERROR MSG%s   余额不足，不能转账\n", types.FRED, types.FRESET)
 		return nil, gas, true, ErrInsufficientBalance
 	}
@@ -435,7 +435,7 @@ func (evm *EVM) Create2(caller ContractRef, code []byte, gas uint64, endowment *
 	IsParallel bool) (ret []byte, addr common.Address, GasRemain uint64, CanParallel bool, err error) {
 	codeAndHash := &codeAndHash{code: code}
 	contractAddr := crypto.CreateAddress2(caller.Address(), salt.Bytes32(), codeAndHash.Hash().Bytes())
-	return evm.create(caller, codeAndHash, gas, endowment, contractAddr, TrueAccessList, IsParallel)
+	return evm.create(caller, codeAndHash, gas, endowment, contractAddr, CREATE2, TrueAccessList, IsParallel)
 }
 
 // ChainConfig returns the environment's chain configuration
