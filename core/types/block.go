@@ -100,7 +100,7 @@ type extblock struct {
 // The values of TxHash, UncleHash, ReceiptHash and Bloom in header
 // are ignored and set to values derived from the given txs, uncles
 // and receipts.
-func NewBlock(header *Header, txs []Transactions, receipts []*Receipt, hasher TrieHasher) *Block {
+func NewBlock(header *Header, txs []Transactions, receipts []*Receipt, stateRoot common.Hash, hasher TrieHasher) *Block {
 	b := &Block{header: CopyHeader(header)}
 
 	// TODO: panic if len(txs) != len(receipts)
@@ -124,6 +124,8 @@ func NewBlock(header *Header, txs []Transactions, receipts []*Receipt, hasher Tr
 		b.header.ReceiptRoot = DeriveSha(Receipts(receipts), hasher)
 		b.header.Bloom = CreateBloom(receipts)
 	}
+
+	b.header.StateRoot = stateRoot
 
 	return b
 }

@@ -1,7 +1,10 @@
 package svc
 
 import (
+	"math/big"
+
 	"github.com/SipengXie/pangu/core"
+	"github.com/SipengXie/pangu/core/evm"
 	"github.com/SipengXie/pangu/core/rawdb"
 	"github.com/SipengXie/pangu/core/state"
 	"github.com/SipengXie/pangu/core/txpool"
@@ -11,7 +14,6 @@ import (
 	"github.com/SipengXie/pangu/node/internal/config"
 	"github.com/SipengXie/pangu/params"
 	"github.com/SipengXie/pangu/pb"
-	"math/big"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -34,7 +36,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	// 模拟一个区块链
 	var chainCfg *params.ChainConfig
 	chainCfg.ChainID = big.NewInt(1)
-	blockchain := core.NewBlokchain(chainCfg, statedb)
+	blockchain := core.NewBlokchain(chainCfg, statedb, evm.Config{})
 
 	// 实例化两个txpool
 	var txpoolCfg legacypool.Config

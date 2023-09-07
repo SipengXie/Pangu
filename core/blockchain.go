@@ -5,6 +5,7 @@ import (
 	"sync/atomic"
 
 	"github.com/SipengXie/pangu/common"
+	"github.com/SipengXie/pangu/core/evm"
 	"github.com/SipengXie/pangu/core/state"
 	"github.com/SipengXie/pangu/core/types"
 	"github.com/SipengXie/pangu/event"
@@ -31,20 +32,26 @@ type Blockchain struct {
 	gasLimit      atomic.Uint64
 	statedb       *state.StateDB
 	chainHeadFeed *event.Feed
+	vmConfig      evm.Config
 
 	chainmu *syncx.ClosableMutex
 
 	scope event.SubscriptionScope
 }
 
-func NewBlokchain(config *params.ChainConfig, statedb *state.StateDB) *Blockchain {
+func NewBlokchain(config *params.ChainConfig, statedb *state.StateDB, vmConfig evm.Config) *Blockchain {
 	return &Blockchain{
 		blocks:        make(types.Blocks, 0),
 		config:        config,
 		statedb:       statedb,
 		chainHeadFeed: new(event.Feed),
 		chainmu:       syncx.NewClosableMutex(),
+		vmConfig:      vmConfig,
 	}
+}
+
+func (bc *Blockchain) VmConfig() evm.Config {
+	return bc.vmConfig
 }
 
 func (bc *Blockchain) Config() *params.ChainConfig {
@@ -65,7 +72,7 @@ func (bc *Blockchain) StateAt(root common.Hash) (*state.StateDB, error) {
 
 func (bc *Blockchain) writeHeadBlock(block *types.Block, state *state.StateDB) {
 	bc.blocks = append(bc.blocks, block)
-	state.Commit(false) // TODO
+	// state.Commit(false) // TODO
 }
 
 func (bc *Blockchain) writeBlockAndSetHead(block *types.Block, receipts []*types.Receipt, logs []*types.Log, state *state.StateDB, emitHeadEvent bool) (status WriteStatus, err error) {

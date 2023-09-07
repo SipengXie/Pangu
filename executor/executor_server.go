@@ -3,10 +3,13 @@ package executor
 import (
 	"context"
 	"fmt"
-	"github.com/SipengXie/pangu/common"
-	"github.com/SipengXie/pangu/core"
 	"math/big"
 	"time"
+
+	"github.com/SipengXie/pangu/common"
+	"github.com/SipengXie/pangu/core"
+	"github.com/SipengXie/pangu/log"
+	"github.com/SipengXie/pangu/trie"
 
 	"github.com/SipengXie/pangu/core/txpool"
 	"github.com/SipengXie/pangu/core/types"
@@ -25,6 +28,7 @@ var (
 
 type ExecutorService struct {
 	BlockChain *core.Blockchain
+	Processer  *core.Processor
 
 	executionTxsCh  chan types.NewTxsEvent
 	executionTxsSub event.Subscription // txsSub = pendingPool.SubscribeNewTxsEvent(txsCh)
@@ -51,6 +55,7 @@ func NewExecutorService(ePool, pPool *txpool.TxPool, bc *core.Blockchain, Cli pb
 		p2pClient:      Cli,
 		initBlockCh:    make(chan struct{}),
 	}
+	es.Processer = core.NewStateProcessor(es.BlockChain.Config(), es.BlockChain)
 	es.executionTxsSub = es.executionPool.SubscribeNewTxsEvent(es.executionTxsCh)
 	es.pendingTxsSub = es.pendingPool.SubscribeNewTxsEvent(es.pendingTxsCh)
 	go es.SendLoop()
@@ -179,10 +184,20 @@ func (e *ExecutorService) ExecuteLoop() {
 				blockTxs := core.ClassifyTx(txs, signer)
 				block := types.InitBlock(header, blockTxs)
 				// 将区块发送执行
+				statedb, _ := e.BlockChain.StateAt(e.BlockChain.CurrentBlock().StateRoot)
+				processRes, err := e.Processer.Process(block, statedb, e.BlockChain.VmConfig())
+				if err != nil {
+					panic(err)
+				}
+				// 生成可上链的block
+				okBlock := types.NewBlock(block.Header(), blockTxs, processRes.Receipt, processRes.RootHash, trie.NewStackTrie(nil))
 
 				// 执行后将block传入一个管道，然后上链
-				err := e.BlockChain.WriteBlockAndSetHead(block,nil,nil,e.BlockChain.)
-
+				status, err := e.BlockChain.WriteBlockAndSetHead(okBlock, processRes.Receipt, processRes.Logs, statedb, true)
+				log.Info("writeBlock status : ", status)
+				if err != nil {
+					panic(err)
+				}
 				// 发送新建block的请求（写入initBlockCH）
 				e.initBlockCh <- struct{}{}
 			} else {
