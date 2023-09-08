@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="变更">
+    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="chore: 生成测试交易">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/parallel_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/tests/parallel_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/internal/logic/sendtransactionlogic.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/logic/sendtransactionlogic.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/internal/types/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/types/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/pangu.api" beforeDir="false" afterPath="$PROJECT_DIR$/node/pangu.api" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +57,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -91,10 +93,19 @@
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "goland.project.structure"
+    "settings.editor.selected.configurable": "Errors"
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RunManager" selected="Go Build.go build github.com/SipengXie/pangu/node">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="Pangu" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build github.com/SipengXie/pangu/node" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="Pangu" />
       <working_directory value="$PROJECT_DIR$" />
@@ -104,9 +115,49 @@
       <filePath value="$PROJECT_DIR$/node/pangu.go" />
       <method v="2" />
     </configuration>
+    <configuration name="TestCreateTx in github.com/SipengXie/pangu/executor" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="Pangu" />
+      <working_directory value="$PROJECT_DIR$/executor" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/SipengXie/pangu/executor" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestCreateTx\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="Pangu" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration name="github.com/SipengXie/pangu/executor 中的 TestCreateTx" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="Pangu" />
+      <working_directory value="$PROJECT_DIR$/executor" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/SipengXie/pangu/executor" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestCreateTx\E$" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go 构建.go build github.com/SipengXie/pangu/node" />
+      <item itemvalue="Go 测试.github.com/SipengXie/pangu/executor 中的 TestCreateTx" />
+      <item itemvalue="Go 测试.TestCreateTx in github.com/SipengXie/pangu/executor" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go 构建.go build github.com/SipengXie/pangu/node" />
+        <item itemvalue="Go Build.go build github.com/SipengXie/pangu/node" />
+        <item itemvalue="Go Test.TestCreateTx in github.com/SipengXie/pangu/executor" />
       </list>
     </recent_temporary>
   </component>
@@ -125,7 +176,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="devXwk" />
+                        <option value="origin/devXwk" />
                       </list>
                     </value>
                   </entry>
@@ -145,9 +196,25 @@
     <MESSAGE value="fix:清除rawdb的显式错误&#10;&#10;通过注释的方法清除" />
     <MESSAGE value="fix:修改了txclassfy的逻辑&#10;&#10;与AccessList相关的错误已修复" />
     <MESSAGE value="chore:增加API处理交易的逻辑&#10;&#10;增加了部分起链的操作，部分逻辑硬编码，后续需要修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore:增加API处理交易的逻辑&#10;&#10;增加了部分起链的操作，部分逻辑硬编码，后续需要修改" />
+    <MESSAGE value="chore: 节点！启动！" />
+    <MESSAGE value="chore: 生成测试交易" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: 生成测试交易" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/executor/executor_test.go</url>
+          <line>144</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Pangu$github_com_SipengXie_pangu_executor__TestCreateTx.out" NAME="github.com/SipengXie/pangu/executor 中的 TestCreateTx 覆盖结果" MODIFIED="1694162364689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

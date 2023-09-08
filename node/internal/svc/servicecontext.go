@@ -1,6 +1,8 @@
 package svc
 
 import (
+	"github.com/SipengXie/pangu/common"
+	"github.com/SipengXie/pangu/crypto"
 	"math/big"
 
 	"github.com/SipengXie/pangu/core"
@@ -20,7 +22,8 @@ import (
 )
 
 var (
-	db = rawdb.NewMemoryDatabase()
+	db         = rawdb.NewMemoryDatabase()
+	BankKeyHex = "c3914129fade8d775d22202702690a8a0dcb178040bcb232a950c65b84308828"
 )
 
 type ServiceContext struct {
@@ -32,10 +35,15 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	// TODO : 工程上需要进一步构筑blockchain的逻辑
 	// 默认起好了一条链
 	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(db), nil)
+	// 初始化一个账户
+	BankAKey, _ := crypto.ToECDSA(common.Hex2Bytes(BankKeyHex))
+	BankAddress := crypto.PubkeyToAddress(BankAKey.PublicKey)
+	statedb.SetBalance(BankAddress, big.NewInt(9000000000000000000))
 
 	// 模拟一个区块链
-	var chainCfg *params.ChainConfig
-	chainCfg.ChainID = big.NewInt(1)
+	chainCfg := &params.ChainConfig{
+		ChainID: big.NewInt(1337),
+	}
 	blockchain := core.NewBlokchain(chainCfg, statedb, evm.Config{})
 
 	// 实例化两个txpool

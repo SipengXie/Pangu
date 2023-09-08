@@ -31,16 +31,16 @@ func NewSendTransactionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *S
 func ToTransaction(args *types.TransactionArgs) *tp.Transaction {
 	var data tp.TxData
 	al := accesslist.NewAccessList()
-	if args.AccessList != nil {
-		// 暂定AccessList以Json字节数据传入
+	if len(args.AccessList) != 0 {
+		// 暂定AccessList以Json字节数据的hexString传入
 		// 解析AccessList填入
-		if err := al.Deserialize(args.AccessList); err != nil {
+		if err := al.Deserialize(common.Hex2Bytes(args.AccessList)); err != nil {
 			log.Fatal(err)
 		}
 	}
 
 	to := new(common.Address)
-	to.SetBytes(args.To)
+	to.SetBytes(common.Hex2Bytes(args.To))
 
 	chainid := new(big.Int)
 	chainid.SetString(args.ChainID, 10)
@@ -55,13 +55,13 @@ func ToTransaction(args *types.TransactionArgs) *tp.Transaction {
 	value.SetString(args.Value, 10)
 
 	var txdata []byte
-	if args.Input != nil {
-		txdata = make([]byte, len(args.Input))
-		copy(txdata, args.Input)
+	if len(args.Input) != 0 {
+		txdata = make([]byte, len(common.Hex2Bytes(args.Input)))
+		copy(txdata, common.Hex2Bytes(args.Input))
 	}
-	if args.Data != nil {
-		txdata = make([]byte, len(args.Data))
-		copy(txdata, args.Data)
+	if len(args.Data) != 0 {
+		txdata = make([]byte, len(common.Hex2Bytes(args.Data)))
+		copy(txdata, common.Hex2Bytes(args.Data))
 	}
 
 	// TODO:上层封装签名逻辑
@@ -76,7 +76,7 @@ func ToTransaction(args *types.TransactionArgs) *tp.Transaction {
 		Value:      value,
 		Data:       txdata,
 		SigAlgo:    args.SigAlgo,
-		Signature:  args.Signature,
+		Signature:  common.Hex2Bytes(args.Signature),
 		AccessList: al,
 	}
 	return tp.NewTx(data)

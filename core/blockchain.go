@@ -40,7 +40,7 @@ type Blockchain struct {
 }
 
 func NewBlokchain(config *params.ChainConfig, statedb *state.StateDB, vmConfig evm.Config) *Blockchain {
-	return &Blockchain{
+	bc := &Blockchain{
 		blocks:        make(types.Blocks, 0),
 		config:        config,
 		statedb:       statedb,
@@ -48,6 +48,9 @@ func NewBlokchain(config *params.ChainConfig, statedb *state.StateDB, vmConfig e
 		chainmu:       syncx.NewClosableMutex(),
 		vmConfig:      vmConfig,
 	}
+	b := NewGenesisBlock()
+	bc.blocks = append(bc.blocks, b)
+	return bc
 }
 
 func (bc *Blockchain) VmConfig() evm.Config {
