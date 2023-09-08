@@ -11,7 +11,7 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 )
 
-var configFile = flag.String("f", "/Pangu/node/etc/pangu.yaml", "the config file")
+var configFile = flag.String("f", "F:\\学习\\学术研究\\跨链项目\\Pangu\\node\\etc\\pangu.yaml", "the config file")
 
 func main() {
 
