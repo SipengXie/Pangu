@@ -58,15 +58,26 @@ func NewExecutorService(ePool, pPool *txpool.TxPool, bc *core.Blockchain, Cli pb
 	es.Processer = core.NewStateProcessor(es.BlockChain.Config(), es.BlockChain)
 	es.executionTxsSub = es.executionPool.SubscribeNewTxsEvent(es.executionTxsCh)
 	es.pendingTxsSub = es.pendingPool.SubscribeNewTxsEvent(es.pendingTxsCh)
+	fmt.Println("go send loop")
 	go es.SendLoop()
+	fmt.Println("go execute loop")
 	go es.ExecuteLoop()
 	return es
 }
 
-func (e *ExecutorService) AddTx(tx *types.Transaction) error {
+func (e *ExecutorService) AddTxToExecutionPool(tx *types.Transaction) error {
+	fmt.Println("Add Transaction to execution txpool")
 	var txs []*txpool.Transaction
 	txs = append(txs, &txpool.Transaction{Tx: tx})
 	errs := e.executionPool.Add(txs, true, false)
+	return errs[0]
+}
+
+func (e *ExecutorService) AddTxToPendingPool(tx *types.Transaction) error {
+	fmt.Println("Add Transaction to pending txpool")
+	var txs []*txpool.Transaction
+	txs = append(txs, &txpool.Transaction{Tx: tx})
+	errs := e.pendingPool.Add(txs, true, false)
 	return errs[0]
 }
 

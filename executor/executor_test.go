@@ -3,6 +3,8 @@ package executor
 import (
 	"bytes"
 	"fmt"
+	"testing"
+
 	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core/rawdb"
@@ -13,7 +15,6 @@ import (
 	"github.com/SipengXie/pangu/event"
 	"github.com/SipengXie/pangu/params"
 	"github.com/SipengXie/pangu/trie"
-	"testing"
 
 	"math/big"
 	"sync/atomic"
@@ -138,9 +139,14 @@ func newPankutxs() []*types.Transaction {
 	toAddr := common.BytesToAddress(common.FromHex(address111))
 	fromKey, _ := crypto.ToECDSA(bankKeyByes)
 	fromAddr := crypto.PubkeyToAddress(fromKey.PublicKey)
-	tx := panguTx(0, toAddr, big.NewInt(100), testGas, nil, big.NewInt(100), big.NewInt(1), bankKeyByes, fromAddr)
+	tx := panguTx(0, toAddr, big.NewInt(100), testTxGas, nil, big.NewInt(100), big.NewInt(1), bankKeyByes, fromAddr)
 	var txs types.Transactions
 	txs = append(txs, tx)
+	fmt.Println(toAddr)
+	fmt.Println(fromAddr)
+	fmt.Println(common.Bytes2Hex(tx.RawSigValues()))
+	alByte, _ := tx.AccessList().Serialize()
+	fmt.Println(common.Bytes2Hex(alByte))
 	return txs
 }
 

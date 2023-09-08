@@ -251,7 +251,7 @@ func (s panguSigner) Sender(tx *Transaction) (common.Address, error) {
 	switch sigAlgo {
 	case SIG_ECDSA:
 		{
-			V, R, S := s.ECDSA_Algo.DecodeSignature(tx.RawSigValues())
+			R, S, V := s.ECDSA_Algo.DecodeSignature(tx.RawSigValues())
 			if tx.ChainId().Cmp(s.chainId) != 0 {
 				return common.Address{}, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, tx.ChainId(), s.chainId)
 			}

@@ -40,7 +40,7 @@ func ToTransaction(args *types.TransactionArgs) *tp.Transaction {
 	}
 
 	to := new(common.Address)
-	to.SetBytes(common.Hex2Bytes(args.To))
+	to.SetBytes(common.FromHex(args.To))
 
 	chainid := new(big.Int)
 	chainid.SetString(args.ChainID, 10)
@@ -86,7 +86,7 @@ func (l *SendTransactionLogic) SendTransaction(req *types.TransactionArgs) (resp
 	// 将TransactionArgs转换成真正的Transaction
 	tx := ToTransaction(req)
 	// 将交易添加到交易池中（调用txpool.Add方法)
-	err = l.svcCtx.ExecutorService.AddTx(tx)
+	err = l.svcCtx.ExecutorService.AddTxToPendingPool(tx)
 	if err != nil {
 		return nil, err
 	}

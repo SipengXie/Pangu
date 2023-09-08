@@ -1,9 +1,11 @@
 package svc
 
 import (
+	"fmt"
+	"math/big"
+
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/crypto"
-	"math/big"
 
 	"github.com/SipengXie/pangu/core"
 	"github.com/SipengXie/pangu/core/evm"
@@ -63,6 +65,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	// 实例化ExecutorService
 	executorService := executor.NewExecutorService(etxpool, ptxpool, blockchain, p2pClient)
+	fmt.Println("creat executor Service")
 
 	return &ServiceContext{
 		Config:          c,
