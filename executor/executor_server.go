@@ -41,7 +41,7 @@ type ExecutorService struct {
 	pb.UnimplementedExecutorServer
 
 	// extra channels
-	initBlockCh chan struct{}
+	// initBlockCh chan struct{}
 }
 
 func NewExecutorService(ePool, pPool *txpool.TxPool, bc *core.Blockchain, Cli pb.P2PClient) *ExecutorService {
@@ -52,7 +52,7 @@ func NewExecutorService(ePool, pPool *txpool.TxPool, bc *core.Blockchain, Cli pb
 		pendingTxsCh:   make(chan types.NewTxsEvent, txChanSize),
 		pendingPool:    pPool,
 		p2pClient:      Cli,
-		initBlockCh:    make(chan struct{}),
+		// initBlockCh:    make(chan struct{}, 1),
 	}
 	es.Processer = core.NewStateProcessor(es.BlockChain.Config(), es.BlockChain)
 	es.executionTxsSub = es.executionPool.SubscribeNewTxsEvent(es.executionTxsCh)
@@ -179,12 +179,14 @@ func (e *ExecutorService) ExecuteLoop() {
 	defer e.executionTxsSub.Unsubscribe()
 	var header *types.Header
 	var txs types.Transactions
-	e.initBlockCh <- struct{}{}
+	needNew := true
 	for {
-		select {
-		case <-e.initBlockCh:
+		if needNew {
 			txs = make(types.Transactions, 0)
 			header = types.CopyHeader(e.initHeader(COINBASE, 12345678))
+			needNew = false
+		}
+		select {
 		case ev := <-e.executionTxsCh:
 			// txs := make(map[common.Address][]*types.Transaction, len(ev.Txs))
 			// 将交易打包进区块
@@ -214,7 +216,7 @@ func (e *ExecutorService) ExecuteLoop() {
 					panic(err)
 				}
 				// 发送新建block的请求（写入initBlockCH）
-				e.initBlockCh <- struct{}{}
+				needNew = true
 			} else {
 				continue
 			}
@@ -230,6 +232,7 @@ func (e *ExecutorService) initHeader(coinBase common.Address, gasLimit uint64) *
 		ParentHash: e.BlockChain.CurrentBlock().Hash(),
 		Time:       uint64(time.Now().Unix()),
 		Number:     blockNum.Add(e.BlockChain.CurrentBlock().Number, big.NewInt(1)),
+		BaseFee:    big.NewInt(0),
 		Coinbase:   coinBase,
 		GasLimit:   gasLimit,
 	}
