@@ -19,6 +19,7 @@ package legacypool
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"math/big"
 	"sort"
@@ -1090,7 +1091,10 @@ func (pool *LegacyPool) requestReset(oldHead *types.Header, newHead *types.Heade
 func (pool *LegacyPool) requestPromoteExecutables(set *accountSet) chan struct{} {
 	select {
 	case pool.reqPromoteCh <- set:
-		return <-pool.reorgDoneCh
+		{
+			fmt.Println(set)
+			return <-pool.reorgDoneCh
+		}
 	case <-pool.reorgShutdownCh:
 		return pool.reorgShutdownCh
 	}
@@ -1150,6 +1154,7 @@ func (pool *LegacyPool) scheduleReorgLoop() {
 			} else {
 				dirtyAccounts.merge(req)
 			}
+			fmt.Println("Here we go")
 			launchNextRun = true
 			pool.reorgDoneCh <- nextDone
 

@@ -220,9 +220,6 @@ func (e *ExecutorService) ExecuteLoop() {
 	}
 }
 
-func (e *ExecutorService) fillTransactionsToBlock() {
-}
-
 func (e *ExecutorService) initHeader(coinBase common.Address, gasLimit uint64) *types.Header {
 	blockNum := big.NewInt(0)
 	header := &types.Header{
@@ -233,4 +230,9 @@ func (e *ExecutorService) initHeader(coinBase common.Address, gasLimit uint64) *
 		GasLimit:   gasLimit,
 	}
 	return header
+}
+
+func (e *ExecutorService) Stop() {
+	e.executionPool.Close()
+	e.pendingPool.Close()
 }
