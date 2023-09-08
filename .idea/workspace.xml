@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="变更">
-      <change afterPath="$PROJECT_DIR$/core/genesis.go" afterDir="false" />
+    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="chore: 节点！启动！">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/blockchain.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/blockchain.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/etc/pangu.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/node/etc/pangu.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/handler/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/handler/routes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/svc/servicecontext.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/svc/servicecontext.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/pangu.api" beforeDir="false" afterPath="$PROJECT_DIR$/node/pangu.api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/pangu.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/pangu.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +143,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="devXwk" />
+                        <option value="origin/devXwk" />
                       </list>
                     </value>
                   </entry>
@@ -171,7 +163,8 @@
     <MESSAGE value="fix:清除rawdb的显式错误&#10;&#10;通过注释的方法清除" />
     <MESSAGE value="fix:修改了txclassfy的逻辑&#10;&#10;与AccessList相关的错误已修复" />
     <MESSAGE value="chore:增加API处理交易的逻辑&#10;&#10;增加了部分起链的操作，部分逻辑硬编码，后续需要修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore:增加API处理交易的逻辑&#10;&#10;增加了部分起链的操作，部分逻辑硬编码，后续需要修改" />
+    <MESSAGE value="chore: 节点！启动！" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: 节点！启动！" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
