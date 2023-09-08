@@ -281,6 +281,7 @@ func (s panguSigner) Hash(tx *Transaction) common.Hash {
 			tx.GasLimit(),
 			tx.To(),
 			tx.Value(),
+			tx.Data(),
 			tx.EncContent(),
 		})
 }
