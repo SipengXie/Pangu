@@ -2,8 +2,8 @@
 package types
 
 type TransactionArgs struct {
-	From                 []byte `json:"from"`
-	To                   []byte `json:"to"`
+	From                 string `json:"from"`
+	To                   string `json:"to"`
 	Gas                  uint64 `json:"gas"`
 	GasPrice             string `json:"gasPrice"`
 	MaxFeePerGas         string `json:"maxFeePerGas"`
@@ -11,10 +11,10 @@ type TransactionArgs struct {
 	Value                string `json:"value"`
 	Nonce                uint64 `json:"nonce"`
 	SigAlgo              byte   `json:"sigAlgo"`
-	Signature            []byte `json:"signature"`
-	Data                 []byte `json:"data"`
-	Input                []byte `json:"input"`
-	AccessList           []byte `json:"accessList,omitemty"`
+	Signature            string `json:"signature"`
+	Data                 string `json:"data"`
+	Input                string `json:"input"`
+	AccessList           string `json:"accessList,omitemty"`
 	ChainID              string `json:"chainId,omitempty"`
 }
 
