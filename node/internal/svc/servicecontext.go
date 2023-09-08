@@ -34,8 +34,9 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(db), nil)
 
 	// 模拟一个区块链
-	var chainCfg *params.ChainConfig
-	chainCfg.ChainID = big.NewInt(1)
+	chainCfg := &params.ChainConfig{
+		ChainID: big.NewInt(1337),
+	}
 	blockchain := core.NewBlokchain(chainCfg, statedb, evm.Config{})
 
 	// 实例化两个txpool

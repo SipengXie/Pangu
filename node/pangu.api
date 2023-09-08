@@ -24,10 +24,6 @@ type (
 	}
 )
 
-@server(
-	jwt: Auth
-)
-
 service pangu {
 	@handler sendTransaction
 	post /pangu/sendTransaction (TransactionArgs) returns (boolRes)

@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-
 	"github.com/SipengXie/pangu/node/internal/config"
 	"github.com/SipengXie/pangu/node/internal/handler"
 	"github.com/SipengXie/pangu/node/internal/svc"
@@ -12,9 +11,10 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 )
 
-var configFile = flag.String("f", "etc/pangu.yaml", "the config file")
+var configFile = flag.String("f", "/Pangu/node/etc/pangu.yaml", "the config file")
 
 func main() {
+
 	flag.Parse()
 
 	var c config.Config
