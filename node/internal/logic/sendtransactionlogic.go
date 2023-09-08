@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"math/big"
 
@@ -79,7 +80,9 @@ func ToTransaction(args *types.TransactionArgs) *tp.Transaction {
 		Signature:  common.Hex2Bytes(args.Signature),
 		AccessList: al,
 	}
-	return tp.NewTx(data)
+	tx := tp.NewTx(data)
+	fmt.Println(tx.Sender(tp.LatestSignerForChainID(big.NewInt(1337))))
+	return tx
 }
 
 func (l *SendTransactionLogic) SendTransaction(req *types.TransactionArgs) (resp *types.BoolRes, err error) {
