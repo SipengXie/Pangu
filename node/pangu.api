@@ -1,7 +1,7 @@
 type (
 	TransactionArgs {
-		From                 []byte `json:"from"`
-		To                   []byte `json:"to"`
+		From                 string `json:"from"`
+		To                   string `json:"to"`
 		Gas                  uint64 `json:"gas"`
 		GasPrice             string `json:"gasPrice"`
 		MaxFeePerGas         string `json:"maxFeePerGas"`
@@ -10,12 +10,12 @@ type (
 		Nonce                uint64 `json:"nonce"`
 
 		SigAlgo   byte   `json:"sigAlgo"`
-		Signature []byte `json:"signature"`
+		Signature string `json:"signature"`
 
-		Data  []byte `json:"data"`
-		Input []byte `json:"input"`
+		Data  string `json:"data"`
+		Input string `json:"input"`
 
-		AccessList []byte `json:"accessList,omitemty"`
+		AccessList string `json:"accessList,omitemty"`
 		ChainID    string `json:"chainId,omitempty"`
 	}
 
