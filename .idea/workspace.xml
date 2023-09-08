@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="02861e4f-7c33-4691-98f5-f7fe779679e9" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/executor/executor_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/executor/executor_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +54,7 @@
     "settings.editor.selected.configurable": "go.vgo"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Go 测试.github.com/SipengXie/pangu/executor 中的 TestMoreTransferTX">
     <configuration name="github.com/SipengXie/pangu/executor 中的 TestCreateTx" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="Pangu" />
       <working_directory value="$PROJECT_DIR$/executor" />
@@ -66,8 +67,21 @@
       <pattern value="^\QTestCreateTx\E$" />
       <method v="2" />
     </configuration>
+    <configuration name="github.com/SipengXie/pangu/executor 中的 TestMoreTransferTX" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="Pangu" />
+      <working_directory value="$PROJECT_DIR$/executor" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/SipengXie/pangu/executor" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestMoreTransferTX\E$" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go 测试.github.com/SipengXie/pangu/executor 中的 TestMoreTransferTX" />
         <item itemvalue="Go 测试.github.com/SipengXie/pangu/executor 中的 TestCreateTx" />
       </list>
     </recent_temporary>

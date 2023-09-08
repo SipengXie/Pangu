@@ -3,6 +3,7 @@ package svc
 import (
 	"fmt"
 	"math/big"
+	"net"
 
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/crypto"
@@ -21,6 +22,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/grpclog"
 )
 
 var (
@@ -60,12 +62,23 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	// defer ptxpool.Close()
 
 	// 实例化共识客户端
-	conn, _ := grpc.Dial("127.0.0.1:9080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("127.0.0.1:9080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		fmt.Println("Failed to dial gRPC server: %v", err)
+	}
 	p2pClient := pb.NewP2PClient(conn)
 
 	// 实例化ExecutorService
 	executorService := executor.NewExecutorService(etxpool, ptxpool, blockchain, p2pClient)
 	fmt.Println("creat executor Service")
+
+	listen, _ := net.Listen("tcp", "127.0.0.1:9876")
+	s := grpc.NewServer()
+	pb.RegisterExecutorServer(s, executorService)
+	fmt.Println("Listen on " + "127.0.0.1:9876")
+	grpclog.Println("Listen on " + "127.0.0.1:9876")
+
+	go s.Serve(listen)
 
 	return &ServiceContext{
 		Config:          c,

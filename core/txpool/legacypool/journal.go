@@ -58,6 +58,7 @@ func newTxJournal(path string) *journal {
 // load parses a transaction journal dump from disk, loading its contents into
 // the specified pool.
 func (journal *journal) load(add func([]*types.Transaction) []error) error {
+	return nil
 	// Open the journal for loading any past transactions
 	input, err := os.Open(journal.path)
 	if errors.Is(err, fs.ErrNotExist) {
@@ -119,6 +120,7 @@ func (journal *journal) load(add func([]*types.Transaction) []error) error {
 
 // insert adds the specified transaction to the local disk journal.
 func (journal *journal) insert(tx *types.Transaction) error {
+	return nil
 	if journal.writer == nil {
 		return errNoActiveJournal
 	}
@@ -131,6 +133,7 @@ func (journal *journal) insert(tx *types.Transaction) error {
 // rotate regenerates the transaction journal based on the current contents of
 // the transaction pool.
 func (journal *journal) rotate(all map[common.Address]types.Transactions) error {
+	return nil
 	// Close the current journal (if any is open)
 	if journal.writer != nil {
 		if err := journal.writer.Close(); err != nil {
@@ -171,6 +174,7 @@ func (journal *journal) rotate(all map[common.Address]types.Transactions) error 
 
 // close flushes the transaction journal contents to disk and closes the file.
 func (journal *journal) close() error {
+	return nil
 	var err error
 
 	if journal.writer != nil {
