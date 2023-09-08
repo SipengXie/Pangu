@@ -1,137 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="ALL" />
+    <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="chore: 生成测试交易">
+    <list default="true" id="5a197236-dbe7-42c8-a5a0-c955c3113029" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/logic/sendtransactionlogic.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/logic/sendtransactionlogic.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/types/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/types/types.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/pangu.api" beforeDir="false" afterPath="$PROJECT_DIR$/node/pangu.api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/process_types.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/process_types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/executor/executor_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/executor/executor_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Go File" />
-      </list>
-    </option>
-  </component>
-  <component name="GOROOT" url="file://$USER_HOME$/go/go1.21.0" />
-  <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="devXsp" />
-      </map>
-    </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;history&quot;: [
-    {
-      &quot;state&quot;: &quot;OPEN&quot;,
-      &quot;assignee&quot;: &quot;LazyDreamingDog&quot;,
-      &quot;author&quot;: &quot;SipengXie&quot;
-    }
-  ],
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;LazyDreamingDog&quot;,
-    &quot;author&quot;: &quot;SipengXie&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="990f9af3-9aa0-4b7e-8ef0-2070599086fa" />
-        <option name="url" value="https://github.com/SipengXie/Pangu.git" />
-      </UrlAndAccount>
-    </option>
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 3
-}</component>
-  <component name="ProjectId" id="2UnLKcO7gOfCjGybHUmJ9rKIx8Y" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "DefaultGoTemplateProperty": "Go File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "configurable..is.expanded": "false",
-    "configurable.GoLibrariesConfigurable.is.expanded": "true",
-    "git-widget-placeholder": "devHanser",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/lhr4108",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "Errors"
+    "git-widget-placeholder": "devHanser"
   }
-}</component>
-  <component name="RunManager" selected="Go Build.go build github.com/SipengXie/pangu/node">
+}]]></component>
+  <component name="RunManager">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="Pangu" />
       <working_directory value="$PROJECT_DIR$" />
-      <go_parameters value="-i" />
-      <kind value="FILE" />
+      <kind />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="go build github.com/SipengXie/pangu/node" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="Pangu" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/SipengXie/pangu/node" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/node/pangu.go" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestCreateTx in github.com/SipengXie/pangu/executor" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="Pangu" />
-      <working_directory value="$PROJECT_DIR$/executor" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/SipengXie/pangu/executor" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestCreateTx\E$" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="Pangu" />
       <working_directory value="$PROJECT_DIR$" />
-      <go_parameters value="-i" />
-      <kind value="DIRECTORY" />
+      <kind />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
@@ -149,67 +52,24 @@
       <pattern value="^\QTestCreateTx\E$" />
       <method v="2" />
     </configuration>
-    <list>
-      <item itemvalue="Go 构建.go build github.com/SipengXie/pangu/node" />
-      <item itemvalue="Go 测试.github.com/SipengXie/pangu/executor 中的 TestCreateTx" />
-      <item itemvalue="Go 测试.TestCreateTx in github.com/SipengXie/pangu/executor" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build github.com/SipengXie/pangu/node" />
-        <item itemvalue="Go Test.TestCreateTx in github.com/SipengXie/pangu/executor" />
+        <item itemvalue="Go 测试.github.com/SipengXie/pangu/executor 中的 TestCreateTx" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/devXwk" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="chore:更新API的交易处理&#10;&#10;增加了AccessList的序列化和反序列化" />
-    <MESSAGE value="chore:更新API的执行器启动&#10;&#10;模拟创建一条链并实例化Txpool和共识客户端，启动了ExecutorService" />
-    <MESSAGE value="chore:添加了Trie，修改了部分BUG&#10;&#10;将geth的Tire包引入，然后改了gomod的几个版本干掉了一些错误" />
-    <MESSAGE value="fix:修改了prepare函数&#10;&#10;新的AccessList的遍历" />
-    <MESSAGE value="fix:清除rawdb的显式错误&#10;&#10;通过注释的方法清除" />
-    <MESSAGE value="fix:修改了txclassfy的逻辑&#10;&#10;与AccessList相关的错误已修复" />
-    <MESSAGE value="chore:增加API处理交易的逻辑&#10;&#10;增加了部分起链的操作，部分逻辑硬编码，后续需要修改" />
-    <MESSAGE value="chore: 节点！启动！" />
-    <MESSAGE value="chore: 生成测试交易" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: 生成测试交易" />
-  </component>
-  <component name="VgoProject">
-    <settings-migrated>true</settings-migrated>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/executor/executor_test.go</url>
-          <line>144</line>
-          <option name="timeStamp" value="2" />
+          <url>file://$PROJECT_DIR$/core/process.go</url>
+          <line>77</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/core/process.go</url>
+          <line>169</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

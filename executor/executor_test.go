@@ -161,6 +161,7 @@ func TestCreateTx(t *testing.T) {
 	blockchain := core.NewBlokchain(chainCfg, statedb, evm.Config{})
 	// 获取最新区块的区块头
 	curblock := blockchain.CurrentBlock()
+	curblock.BaseFee = big.NewInt(0)
 	// 获取最新区块
 	NewBlock := blockchain.GetBlock(curblock.Hash(), curblock.Number.Uint64())
 	// 交易赋值
