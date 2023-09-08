@@ -19,8 +19,8 @@ package types
 import (
 	"bytes"
 	"container/heap"
+	"encoding/json"
 	"errors"
-	"io"
 	"math/big"
 	"sync/atomic"
 	"time"
@@ -51,7 +51,7 @@ var (
 
 // Transaction types.
 const (
-	PanguTxType = 0x00
+	PanguTxType = 0x01
 )
 
 // Transaction is an Ethereum transaction.
@@ -106,22 +106,23 @@ type TxData interface {
 	effectiveGasPrice(dst *big.Int, baseFee *big.Int) *big.Int
 }
 
-// EncodeRLP implements rlp.Encoder
-func (tx *Transaction) EncodeRLP(w io.Writer) error {
+// // EncodeRLP implements rlp.Encoder
+// func (tx *Transaction) EncodeRLP(w io.Writer) error {
 
-	buf := encodeBufferPool.Get().(*bytes.Buffer)
-	defer encodeBufferPool.Put(buf)
-	buf.Reset()
-	if err := tx.encodeTyped(buf); err != nil {
-		return err
-	}
-	return rlp.Encode(w, buf.Bytes())
-}
+// 	buf := encodeBufferPool.Get().(*bytes.Buffer)
+// 	defer encodeBufferPool.Put(buf)
+// 	buf.Reset()
+// 	if err := tx.encodeTyped(buf); err != nil {
+// 		return err
+// 	}
+// 	return rlp.Encode(w, buf.Bytes())
+// }
 
 // encodeTyped writes the canonical encoding of a typed transaction to w.
 func (tx *Transaction) encodeTyped(w *bytes.Buffer) error {
 	w.WriteByte(tx.Type())
-	return rlp.Encode(w, tx.inner)
+	return json.NewEncoder(w).Encode(tx.inner)
+	// return rlp.Encode(w, tx.inner)
 }
 
 // MarshalBinary returns the canonical encoding of the transaction.
@@ -133,24 +134,24 @@ func (tx *Transaction) MarshalBinary() ([]byte, error) {
 	return buf.Bytes(), err
 }
 
-// DecodeRLP implements rlp.Decoder
-func (tx *Transaction) DecodeRLP(s *rlp.Stream) error {
-	_, _, err := s.Kind()
-	switch {
-	case err != nil:
-		return err
-	default:
-		var b []byte
-		if b, err = s.Bytes(); err != nil {
-			return err
-		}
-		inner, err := tx.decodeTyped(b)
-		if err == nil {
-			tx.setDecoded(inner, uint64(len(b)))
-		}
-		return err
-	}
-}
+// // DecodeRLP implements rlp.Decoder
+// func (tx *Transaction) DecodeRLP(s *rlp.Stream) error {
+// 	_, _, err := s.Kind()
+// 	switch {
+// 	case err != nil:
+// 		return err
+// 	default:
+// 		var b []byte
+// 		if b, err = s.Bytes(); err != nil {
+// 			return err
+// 		}
+// 		inner, err := tx.decodeTyped(b)
+// 		if err == nil {
+// 			tx.setDecoded(inner, uint64(len(b)))
+// 		}
+// 		return err
+// 	}
+// }
 
 // UnmarshalBinary decodes the canonical encoding of transactions.
 func (tx *Transaction) UnmarshalBinary(b []byte) error {
@@ -170,7 +171,8 @@ func (tx *Transaction) decodeTyped(b []byte) (TxData, error) {
 	switch b[0] {
 	case PanguTxType:
 		var inner PanguTransaction
-		err := rlp.DecodeBytes(b[1:], &inner)
+		// err := rlp.DecodeBytes(b[1:], &inner)
+		err := json.NewDecoder(bytes.NewReader(b[1:])).Decode(&inner)
 		return &inner, err
 	default:
 		return nil, ErrTxTypeNotSupported

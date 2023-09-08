@@ -130,6 +130,8 @@ type ValidationOptionsWithState struct {
 func ValidateTransactionWithState(tx *types.Transaction, signer types.Signer, opts *ValidationOptionsWithState) error {
 	// Ensure the transaction adheres to nonce ordering
 	from, err := signer.Sender(tx) // already validated (and cached), but cleaner to check
+	// from, err := tx.Sender(signer)
+	// fmt.Println(from, err)
 	if err != nil {
 		log.Error("Transaction sender recovery failed", "err", err)
 		return err

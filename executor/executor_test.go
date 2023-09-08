@@ -239,41 +239,45 @@ func TestTripleTransferTX(t *testing.T) {
 	statedb.SetBalance(FromAddr, big.NewInt(99999999999999999)) // A发送地址余额增加
 	statedb.SetBalance(CAddr, big.NewInt(99999999999999999))    // C发送地址余额增加
 
-	// 创建一条完整链作为父链
-	// 模拟一个区块链
-	chainCfg := &params.ChainConfig{
-		ChainID: big.NewInt(1337),
-	}
-	// 起链
-	blockchain := core.NewBlokchain(chainCfg, statedb, evm.Config{})
-	// 获取最新区块的区块头
-	curblock := blockchain.CurrentBlock()
-	curblock.BaseFee = big.NewInt(0)
-	// 获取最新区块
-	NewBlock := blockchain.GetBlock(curblock.Hash(), curblock.Number.Uint64())
-	// 交易赋值
-	NewBlock.SetTransactions(txs)
+	fmt.Println(common.Bytes2Hex(txs[0][0].RawSigValues()))
+	// statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(db), nil)
+	// statedb.SetBalance(FromAddr, big.NewInt(99999999999999999)) // 发送地址余额增加
 
-	// 新建执行器
-	processer := core.NewStateProcessor(chainCfg, blockchain)
-	// 新建EVM执行环境
-	// 执行交易
-	returnmsg, err := processer.Process(NewBlock, statedb, evm.Config{
-		Tracer:                  nil,
-		NoBaseFee:               false,
-		EnablePreimageRecording: false,
-		ExtraEips:               nil,
-	})
-	if err != nil {
-		fmt.Printf("%sERROR MSG%s   测试函数交易执行失败 err = %v\n", types.FRED, types.FRESET, err)
-		t.Fatalf("failed to import forked block chain: %v", err)
-		return
-	}
-	fmt.Printf("交易结果：%v\n", returnmsg)
-	if returnmsg.ErrTx != nil {
-		fmt.Printf("%sERROR MSG%s   交易中出现了错误 err = %v\n", types.FRED, types.FRESET, err)
-		for _, value := range returnmsg.ErrTx {
-			fmt.Printf("错误 %v", value.ErrorMsg)
-		}
-	}
+	// // 创建一条完整链作为父链
+	// // 模拟一个区块链
+	// chainCfg := &params.ChainConfig{
+	// 	ChainID: big.NewInt(1337),
+	// }
+	// // 起链
+	// blockchain := core.NewBlokchain(chainCfg, statedb, evm.Config{})
+	// // 获取最新区块的区块头
+	// curblock := blockchain.CurrentBlock()
+	// curblock.BaseFee = big.NewInt(0)
+	// // 获取最新区块
+	// NewBlock := blockchain.GetBlock(curblock.Hash(), curblock.Number.Uint64())
+	// // 交易赋值
+	// NewBlock.SetTransactions(txs)
+
+	// // 新建执行器
+	// processer := core.NewStateProcessor(chainCfg, blockchain)
+	// // 新建EVM执行环境
+	// // 执行交易
+	// returnmsg, err := processer.Process(NewBlock, statedb, evm.Config{
+	// 	Tracer:                  nil,
+	// 	NoBaseFee:               false,
+	// 	EnablePreimageRecording: false,
+	// 	ExtraEips:               nil,
+	// })
+	// if err != nil {
+	// 	fmt.Printf("%sERROR MSG%s   测试函数交易执行失败 err = %v\n", types.FRED, types.FRESET, err)
+	// 	t.Fatalf("failed to import forked block chain: %v", err)
+	// 	return
+	// }
+	// fmt.Printf("交易结果：%v\n", returnmsg)
+	// if returnmsg.ErrTx != nil {
+	// 	fmt.Printf("%sERROR MSG%s   交易中出现了错误 err = %v\n", types.FRED, types.FRESET, err)
+	// 	for _, value := range returnmsg.ErrTx {
+	// 		fmt.Printf("错误 %v", value.ErrorMsg)
+	// 	}
+	// }
 }

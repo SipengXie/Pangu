@@ -8,7 +8,6 @@ import (
 
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core"
-	"github.com/SipengXie/pangu/log"
 	"github.com/SipengXie/pangu/trie"
 
 	"github.com/SipengXie/pangu/core/txpool"
@@ -126,7 +125,6 @@ func (e *ExecutorService) CommitBlock(ctx context.Context, pbBlock *pb.ExecBlock
 		if err != nil {
 			continue
 		}
-		fmt.Println(tx.Nonce())
 		ptx := &txpool.Transaction{Tx: tx}
 		if e.pendingPool.IsLocalTx(tx) {
 			Localtxs = append(Localtxs, ptx)
@@ -134,8 +132,13 @@ func (e *ExecutorService) CommitBlock(ctx context.Context, pbBlock *pb.ExecBlock
 			Remotetxs = append(Remotetxs, ptx)
 		}
 	}
-	e.executionPool.Add(Localtxs, true, false)
-	e.executionPool.Add(Remotetxs, false, false)
+	if len(Localtxs) != 0 {
+		e.executionPool.Add(Localtxs, true, false)
+	}
+	if len(Remotetxs) != 0 {
+		e.executionPool.Add(Remotetxs, false, false)
+	}
+
 	return &pb.Empty{}, err
 }
 
@@ -186,10 +189,11 @@ func (e *ExecutorService) ExecuteLoop() {
 			// txs := make(map[common.Address][]*types.Transaction, len(ev.Txs))
 			// 将交易打包进区块
 			// TODO : 完善打包区块的逻辑
+			fmt.Println("exec tx")
 			for _, tx := range ev.Txs {
 				txs = append(txs, tx)
 			}
-			if len(txs) >= 10 {
+			if len(txs) >= 1 {
 				signer := types.MakeSigner(e.BlockChain.Config(), header.Number, header.Time)
 				// 交易分组
 				blockTxs := core.ClassifyTx(txs, signer)
@@ -205,7 +209,7 @@ func (e *ExecutorService) ExecuteLoop() {
 
 				// 执行后将block传入一个管道，然后上链
 				status, err := e.BlockChain.WriteBlockAndSetHead(okBlock, processRes.Receipt, processRes.Logs, statedb, true)
-				log.Info("writeBlock status : ", status)
+				fmt.Println("writeBlock status : ", status)
 				if err != nil {
 					panic(err)
 				}
@@ -220,9 +224,6 @@ func (e *ExecutorService) ExecuteLoop() {
 	}
 }
 
-func (e *ExecutorService) fillTransactionsToBlock() {
-}
-
 func (e *ExecutorService) initHeader(coinBase common.Address, gasLimit uint64) *types.Header {
 	blockNum := big.NewInt(0)
 	header := &types.Header{
@@ -233,4 +234,9 @@ func (e *ExecutorService) initHeader(coinBase common.Address, gasLimit uint64) *
 		GasLimit:   gasLimit,
 	}
 	return header
+}
+
+func (e *ExecutorService) Stop() {
+	e.executionPool.Close()
+	e.pendingPool.Close()
 }
