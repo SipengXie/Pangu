@@ -108,6 +108,12 @@ func panguTx(nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, 
 			Data:       data,
 			AccessList: al,
 		}, types.LatestSignerForChainID(big.NewInt(1337)), key, byte(0x00))
+		data, _ := tx.MarshalBinary()
+		newTx := new(types.Transaction)
+		err := newTx.UnmarshalBinary(data)
+		if err != nil {
+			fmt.Printf("err = %v", err)
+		}
 		return tx
 	} else {
 		al := &accesslist.AccessList{
@@ -128,6 +134,12 @@ func panguTx(nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, 
 			Data:       data,
 			AccessList: al,
 		}, types.LatestSignerForChainID(big.NewInt(1337)), key, byte(0x00))
+		data, _ := tx.MarshalBinary()
+		newTx := new(types.Transaction)
+		err := newTx.UnmarshalBinary(data)
+		if err != nil {
+			fmt.Printf("err = %v", err)
+		}
 		return tx
 	}
 }

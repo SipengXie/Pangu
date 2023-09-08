@@ -1154,7 +1154,7 @@ func (pool *LegacyPool) scheduleReorgLoop() {
 			} else {
 				dirtyAccounts.merge(req)
 			}
-			fmt.Println("Here we go")
+			// fmt.Println("Here we go")
 			launchNextRun = true
 			pool.reorgDoneCh <- nextDone
 
