@@ -183,4 +183,10 @@ func TestCreateTx(t *testing.T) {
 		return
 	}
 	fmt.Printf("交易结果：%v\n", returnmsg)
+	if returnmsg.ErrTx != nil {
+		fmt.Printf("%sERROR MSG%s   交易中出现了错误 err = %v\n", types.FRED, types.FRESET, err)
+		for _, value := range returnmsg.ErrTx {
+			fmt.Printf("错误 %v", value.ErrorMsg)
+		}
+	}
 }
