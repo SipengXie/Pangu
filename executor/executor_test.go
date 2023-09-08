@@ -7,6 +7,8 @@ import (
 
 	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
+	"github.com/SipengXie/pangu/core"
+	"github.com/SipengXie/pangu/core/evm"
 	"github.com/SipengXie/pangu/core/rawdb"
 	"github.com/SipengXie/pangu/core/state"
 	"github.com/SipengXie/pangu/core/txpool/legacypool"
@@ -110,13 +112,6 @@ func panguTx(nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, 
 		}
 		al.Addresses[from] = -1
 		al.Addresses[to] = -1
-		// var result = "{\n"
-		// result += "\tFrom: " + from.Hex() + ",\n"
-		// nonce_str := strconv.Itoa(int(nonce))
-		// result += "\tNonce: " + nonce_str + ",\n"
-		// result += "\tTo: " + to.Hex() + ",\n"
-		// result += "}\n"
-		// fmt.Println(result)
 		tx, _ := types.SignNewTx(&types.PanguTransaction{
 			To:         &to,
 			Nonce:      nonce,
@@ -133,24 +128,66 @@ func panguTx(nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, 
 	}
 }
 
-// 构造3比交易，A -> B, B->C , D->E
-func newPankutxs() []*types.Transaction {
+// 构造3比交易，A -> B
+func newPankutxs() []types.Transactions {
 	// 构造交易
 	toAddr := common.BytesToAddress(common.FromHex(address111))
 	fromKey, _ := crypto.ToECDSA(bankKeyByes)
 	fromAddr := crypto.PubkeyToAddress(fromKey.PublicKey)
 	tx := panguTx(0, toAddr, big.NewInt(100), testTxGas, nil, big.NewInt(100), big.NewInt(1), bankKeyByes, fromAddr)
-	var txs types.Transactions
-	txs = append(txs, tx)
-	fmt.Println(toAddr)
-	fmt.Println(fromAddr)
-	fmt.Println(common.Bytes2Hex(tx.RawSigValues()))
-	alByte, _ := tx.AccessList().Serialize()
-	fmt.Println(common.Bytes2Hex(alByte))
+	txs := make([]types.Transactions, 1)
+	txs[0] = append(txs[0], tx)
+	// 变成二维数组
 	return txs
 }
 
 func TestCreateTx(t *testing.T) {
+	// 创建一笔交易
 	txs := newPankutxs()
-	fmt.Println(txs[0])
+	fmt.Printf("%sPROMPT MSG%s   创建了一笔新交易，该交易内容是 %v", types.FGREEN, types.FRESET, txs[0])
+
+	// ToAddr := common.BytesToAddress(common.FromHex(address111)) // 目的地址
+	FromKey, _ := crypto.ToECDSA(bankKeyByes)
+	FromAddr := crypto.PubkeyToAddress(FromKey.PublicKey) // 发送地址
+
+	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(db), nil)
+	statedb.SetBalance(FromAddr, big.NewInt(99999999999999999)) // 发送地址余额增加
+
+	// 创建一条完整链作为父链
+	// 模拟一个区块链
+	chainCfg := &params.ChainConfig{
+		ChainID: big.NewInt(1337),
+	}
+	// 起链
+	blockchain := core.NewBlokchain(chainCfg, statedb, evm.Config{})
+	// 获取最新区块的区块头
+	curblock := blockchain.CurrentBlock()
+	curblock.BaseFee = big.NewInt(0)
+	// 获取最新区块
+	NewBlock := blockchain.GetBlock(curblock.Hash(), curblock.Number.Uint64())
+	// 交易赋值
+	NewBlock.SetTransactions(txs)
+
+	// 新建执行器
+	processer := core.NewStateProcessor(chainCfg, blockchain)
+	// 新建EVM执行环境
+	// 执行交易
+	returnmsg, err := processer.Process(NewBlock, statedb, evm.Config{
+		Tracer:                  nil,
+		NoBaseFee:               false,
+		EnablePreimageRecording: false,
+		ExtraEips:               nil,
+	})
+	if err != nil {
+		fmt.Printf("%sERROR MSG%s   测试函数交易执行失败 err = %v\n", types.FRED, types.FRESET, err)
+		t.Fatalf("failed to import forked block chain: %v", err)
+		return
+	}
+	fmt.Printf("交易结果：%v\n", returnmsg)
+	if returnmsg.ErrTx != nil {
+		fmt.Printf("%sERROR MSG%s   交易中出现了错误 err = %v\n", types.FRED, types.FRESET, err)
+		for _, value := range returnmsg.ErrTx {
+			fmt.Printf("错误 %v", value.ErrorMsg)
+		}
+	}
 }
