@@ -35,9 +35,13 @@ var (
 	eip1559Config    *params.ChainConfig
 
 	// Test accounts
-	bankKeyHex  = "c3914129fade8d775d22202702690a8a0dcb178040bcb232a950c65b84308828"
-	bankKeyByes = common.Hex2Bytes(bankKeyHex)
-	address111  = "0x055504FE4d542fE266C7215a9cc2aa22E6a78445"
+	AKeyHex   = "c3914129fade8d775d22202702690a8a0dcb178040bcb232a950c65b84308828"
+	AKeyBytes = common.Hex2Bytes(AKeyHex)
+
+	BAddress = "0x055504FE4d542fE266C7215a9cc2aa22E6a78445"
+
+	CKeyHex   = "c3914129fade8d775d22202702690a8a0dcb178040bcb232a950c65b84308830"
+	CKeyBytes = common.Hex2Bytes(CKeyHex)
 )
 
 func init() {
@@ -128,30 +132,112 @@ func panguTx(nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, 
 	}
 }
 
-// 构造3比交易，A -> B
-func newPankutxs() []types.Transactions {
+// 构造一笔交易，A -> B
+func NewSingleTX() []types.Transactions {
 	// 构造交易
-	toAddr := common.BytesToAddress(common.FromHex(address111))
-	fromKey, _ := crypto.ToECDSA(bankKeyByes)
+	toAddr := common.BytesToAddress(common.FromHex(BAddress))
+	fromKey, _ := crypto.ToECDSA(AKeyBytes)
 	fromAddr := crypto.PubkeyToAddress(fromKey.PublicKey)
-	tx := panguTx(0, toAddr, big.NewInt(100), testTxGas, nil, big.NewInt(100), big.NewInt(1), bankKeyByes, fromAddr)
+	tx := panguTx(0, toAddr, big.NewInt(100), testTxGas, nil, big.NewInt(100), big.NewInt(1), AKeyBytes, fromAddr)
 	txs := make([]types.Transactions, 1)
 	txs[0] = append(txs[0], tx)
 	// 变成二维数组
 	return txs
 }
 
-func TestCreateTx(t *testing.T) {
+// 构造三笔交易，A -> B，A -> C，B -> C
+func NewTripleTX() []types.Transactions {
+	// A -> B
+	BAddr := common.BytesToAddress(common.FromHex(BAddress))
+	AKey, _ := crypto.ToECDSA(AKeyBytes)
+	AAddr := crypto.PubkeyToAddress(AKey.PublicKey)
+	tx1 := panguTx(0, BAddr, big.NewInt(100), testTxGas, nil, big.NewInt(100), big.NewInt(1), AKeyBytes, AAddr)
+
+	// A -> C
+	CKey, _ := crypto.ToECDSA(CKeyBytes)
+	CAddr := crypto.PubkeyToAddress(CKey.PublicKey)
+	tx2 := panguTx(1, CAddr, big.NewInt(100), testTxGas, nil, big.NewInt(100), big.NewInt(2), AKeyBytes, AAddr)
+
+	// C -> B
+	tx3 := panguTx(0, BAddr, big.NewInt(1), testTxGas, nil, big.NewInt(50), big.NewInt(1), CKeyBytes, CAddr)
+
+	// 组装交易
+	txs := make([]types.Transactions, 1)
+	txs[0] = append(txs[0], tx1, tx2, tx3)
+	// 变成二维数组
+	return txs
+}
+
+// 测试单笔转账交易 串行
+func TestSingleTransferTX(t *testing.T) {
 	// 创建一笔交易
-	txs := newPankutxs()
+	txs := NewSingleTX()
 	fmt.Printf("%sPROMPT MSG%s   创建了一笔新交易，该交易内容是 %v", types.FGREEN, types.FRESET, txs[0])
 
-	// ToAddr := common.BytesToAddress(common.FromHex(address111)) // 目的地址
-	FromKey, _ := crypto.ToECDSA(bankKeyByes)
-	FromAddr := crypto.PubkeyToAddress(FromKey.PublicKey) // 发送地址
+	// ToAddr := common.BytesToAddress(common.FromHex(BAddress)) // 目的地址
+	AKey, _ := crypto.ToECDSA(AKeyBytes)
+	AAddr := crypto.PubkeyToAddress(AKey.PublicKey) // 发送地址
+	CKey, _ := crypto.ToECDSA(CKeyBytes)
+	CAddr := crypto.PubkeyToAddress(CKey.PublicKey)
 
 	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(db), nil)
-	statedb.SetBalance(FromAddr, big.NewInt(99999999999999999)) // 发送地址余额增加
+	statedb.SetBalance(AAddr, big.NewInt(99999999999999999)) // 发送地址余额增加
+	statedb.SetBalance(CAddr, big.NewInt(99999999999999999)) // 发送地址余额增加
+
+	// 创建一条完整链作为父链
+	// 模拟一个区块链
+	chainCfg := &params.ChainConfig{
+		ChainID: big.NewInt(1337),
+	}
+	// 起链
+	blockchain := core.NewBlokchain(chainCfg, statedb, evm.Config{})
+	// 获取最新区块的区块头
+	curblock := blockchain.CurrentBlock()
+	curblock.BaseFee = big.NewInt(0)
+	// 获取最新区块
+	NewBlock := blockchain.GetBlock(curblock.Hash(), curblock.Number.Uint64())
+	// 交易赋值
+	NewBlock.SetTransactions(txs)
+
+	// 新建执行器
+	processer := core.NewStateProcessor(chainCfg, blockchain)
+	// 新建EVM执行环境
+	// 执行交易
+	returnmsg, err := processer.Process(NewBlock, statedb, evm.Config{
+		Tracer:                  nil,
+		NoBaseFee:               false,
+		EnablePreimageRecording: false,
+		ExtraEips:               nil,
+	})
+	if err != nil {
+		fmt.Printf("%sERROR MSG%s   测试函数交易执行失败 err = %v\n", types.FRED, types.FRESET, err)
+		t.Fatalf("failed to import forked block chain: %v", err)
+		return
+	}
+	fmt.Printf("交易结果：%v\n", returnmsg)
+	if returnmsg.ErrTx != nil {
+		fmt.Printf("%sERROR MSG%s   交易中出现了错误 err = %v\n", types.FRED, types.FRESET, err)
+		for _, value := range returnmsg.ErrTx {
+			fmt.Printf("错误 %v", value.ErrorMsg)
+		}
+	}
+}
+
+// 测试多笔转账交易 单组串行
+func TestTripleTransferTX(t *testing.T) {
+	// 创建一笔交易
+	txs := NewTripleTX()
+	fmt.Printf("%sPROMPT MSG%s   创建了三笔交易，该交易内容是 %v", types.FGREEN, types.FRESET, txs[0])
+
+	// ToAddr := common.BytesToAddress(common.FromHex(BAddress)) // 目的地址
+	FromKey, _ := crypto.ToECDSA(AKeyBytes)
+	FromAddr := crypto.PubkeyToAddress(FromKey.PublicKey) // 发送地址
+	CKey, _ := crypto.ToECDSA(CKeyBytes)
+	CAddr := crypto.PubkeyToAddress(CKey.PublicKey)
+
+	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(db), nil)
+	statedb.SetBalance(FromAddr, big.NewInt(99999999999999999)) // A发送地址余额增加
+	statedb.SetBalance(CAddr, big.NewInt(99999999999999999))    // C发送地址余额增加
 
 	// 创建一条完整链作为父链
 	// 模拟一个区块链
