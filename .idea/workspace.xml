@@ -4,65 +4,29 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f79c756a-f2f8-4290-8f86-ddd4cb1e242b" name="变更" comment="chore: 生成测试交易">
+    <list default="true" id="02861e4f-7c33-4691-98f5-f7fe779679e9" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/logic/sendtransactionlogic.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/logic/sendtransactionlogic.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/internal/types/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/types/types.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/pangu.api" beforeDir="false" afterPath="$PROJECT_DIR$/node/pangu.api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/executor/executor_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/executor/executor_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Go File" />
-      </list>
-    </option>
-  </component>
-  <component name="GOROOT" url="file://D:/Demo_go/go1.21.0" />
+  <component name="GOROOT" url="file://$USER_HOME$/go/go1.21.0" />
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="devXsp" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;history&quot;: [
-    {
-      &quot;state&quot;: &quot;OPEN&quot;,
-      &quot;assignee&quot;: &quot;LazyDreamingDog&quot;,
-      &quot;author&quot;: &quot;SipengXie&quot;
-    }
-  ],
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;LazyDreamingDog&quot;,
-    &quot;author&quot;: &quot;SipengXie&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="990f9af3-9aa0-4b7e-8ef0-2070599086fa" />
-        <option name="url" value="https://github.com/SipengXie/Pangu.git" />
-      </UrlAndAccount>
-    </option>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 3
+  &quot;associatedIndex&quot;: 6
 }</component>
-  <component name="ProjectId" id="2UnLKcO7gOfCjGybHUmJ9rKIx8Y" />
+  <component name="ProjectId" id="2V6kmECMiKMwfLBW6QfDA3Obn1q" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -70,52 +34,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;configurable..is.expanded&quot;: &quot;false&quot;,
-    &quot;configurable.GoLibrariesConfigurable.is.expanded&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;devXwk&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/38142&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;goland.project.structure&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "devXwk",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "F:/学习/学术研究/跨链项目/Pangu",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "go.vgo"
   }
-}</component>
-  <component name="RunManager" selected="Go Build.go build github.com/SipengXie/pangu/node">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="Pangu" />
-      <working_directory value="$PROJECT_DIR$" />
-      <go_parameters value="-i" />
-      <kind value="FILE" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="go build github.com/SipengXie/pangu/node" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="Pangu" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/SipengXie/pangu/node" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/node/pangu.go" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestCreateTx in github.com/SipengXie/pangu/executor" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+}]]></component>
+  <component name="RunManager">
+    <configuration name="github.com/SipengXie/pangu/executor 中的 TestCreateTx" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="Pangu" />
       <working_directory value="$PROJECT_DIR$/executor" />
       <root_directory value="$PROJECT_DIR$" />
@@ -127,20 +66,9 @@
       <pattern value="^\QTestCreateTx\E$" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="Pangu" />
-      <working_directory value="$PROJECT_DIR$" />
-      <go_parameters value="-i" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build github.com/SipengXie/pangu/node" />
-        <item itemvalue="Go Test.TestCreateTx in github.com/SipengXie/pangu/executor" />
+        <item itemvalue="Go 测试.github.com/SipengXie/pangu/executor 中的 TestCreateTx" />
       </list>
     </recent_temporary>
   </component>
@@ -148,42 +76,21 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/devXwk" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="chore:更新API的交易处理&#10;&#10;增加了AccessList的序列化和反序列化" />
-    <MESSAGE value="chore:更新API的执行器启动&#10;&#10;模拟创建一条链并实例化Txpool和共识客户端，启动了ExecutorService" />
-    <MESSAGE value="chore:添加了Trie，修改了部分BUG&#10;&#10;将geth的Tire包引入，然后改了gomod的几个版本干掉了一些错误" />
-    <MESSAGE value="fix:修改了prepare函数&#10;&#10;新的AccessList的遍历" />
-    <MESSAGE value="fix:清除rawdb的显式错误&#10;&#10;通过注释的方法清除" />
-    <MESSAGE value="fix:修改了txclassfy的逻辑&#10;&#10;与AccessList相关的错误已修复" />
-    <MESSAGE value="chore:增加API处理交易的逻辑&#10;&#10;增加了部分起链的操作，部分逻辑硬编码，后续需要修改" />
-    <MESSAGE value="chore: 节点！启动！" />
-    <MESSAGE value="chore: 生成测试交易" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: 生成测试交易" />
-  </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/core/process.go</url>
+          <line>173</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Pangu$github_com_SipengXie_pangu_executor__TestCreateTx.out" NAME="github.com/SipengXie/pangu/executor 中的 TestCreateTx 覆盖结果" MODIFIED="1694162364689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
