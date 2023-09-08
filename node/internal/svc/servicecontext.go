@@ -53,11 +53,11 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	txpoolCfg = legacypool.DefaultConfig
 	epool := legacypool.New(txpoolCfg, blockchain)
 	etxpool, _ := txpool.New(new(big.Int).SetUint64(txpoolCfg.PriceLimit), blockchain, []txpool.SubPool{epool})
-	defer etxpool.Close()
+	// defer etxpool.Close()
 
 	ppool := legacypool.New(txpoolCfg, blockchain)
 	ptxpool, _ := txpool.New(new(big.Int).SetUint64(txpoolCfg.PriceLimit), blockchain, []txpool.SubPool{ppool})
-	defer ptxpool.Close()
+	// defer ptxpool.Close()
 
 	// 实例化共识客户端
 	conn, _ := grpc.Dial("127.0.0.1:9080", grpc.WithTransportCredentials(insecure.NewCredentials()))
