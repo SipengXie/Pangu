@@ -52,19 +52,20 @@ type ThreadMessage struct {
 
 // TxMessage 实际交易执行传递的信息
 type TxMessage struct {
-	To          *common.Address
-	From        common.Address
-	Nonce       uint64
-	Value       *big.Int
-	GasLimit    uint64
-	GasPrice    *big.Int // 最终的价格 = 基础费 + 小费
-	GasFeeCap   *big.Int // Max Fee
-	GasTipCap   *big.Int // 小费
-	Data        []byte
-	AccessList  *accesslist.AccessList
-	BlobHashes  []common.Hash
-	IsParallel  bool // 是否是并行队列
-	CanParallel bool // 交易能否并行执行
+	To           *common.Address
+	From         common.Address
+	Nonce        uint64
+	Value        *big.Int
+	GasLimit     uint64
+	GasPrice     *big.Int // 最终的价格 = 基础费 + 小费
+	GasFeeCap    *big.Int // Max Fee
+	GasTipCap    *big.Int // 小费
+	Data         []byte
+	AccessList   *accesslist.AccessList
+	RWAccessList *accesslist.RW_AccessLists
+	BlobHashes   []common.Hash
+	IsParallel   bool // 是否是并行队列
+	CanParallel  bool // 交易能否并行执行
 
 	// 当SkipAccountChecks为true时，消息的nonce不会与状态中的账户nonce进行检查
 	SkipAccountChecks bool
@@ -74,6 +75,7 @@ type TxMessage struct {
 type ExecutionResult struct {
 	UsedGas         uint64
 	Err             error
+	VmErr           error
 	ReturnData      []byte // Returned data from evm(function result or data supplied with revert opcode)
 	IsParallelError bool   // 标识当前错误是否时因为交易无法并行导致的错误
 	TrueAccessList  *accesslist.AccessList

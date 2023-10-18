@@ -8,7 +8,6 @@ import (
 	"github.com/SipengXie/pangu/common"
 	"github.com/SipengXie/pangu/core/evm"
 	"github.com/SipengXie/pangu/crypto"
-	"github.com/ethereum/go-ethereum/core/vm"
 )
 
 var (
@@ -22,25 +21,27 @@ var (
 // Tracer mainly records the accesslist of each transaction during evm execution (interpreter.run)
 type RW_AccessListsTracer struct {
 	excl map[common.Address]struct{} // only excludes those stateless precompile contracts
-	list accesslist.RW_AccessLists
+	list *accesslist.RW_AccessLists
 }
 
-func NewRWAccessListTracer(rwAL accesslist.RW_AccessLists, precompiles []common.Address) *RW_AccessListsTracer {
+func NewRWAccessListTracer(rwAL *accesslist.RW_AccessLists, precompiles []common.Address) *RW_AccessListsTracer {
 	excl := make(map[common.Address]struct{})
 	for _, addr := range precompiles {
 		excl[addr] = struct{}{}
 	}
 	rwList := accesslist.NewRWAccessLists()
-	for key := range rwAL.ReadAL {
-		addr := common.BytesToAddress(key[:20])
-		if _, ok := excl[addr]; !ok {
-			rwList.ReadAL.Add(addr, common.BytesToHash(key[20:]))
+	if rwAL != nil {
+		for key := range rwAL.ReadAL {
+			addr := common.BytesToAddress(key[:20])
+			if _, ok := excl[addr]; !ok {
+				rwList.ReadAL.Add(addr, common.BytesToHash(key[20:]))
+			}
 		}
-	}
-	for key := range rwAL.WriteAL {
-		addr := common.BytesToAddress(key[:20])
-		if _, ok := excl[addr]; !ok {
-			rwList.WriteAL.Add(addr, common.BytesToHash(key[20:]))
+		for key := range rwAL.WriteAL {
+			addr := common.BytesToAddress(key[:20])
+			if _, ok := excl[addr]; !ok {
+				rwList.WriteAL.Add(addr, common.BytesToHash(key[20:]))
+			}
 		}
 	}
 	return &RW_AccessListsTracer{
@@ -183,12 +184,12 @@ func (a *RW_AccessListsTracer) CaptureState(pc uint64, op evm.OpCode, gas, cost 
 	}
 }
 
-func (*RW_AccessListsTracer) CaptureFault(pc uint64, op vm.OpCode, gas, cost uint64, scope *vm.ScopeContext, depth int, err error) {
+func (*RW_AccessListsTracer) CaptureFault(pc uint64, op evm.OpCode, gas, cost uint64, scope *evm.ScopeContext, depth int, err error) {
 }
 
 func (*RW_AccessListsTracer) CaptureEnd(output []byte, gasUsed uint64, err error) {}
 
-func (*RW_AccessListsTracer) CaptureEnter(typ vm.OpCode, from common.Address, to common.Address, input []byte, gas uint64, value *big.Int) {
+func (*RW_AccessListsTracer) CaptureEnter(typ evm.OpCode, from common.Address, to common.Address, input []byte, gas uint64, value *big.Int) {
 }
 
 func (*RW_AccessListsTracer) CaptureExit(output []byte, gasUsed uint64, err error) {}
@@ -198,6 +199,6 @@ func (*RW_AccessListsTracer) CaptureTxStart(gasLimit uint64) {}
 func (*RW_AccessListsTracer) CaptureTxEnd(restGas uint64) {}
 
 // AccessList returns the current accesslist maintained by the tracer.
-func (a *RW_AccessListsTracer) RWAccessList() accesslist.RW_AccessLists {
+func (a *RW_AccessListsTracer) RWAccessList() *accesslist.RW_AccessLists {
 	return a.list
 }

@@ -2,6 +2,7 @@ package accesslist
 
 import (
 	"crypto/sha256"
+	"encoding/json"
 
 	"github.com/SipengXie/pangu/common"
 )
@@ -43,8 +44,8 @@ type RW_AccessLists struct {
 	WriteAL ALTuple
 }
 
-func NewRWAccessLists() RW_AccessLists {
-	return RW_AccessLists{
+func NewRWAccessLists() *RW_AccessLists {
+	return &RW_AccessLists{
 		ReadAL:  make(ALTuple),
 		WriteAL: make(ALTuple),
 	}
@@ -75,6 +76,15 @@ func (RWAL RW_AccessLists) HasConflict(other RW_AccessLists) bool {
 	return false
 }
 
+func (RWAL RW_AccessLists) Merge(other RW_AccessLists) {
+	for key := range other.ReadAL {
+		RWAL.ReadAL.Add(common.BytesToAddress(key[:20]), common.BytesToHash(key[20:]))
+	}
+	for key := range other.WriteAL {
+		RWAL.WriteAL.Add(common.BytesToAddress(key[:20]), common.BytesToHash(key[20:]))
+	}
+}
+
 func (RWAL RW_AccessLists) ToMarshal() RW_AccessLists_Marshal {
 	readSet := make(map[common.Address][]string)
 	writeSet := make(map[common.Address][]string)
@@ -94,6 +104,31 @@ func (RWAL RW_AccessLists) ToMarshal() RW_AccessLists_Marshal {
 	}
 }
 
+func (RWAL RW_AccessLists) Equal(other RW_AccessLists) bool {
+	if len(RWAL.ReadAL) != len(other.ReadAL) {
+		return false
+	}
+	if len(RWAL.WriteAL) != len(other.WriteAL) {
+		return false
+	}
+	for key := range RWAL.ReadAL {
+		if !other.ReadAL.Contains(key) {
+			return false
+		}
+	}
+	for key := range RWAL.WriteAL {
+		if !other.WriteAL.Contains(key) {
+			return false
+		}
+	}
+	return true
+}
+
+func (RWAL RW_AccessLists) ToJSON() string {
+	str, _ := json.Marshal(RWAL.ToMarshal())
+	return common.Bytes2Hex(str)
+}
+
 func decodeHash(hash common.Hash) string {
 	switch hash {
 	case CODE:
@@ -111,7 +146,46 @@ func decodeHash(hash common.Hash) string {
 	}
 }
 
+func encodeHash(str string) common.Hash {
+	switch str {
+	case "code":
+		return CODE
+	case "balance":
+		return BALANCE
+	case "alive":
+		return ALIVE
+	case "codeHash":
+		return CODEHASH
+	case "nonce":
+		return NONCE
+	default:
+		return common.HexToHash(str)
+	}
+}
+
 type RW_AccessLists_Marshal struct {
 	ReadSet  map[common.Address][]string `json:"readSet"`
 	WriteSet map[common.Address][]string `json:"writeSet"`
+}
+
+func NewRWAccessListsMarshal() *RW_AccessLists_Marshal {
+	return &RW_AccessLists_Marshal{
+		ReadSet:  make(map[common.Address][]string),
+		WriteSet: make(map[common.Address][]string),
+	}
+}
+
+func (RWALM RW_AccessLists_Marshal) ToRWAL() *RW_AccessLists {
+	res := NewRWAccessLists()
+	for addr, hashList := range RWALM.ReadSet {
+		for _, hash := range hashList {
+			res.ReadAL.Add(addr, encodeHash(hash))
+		}
+	}
+	for addr, hashList := range RWALM.WriteSet {
+		for _, hash := range hashList {
+			res.WriteAL.Add(addr, encodeHash(hash))
+		}
+	}
+	return res
 }

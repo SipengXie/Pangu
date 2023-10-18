@@ -10,6 +10,7 @@ type TransactionArgs struct {
 	MaxPriorityFeePerGas string `json:"maxPriorityFeePerGas"`
 	Value                string `json:"value"`
 	Nonce                uint64 `json:"nonce"`
+	Salt                 string `json:"salt"`
 	SigAlgo              byte   `json:"sigAlgo"`
 	Signature            string `json:"signature"`
 	Data                 string `json:"data"`
