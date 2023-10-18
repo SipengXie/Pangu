@@ -119,7 +119,10 @@ type (
 		account            *common.Address
 		prevcode, prevhash []byte
 	}
-
+	auditChange struct {
+		account *common.Address
+		prev    bool
+	}
 	// Changes to other state values.
 	refundChange struct {
 		prev uint64
@@ -208,6 +211,14 @@ func (ch nonceChange) revert(s *StateDB) {
 }
 
 func (ch nonceChange) dirtied() *common.Address {
+	return ch.account
+}
+
+func (ch auditChange) revert(s *StateDB) {
+	s.getStateObject(*ch.account).setAudit(ch.prev)
+}
+
+func (ch auditChange) dirtied() *common.Address {
 	return ch.account
 }
 

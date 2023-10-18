@@ -1,9 +1,10 @@
 module github.com/SipengXie/pangu
 
-go 1.21
+go 1.20
 
 require (
 	github.com/VictoriaMetrics/fastcache v1.12.1
+	github.com/boltdb/bolt v1.3.1
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2
 	github.com/cockroachdb/pebble v0.0.0-20230906203007-2129a6e99d0f
 	github.com/consensys/gnark-crypto v0.11.2

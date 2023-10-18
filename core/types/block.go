@@ -76,7 +76,7 @@ func CopyHeader(h *Header) *Header {
 
 type Body struct {
 	// Grouped Txs for parallel execution
-	transactions []Transactions
+	transactions []Transactions `json:"transactions" gencodec:"required"`
 }
 
 type Block struct {

@@ -17,6 +17,7 @@ type StateAccount struct {
 	Balance  *big.Int
 	Root     common.Hash // merkle root of the storage trie
 	CodeHash []byte
+	IsAudit  bool
 }
 
 // SlimAccount is a modified version of an Account, where the root is replaced
@@ -27,6 +28,7 @@ type SlimAccount struct {
 	Balance  *big.Int
 	Root     []byte // Nil if root equals to types.EmptyRootHash
 	CodeHash []byte // Nil if hash equals to types.EmptyCodeHash
+	IsAudit  bool
 }
 
 // SlimAccountRLP encodes the state account in 'slim RLP' format.
@@ -34,6 +36,7 @@ func SlimAccountRLP(account StateAccount) []byte {
 	slim := SlimAccount{
 		Nonce:   account.Nonce,
 		Balance: account.Balance,
+		IsAudit: account.IsAudit,
 	}
 	if account.Root != EmptyRootHash {
 		slim.Root = account.Root[:]
@@ -56,7 +59,7 @@ func FullAccount(data []byte) (*StateAccount, error) {
 		return nil, err
 	}
 	var account StateAccount
-	account.Nonce, account.Balance = slim.Nonce, slim.Balance
+	account.Nonce, account.Balance, account.IsAudit = slim.Nonce, slim.Balance, slim.IsAudit
 
 	// Interpret the storage root and code hash in slim format.
 	if len(slim.Root) == 0 {

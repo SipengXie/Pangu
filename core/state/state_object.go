@@ -494,6 +494,18 @@ func (s *StateObject) setNonce(nonce uint64) {
 	s.data.Nonce = nonce
 }
 
+func (s *StateObject) SetAudit(audit bool) {
+	s.db.journal.append(auditChange{
+		account: &s.address,
+		prev:    s.data.IsAudit,
+	})
+	s.setAudit(audit)
+}
+
+func (s *StateObject) setAudit(audit bool) {
+	s.data.IsAudit = audit
+}
+
 func (s *StateObject) CodeHash() []byte {
 	return s.data.CodeHash
 }
@@ -504,4 +516,8 @@ func (s *StateObject) Balance() *big.Int {
 
 func (s *StateObject) Nonce() uint64 {
 	return s.data.Nonce
+}
+
+func (s *StateObject) IsAudit() bool {
+	return s.data.IsAudit
 }
