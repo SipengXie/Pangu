@@ -240,6 +240,12 @@ func (e *ExecutorService) initHeader(coinBase common.Address, gasLimit uint64) *
 }
 
 func (e *ExecutorService) Stop() {
-	e.executionPool.Close()
-	e.pendingPool.Close()
+	err := e.executionPool.Close()
+	if err != nil {
+		return
+	}
+	err = e.pendingPool.Close()
+	if err != nil {
+		return
+	}
 }

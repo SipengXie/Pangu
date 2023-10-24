@@ -6,14 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="02861e4f-7c33-4691-98f5-f7fe779679e9" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/executor/executor_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/executor/executor_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/blockchain.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/blockchain.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/genesis.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/genesis.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/executor/executor_server.go" beforeDir="false" afterPath="$PROJECT_DIR$/executor/executor_server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/internal/svc/servicecontext.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/internal/svc/servicecontext.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/pangu.go" beforeDir="false" afterPath="$PROJECT_DIR$/node/pangu.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://$USER_HOME$/go/go1.21.0" />
+  <component name="GOROOT" url="file://D:/Demo_go/go1.21.0" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -47,14 +51,14 @@
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "F:/学习/学术研究/跨链项目/Pangu",
+    "last_opened_file_path": "F:/Pangu",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "go.vgo"
   }
 }]]></component>
-  <component name="RunManager" selected="Go 测试.github.com/SipengXie/pangu/executor 中的 TestMoreTransferTX">
+  <component name="RunManager" selected="Go Test.github.com/SipengXie/pangu/executor 中的 TestCreateTx">
     <configuration name="github.com/SipengXie/pangu/executor 中的 TestCreateTx" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="Pangu" />
       <working_directory value="$PROJECT_DIR$/executor" />
@@ -79,12 +83,6 @@
       <pattern value="^\QTestMoreTransferTX\E$" />
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Go 测试.github.com/SipengXie/pangu/executor 中的 TestMoreTransferTX" />
-        <item itemvalue="Go 测试.github.com/SipengXie/pangu/executor 中的 TestCreateTx" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
@@ -92,17 +90,6 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/core/process.go</url>
-          <line>173</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Pangu$github_com_SipengXie_pangu_executor__TestCreateTx.out" NAME="github.com/SipengXie/pangu/executor 中的 TestCreateTx 覆盖结果" MODIFIED="1694162364689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

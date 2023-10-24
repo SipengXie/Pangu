@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	dbFile          = "blockchain_%s.db"
+	//dbFile          = "blockchain.db"
 	blocksBucket    = "blocks"
 	headerBucket    = "headers"
 	errChainStopped = errors.New("chain stopped")
@@ -57,11 +57,12 @@ func dbExists(dbFile string) bool {
 	return true
 }
 
-func NewBlokchain(config *params.ChainConfig, statedb *state.StateDB, vmConfig evm.Config) *Blockchain {
-	db, err := bolt.Open(dbFile, 0600, nil)
-	if err != nil {
-		panic(err)
-	}
+func NewBlokchain(config *params.ChainConfig, db *bolt.DB, statedb *state.StateDB, vmConfig evm.Config) *Blockchain {
+	//// 打开DB
+	//db, err := bolt.Open(dbFile, 0600, nil)
+	//if err != nil {
+	//	panic(err)
+	//}
 
 	bc := &Blockchain{
 		db:            db,

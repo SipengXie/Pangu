@@ -25,7 +25,10 @@ func main() {
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)
+	// 关掉ExecutorService的两个pool
 	defer ctx.ExecutorService.Stop()
+	// TODO: 关掉数据库
+
 	handler.RegisterHandlers(server, ctx)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)

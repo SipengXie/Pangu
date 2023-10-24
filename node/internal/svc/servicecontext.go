@@ -2,6 +2,7 @@ package svc
 
 import (
 	"fmt"
+	"github.com/boltdb/bolt"
 	"math/big"
 	"net"
 
@@ -25,8 +26,11 @@ import (
 	"google.golang.org/grpc/grpclog"
 )
 
+// 打开存状态的leveldb的路径
+const StateDbPath = "/mnt/disk1/xsp/pangu/chaindata/state/"
+const ChainDbPath = "/mnt/disk1/xsp/pangu/chaindata/chain/blockchain.db"
+
 var (
-	db         = rawdb.NewMemoryDatabase()
 	BankKeyHex = "c3914129fade8d775d22202702690a8a0dcb178040bcb232a950c65b84308828"
 )
 
@@ -38,7 +42,25 @@ type ServiceContext struct {
 func NewServiceContext(c config.Config) *ServiceContext {
 	// TODO : 工程上需要进一步构筑blockchain的逻辑
 	// 默认起好了一条链
-	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(db), nil)
+	// state db 使用 leveldb
+	leveldb, err := rawdb.Open(rawdb.OpenOptions{
+		Type:      "leveldb",
+		Directory: StateDbPath,
+		Namespace: "db/data",
+		Cache:     512,
+		Handles:   16,
+		ReadOnly:  false,
+	})
+	if err == nil {
+		panic(err)
+	}
+	// chain db 使用 boltdb
+	boltdb, err := bolt.Open(ChainDbPath, 0600, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(leveldb), nil)
 	// 初始化一个账户
 	BankAKey, _ := crypto.ToECDSA(common.Hex2Bytes(BankKeyHex))
 	BankAddress := crypto.PubkeyToAddress(BankAKey.PublicKey)
@@ -48,7 +70,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	chainCfg := &params.ChainConfig{
 		ChainID: big.NewInt(1337),
 	}
-	blockchain := core.NewBlokchain(chainCfg, statedb, evm.Config{})
+	blockchain := core.NewBlokchain(chainCfg, boltdb, statedb, evm.Config{})
 
 	// 实例化两个txpool
 	var txpoolCfg legacypool.Config
