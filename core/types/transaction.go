@@ -65,6 +65,15 @@ type Transaction struct {
 	from atomic.Value
 }
 
+// GuarantorTX TODO: 担保人交易
+type GuarantorTX struct {
+	GuarSigAlgo []byte // 担保人签名算法
+	GuarSig     []byte // 担保人签名 用户如果不选择担保人签名，那么就需要用自己的签名来签名
+
+	EncAlgo    []byte // 加密算法
+	EncContent []byte // 加密数据 解密后得到 []Transaction
+}
+
 // NewTx creates a new transaction.
 func NewTx(inner TxData) *Transaction {
 	tx := new(Transaction)
@@ -97,12 +106,6 @@ type TxData interface {
 	rawSigValues() []byte
 	setSigValues(chainID *big.Int, sig []byte, sigAlgo byte)
 
-	// effectiveGasPrice computes the gas price paid by the transaction, given
-	// the inclusion block baseFee.
-	//
-	// Unlike other TxData methods, the returned *big.Int should be an independent
-	// copy of the computed value, i.e. callers are allowed to mutate the result.
-	// Method implementations can use 'dst' to store the result.
 	effectiveGasPrice(dst *big.Int, baseFee *big.Int) *big.Int
 }
 
