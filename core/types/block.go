@@ -76,7 +76,10 @@ func CopyHeader(h *Header) *Header {
 
 type Body struct {
 	// Grouped Txs for parallel execution
-	transactions []Transactions
+	transactions []Transactions // 暂时保留
+
+	// 担保人交易 实际上上面这种交易类型是不需要的，所有交易都需要转成担保人交易的形式
+	GuarantorTX GuarantorTX
 }
 
 type Block struct {
@@ -174,7 +177,14 @@ func (b *Block) Transactions() Transactions {
 }
 
 func (b *Block) Transactions2D() []Transactions {
-	return b.transactions
+	// return b.transactions 这样修改可以吗
+	return b.Body.transactions
+}
+
+// GetGuaranteeTX 新增方法，获取区块内的担保人交易
+func (b *Block) GetGuaranteeTX() GuarantorTX {
+	// return b.transactions 这样修改可以吗
+	return b.Body.GuarantorTX
 }
 
 func (b *Block) Transaction(hash common.Hash) *Transaction {

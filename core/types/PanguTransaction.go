@@ -26,6 +26,20 @@ type PanguTransaction struct {
 
 	Data       []byte
 	AccessList *accesslist.AccessList
+
+	// 新增
+	TrueAL      *accesslist.AccessList // 担保人修改后真实的AccessList，用户不对这一部分签名
+	IsGuarantee bool                   // 是否是担保人签名交易，用户可以自己签名相应的也要对交易执行结果负责
+}
+
+// 新增方法 getTrueAL
+func (tx *PanguTransaction) getTrueAL() (tal *accesslist.AccessList) {
+	return tx.TrueAL
+}
+
+// 新增方法 getIsGuarantee
+func (tx *PanguTransaction) getIsGuarantee() bool {
+	return tx.IsGuarantee
 }
 
 // copy creates a deep copy of the transaction data and initializes all fields.

@@ -74,6 +74,16 @@ type GuarantorTX struct {
 	EncContent []byte // 加密数据 解密后得到 []Transaction
 }
 
+// EncGuarantorTX 担保人交易解密函数
+func (g GuarantorTX) EncGuarantorTX() {
+	// 后续实现
+}
+
+// VerifySigTX 验证担保人交易签名
+func (g GuarantorTX) VerifySigTX() {
+	// 后续实现
+}
+
 // NewTx creates a new transaction.
 func NewTx(inner TxData) *Transaction {
 	tx := new(Transaction)
@@ -107,6 +117,21 @@ type TxData interface {
 	setSigValues(chainID *big.Int, sig []byte, sigAlgo byte)
 
 	effectiveGasPrice(dst *big.Int, baseFee *big.Int) *big.Int
+
+	// 获得TrueAL
+	getTrueAL() *accesslist.AccessList
+	// 获得是否是担保人签名的交易
+	getIsGuarantee() bool
+}
+
+// TrueAL 新增方法
+func (tx *Transaction) TrueAL() (tal *accesslist.AccessList) {
+	return tx.inner.getTrueAL()
+}
+
+// IsGuarantee 新增方法
+func (tx *Transaction) IsGuarantee() bool {
+	return tx.inner.getIsGuarantee()
 }
 
 // EncodeRLP implements rlp.Encoder
@@ -188,6 +213,10 @@ func (tx *Transaction) setDecoded(inner TxData, size uint64) {
 		tx.size.Store(size)
 	}
 }
+
+//func (tx *Transaction) getTrueAL() (tal *accesslist.AccessList){
+//	return tx.
+//}
 
 // TODO: 交易是否被Protecetd对于签名算法很敏感，在这里先不做讨论
 // func sanityCheckSignature(v *big.Int, r *big.Int, s *big.Int, maybeProtected bool) error {
