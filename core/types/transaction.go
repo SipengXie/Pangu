@@ -65,6 +65,11 @@ type Transaction struct {
 	from atomic.Value
 }
 
+// 新增方法，返回交易哈希值
+func (t Transaction) GetTXHash() atomic.Value {
+	return t.hash
+}
+
 // GuarantorTX TODO: 担保人交易
 type GuarantorTX struct {
 	GuarSigAlgo []byte // 担保人签名算法

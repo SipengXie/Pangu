@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/big"
 	"sync"
+	"sync/atomic"
 
 	"github.com/SipengXie/pangu/accesslist"
 	"github.com/SipengXie/pangu/common"
@@ -34,11 +35,43 @@ func NewStateProcessor(config *params.ChainConfig, bc *Blockchain) *Processor {
 	}
 }
 
+// 解密函数
+func DecTX(t types.GuarantorTX) []*types.Transaction {
+	// 后续实现
+	// 解密 EncContent []byte 字段为[]Transaction
+	return nil
+}
+
+// 分组函数
+func Classify(t []*types.Transaction) []types.Transactions {
+	// 后续实现
+	// 分组结果为二维数组
+	return nil
+}
+
 // Process * 注意，该函数不是验证函数
 // Process 执行函数，该函数作为第一次执行交易的函数，而不是验证函数；验证函数接收到的分组结果应该是Process函数中最后运行的结果
 func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.Config) (*ProcessReturnMsg, error) {
 	// 获取到的当前区块所有的交易序列（已分好组）
 	TXS := block.Transactions2D()
+
+	// 获取当前区块所有交易的加密数组
+	EncGuarantorTX := block.GetGuaranteeTX()
+	fmt.Println(EncGuarantorTX)
+
+	// 解密所有交易 按理说是交易在执行前再解密，但是我们这里还不知道协议的设计，所以提前解密，后续再修改
+	// HashToSig 定义为 map数据类型 hash - 担保人，不选择担保人交易的直接写交易发起者
+	var HashToSig map[atomic.Value][]byte
+	var DecGuarantorTX []*types.Transaction // 所有解密后的交易
+	for i := 0; i < len(EncGuarantorTX); i++ {
+		temp := DecTX(EncGuarantorTX[i])
+		DecGuarantorTX = append(DecGuarantorTX, temp...)
+		for j := 0; j < len(temp); j++ {
+			HashToSig[temp[j].GetTXHash()] = EncGuarantorTX[i].GuarSig // 赋值
+		}
+	}
+
+	TXS = Classify(DecGuarantorTX) // 赋值
 
 	var (
 		Receipts         types.Receipts // 收据树
