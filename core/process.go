@@ -55,6 +55,8 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 	// 获取到的当前区块所有的交易序列（已分好组）
 	TXS := block.Transactions2D()
 
+	EvmContext := NewEVMBlockContext(block.Header(), p.blockchain, nil) // evm环境
+
 	// 获取当前区块所有交易的加密数组
 	EncGuarantorTX := block.GetGuaranteeTX()
 	fmt.Println(EncGuarantorTX)
@@ -63,11 +65,74 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 	// HashToSig 定义为 map数据类型 hash - 担保人，不选择担保人交易的直接写交易发起者
 	var HashToSig map[atomic.Value][]byte
 	var DecGuarantorTX []*types.Transaction // 所有解密后的交易
+	// 新建evm
+	EachEvm := evm.NewEVM(EvmContext, evm.TxContext{}, statedb, new(evmparams.ChainConfig).FromGlobal(p.config), cfg)
+
 	for i := 0; i < len(EncGuarantorTX); i++ {
-		temp := DecTX(EncGuarantorTX[i])
-		DecGuarantorTX = append(DecGuarantorTX, temp...)
+		temp := DecTX(EncGuarantorTX[i]) // 当前循环处理的担保人交易组
+
+		// 第一步 安全检查
+		// ① 一个担保交易内的交易是否IsGua统一
+		IsGua := temp[0].IsGuarantee()
+		IsGuaResult := true
+		for _, v := range temp {
+			if v.IsGuarantee() != IsGua {
+				fmt.Printf("\n%sERROR MSG%s   一个担保交易内的所有交易并不是同样的IsGuarantee值\n", types.FRED, types.FRESET)
+				IsGuaResult = false
+			}
+			// // ② 当IsGuarantee = false时，GSig和用户签名是否一致，防止偷换 其实不用，因为交易是加密的，担保人就算拿走了也无法解密
+			// GSig := EncGuarantorTX[i].GuarSig // 担保人签名
+			// USig := v.RawSigValues()          // 用户签名
+			// types.Sender()
+		}
+		if !IsGuaResult {
+			// 第二步 记录所有交易
+			// 出现错误，当前这组交易不能执行，只有当没有出现错误的时候，当前这组交易才能执行
+			// DecGuarantorTX = append(DecGuarantorTX, temp...)
+		}
+
+		// 第五步 检查担保人是否有足够的余额支付汽油费
+		GSig := EncGuarantorTX[i].GuarSig                                                // 担保人签名
+		GR, GS, GV := types.DecodeSignature2(GSig)                                       // 担保人r,s,v
+		GAddress, Gerr := types.RecoverPlain2(EncGuarantorTX[i].GHash, GR, GS, GV, true) // 担保人地址
+		GBalance := EachEvm.StateDB.GetBalance(GAddress)                                 // 担保人账户余额
+		if Gerr != nil {
+			fmt.Printf("\n%sERROR MSG%s   从担保人签名求地址出现了错误，错误原因是 %v\n", types.FRED, types.FRESET, Gerr)
+			return nil, nil
+		}
+		UAllCost := new(big.Int) // 执行担保人所有交易花费的最大汽油费
 		for j := 0; j < len(temp); j++ {
-			HashToSig[temp[j].GetTXHash()] = EncGuarantorTX[i].GuarSig // 赋值
+			// 第四步 收取担保费
+
+			USig := temp[j].RawSigValues() // 用户签名
+
+			UR, US, UV := types.DecodeSignature2(USig) // 用户r,s,v
+
+			UAddress, Uerr := types.RecoverPlain2(temp[j].Hash(), UR, US, UV, true) // 用户地址，可能存在问题，哈希值到底是哪个，是哪种格式
+			if Uerr != nil {
+				fmt.Printf("\n%sERROR MSG%s   从用户签名求地址出现了错误，错误原因是 %v\n", types.FRED, types.FRESET, Uerr)
+				return nil, nil
+			}
+			GuaranteeFee := new(big.Int) // 担保费的计算方法待定
+			if EachEvm.StateDB.GetBalance(UAddress).Cmp(GuaranteeFee) == -1 {
+				fmt.Printf("\n%sERROR MSG%s   用户余额不足以支付担保费\n", types.FRED, types.FRESET)
+				continue
+			} else {
+				// 新增交易
+				DecGuarantorTX = append(DecGuarantorTX, temp[j])
+				// 第三步 生成hash-sig对应关系map
+				HashToSig[temp[j].GetTXHash()] = EncGuarantorTX[i].GuarSig // 赋值
+			}
+			EachEvm.StateDB.AddBalance(GAddress, GuaranteeFee) // 支付担保费
+			EachEvm.StateDB.SubBalance(UAddress, GuaranteeFee) // 从用户地址扣除担保费，扣除的担保费与交给担保人的担保费金额一样
+
+			// 计算最大花费汽油费，暂时不知道同时增加担保人余额会不会产生问题
+			UAllCost.Add(UAllCost, new(big.Int).Mul(new(big.Int).SetUint64(temp[j].GasLimit()), temp[j].GasFeeCap()))
+
+			if UAllCost.Cmp(GBalance) == 1 {
+				fmt.Printf("\n%sERROR MSG%s   担保人余额不足以支付所有交易的费用\n", types.FRED, types.FRESET)
+				return nil, nil
+			}
 		}
 	}
 
@@ -80,7 +145,6 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 		BlockHash        = block.Hash()
 		BlockNumber      = block.Number()
 		AllLogs          []*types.Log
-		EvmContext       = NewEVMBlockContext(Header, p.blockchain, nil)          // evm环境
 		Signer           = types.MakeSigner(p.config, Header.Number, Header.Time) // 签名者
 		GroupNum         = len(TXS)                                               // 组数
 		PReturnMsg       = new(ProcessReturnMsg)                                  // 函数返回值

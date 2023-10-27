@@ -72,10 +72,11 @@ func (t Transaction) GetTXHash() atomic.Value {
 
 // GuarantorTX TODO: 担保人交易
 type GuarantorTX struct {
-	GuarSigAlgo []byte // 担保人签名算法
-	GuarSig     []byte // 担保人签名 用户如果不选择担保人签名，那么就需要用自己的签名来签名
+	GHash       common.Hash // 哈希值
+	GuarSigAlgo byte        // 担保人签名算法
+	GuarSig     []byte      // 担保人签名 用户如果不选择担保人签名，那么就需要用自己的签名来签名
 
-	EncAlgo    []byte // 加密算法
+	EncAlgo    byte   // 加密算法
 	EncContent []byte // 加密数据 解密后得到 []Transaction
 }
 
