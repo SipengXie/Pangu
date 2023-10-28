@@ -156,6 +156,7 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 		SerialTxList     []*types.Transaction                                     // 串行交易队列
 		ErrorTxList      []*TxErrorMessage                                        // 执行出现错误的交易队列
 		AccessListTxList []*TxAccessListMessage                                   // 串行队列AccessList不一致的交易
+		CoinbaseFeeAll   *big.Int                                                 // Coinbase费用
 		// AllStateDB  []*state.StateDB                     // 存储所有线程的stateDB
 	)
 
@@ -193,10 +194,11 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 	}
 	for value := range ReturnChan1 {
 		fmt.Printf("%sPROMPT MSG%s   收到一组并行交易的返回值，开始处理\n", types.FGREEN, types.FRESET)
-		Receipts = append(Receipts, value.NewReceipt...)       // 收据树
-		AllLogs = append(AllLogs, value.NewLogs...)            // 日志
-		SerialTxList = append(SerialTxList, value.TxSerial...) // 串行队列
-		ErrorTxList = append(ErrorTxList, value.TxError...)    // 执行出现错误的交易队列
+		Receipts = append(Receipts, value.NewReceipt...)                             // 收据树
+		AllLogs = append(AllLogs, value.NewLogs...)                                  // 日志
+		SerialTxList = append(SerialTxList, value.TxSerial...)                       // 串行队列
+		ErrorTxList = append(ErrorTxList, value.TxError...)                          // 执行出现错误的交易队列
+		CoinbaseFeeAll = CoinbaseFeeAll.Add(CoinbaseFeeAll, value.CoinbaseFeeThread) // Coinbase费用
 		if len(ReturnChan1) == 0 {
 			break
 		}
@@ -227,6 +229,7 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 		AllLogs = append(AllLogs, value.NewLogs...)
 		ErrorTxList = append(ErrorTxList, value.TxError...)
 		AccessListTxList = append(AccessListTxList, value.TxAccessList...)
+		CoinbaseFeeAll = CoinbaseFeeAll.Add(CoinbaseFeeAll, value.CoinbaseFeeThread)
 		EachEvm.StateDB.Finalise(true)
 	} else {
 		fmt.Printf("\n%sSTAGE CHANGE%s   串行交易队列长度为零，不需要执行串行队列交易 <<< \n", types.FBLUE, types.FRESET)
@@ -239,6 +242,9 @@ func (p *Processor) Process(block *types.Block, statedb *state.StateDB, cfg evm.
 		fmt.Printf("%sERROR MSG%s   Commit函数出错\n", types.FRED, types.FRESET)
 		return PReturnMsg, errors.New("commit函数出错")
 	}
+
+	// Coinbase转账交易
+	statedb.AddBalance(EvmContext.Coinbase, CoinbaseFeeAll)
 
 	fmt.Printf("\n%sSTAGE CHANGE%s   Process函数执行完成 <<< \n", types.FBLUE, types.FRESET)
 	PReturnMsg = NewProcessReturnMsg(Receipts, AllLogs, ErrorTxList, AccessListTxList, UsedGas, RootHash) // Process函数返回值
@@ -256,11 +262,12 @@ func TxThread(id int, txs []*types.Transaction, wg *sync.WaitGroup, msgReturn ch
 	defer wg.Done()
 
 	var (
-		ThreadReceipt  []*types.Receipt       // 线程执行的收据树
-		ThreadLogs     []*types.Log           // 线程执行的log
-		ThreadSerialTx []*types.Transaction   // 线程执行的串行队列
-		ErrReturnMsg   []*TxErrorMessage      // 返回值
-		TxAccessList   []*TxAccessListMessage // 需要更改AccessList的交易
+		ThreadReceipt     []*types.Receipt       // 线程执行的收据树
+		ThreadLogs        []*types.Log           // 线程执行的log
+		ThreadSerialTx    []*types.Transaction   // 线程执行的串行队列
+		ErrReturnMsg      []*TxErrorMessage      // 返回值
+		TxAccessList      []*TxAccessListMessage // 需要更改AccessList的交易
+		CoinbaseFeeThread *big.Int               // 当前线程的CoinbaseFee总和
 	)
 
 	// 开始执行交易
@@ -276,7 +283,7 @@ func TxThread(id int, txs []*types.Transaction, wg *sync.WaitGroup, msgReturn ch
 			continue
 		}
 		// 执行交易
-		Receipt, TrueAccessList, err := ExecuteTx(msg, trMessage.BlockNumber, trMessage.BlockHash, tx, trMessage.UsedGas, trMessage.EVMenv)
+		Receipt, TrueAccessList, CoinbaseFeePart, err := ExecuteTx(msg, trMessage.BlockNumber, trMessage.BlockHash, tx, trMessage.UsedGas, trMessage.EVMenv)
 
 		// 错误处理
 		if err != nil {
@@ -309,6 +316,7 @@ func TxThread(id int, txs []*types.Transaction, wg *sync.WaitGroup, msgReturn ch
 		}
 
 		// 交易没有错误
+		CoinbaseFeeThread = CoinbaseFeeThread.Add(CoinbaseFeeThread, CoinbaseFeePart) // 累加CoinbaseFeePart
 		fmt.Printf("%sPROMPT MSG%s   恭喜您，一笔交易在并行组中成功执行\n", types.FGREEN, types.FRESET)
 		ThreadReceipt = append(ThreadReceipt, Receipt)
 		ThreadLogs = append(ThreadLogs, Receipt.Logs...)
@@ -322,17 +330,18 @@ func TxThread(id int, txs []*types.Transaction, wg *sync.WaitGroup, msgReturn ch
 
 	// 汇总最后的返回信息
 	messageReturn := MessageReturn{
-		NewReceipt:   ThreadReceipt,
-		NewLogs:      ThreadLogs,
-		TxSerial:     ThreadSerialTx,
-		TxError:      ErrReturnMsg,
-		TxAccessList: TxAccessList,
+		NewReceipt:        ThreadReceipt,
+		NewLogs:           ThreadLogs,
+		TxSerial:          ThreadSerialTx,
+		TxError:           ErrReturnMsg,
+		TxAccessList:      TxAccessList,
+		CoinbaseFeeThread: CoinbaseFeeThread,
 	}
 	msgReturn <- messageReturn
 }
 
 // ExecuteTx 交易执行入口函数，代替原applyTransaction函数
-func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *types.Transaction, usedGas *uint64, evm *evm.EVM) (*types.Receipt, *accesslist.AccessList, error) {
+func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *types.Transaction, usedGas *uint64, evm *evm.EVM) (*types.Receipt, *accesslist.AccessList, *big.Int, error) {
 	EvmTxContext := NewEVMTxContext(msg)
 	evm.TxContext = EvmTxContext
 
@@ -345,7 +354,7 @@ func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *
 	// 错误处理
 	if executionResult.IsParallelError {
 		fmt.Printf("%sERROR MSG%s   当前交易无法在并行队列中并行执行\n", types.FRED, types.FRESET)
-		return nil, nil, nil
+		return nil, nil, big.NewInt(0), nil
 	}
 	//if executionResult == nil && err != nil {
 	//	fmt.Printf("%sERROR MSG%s   当前交易在执行前的检查阶段发生错误\n", types.FRED, types.FRESET)
@@ -353,7 +362,7 @@ func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *
 	//}
 	if executionResult.Err != nil {
 		fmt.Printf("%sERROR MSG%s   当前交易在执行中发生错误\n", types.FRED, types.FRESET)
-		return nil, nil, executionResult.Err
+		return nil, nil, big.NewInt(0), executionResult.Err
 	}
 
 	*usedGas += executionResult.UsedGas
@@ -376,5 +385,5 @@ func ExecuteTx(msg *TxMessage, blockNumber *big.Int, blockHash common.Hash, tx *
 	receipt.Bloom = types.CreateBloom(types.Receipts{receipt})
 	receipt.BlockHash = blockHash
 	receipt.BlockNumber = blockNumber
-	return receipt, executionResult.TrueAccessList, nil
+	return receipt, executionResult.TrueAccessList, big.NewInt(0), nil
 }

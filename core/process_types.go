@@ -24,6 +24,8 @@ type MessageReturn struct {
 	TxError []*TxErrorMessage
 	// AccessList有问题的交易
 	TxAccessList []*TxAccessListMessage
+	// 当前线程返回的CoinbaseFeePart
+	CoinbaseFeeThread *big.Int
 }
 
 // TxErrorMessage 首次执行时记录每组中执行错误的交易错误信息
@@ -77,6 +79,7 @@ type ExecutionResult struct {
 	ReturnData      []byte // Returned data from evm(function result or data supplied with revert opcode)
 	IsParallelError bool   // 标识当前错误是否时因为交易无法并行导致的错误
 	TrueAccessList  *accesslist.AccessList
+	Coinbase        big.Int // 给矿工多少钱
 }
 
 // ProcessReturnMsg Process函数返回结构体
